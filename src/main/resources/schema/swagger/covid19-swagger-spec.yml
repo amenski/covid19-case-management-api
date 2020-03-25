@@ -14,10 +14,10 @@ tags:
   - name: Case
     description: 'Case Registration'
 paths:
-  '/v1/case/create':
+  '/v1/case':
       put:
-        operationId: createCase
-        summary: 'Create a new case'
+        operationId: registerNewCase
+        summary: 'Register new case'
         tags:
         - Case
         consumes:
@@ -157,6 +157,8 @@ definitions:
       properties:
         schema:
           $ref: '#/definitions/model-case'
+      required:
+         - schema
     def-response-case-list:
       allOf:
         - $ref: '#/definitions/response-base'

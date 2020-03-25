@@ -36,7 +36,7 @@ CREATE TABLE `pui_info` (
   
   `reporting_date`  			timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modified_by` 				int(11), -- health official table id
+  `modified_by` 				varchar(50) NOT NULL, -- health official table id
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
