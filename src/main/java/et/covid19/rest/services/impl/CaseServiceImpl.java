@@ -36,7 +36,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	public boolean registerNewCase(RequestSaveCase newCase) throws EthException {
 		try{
 			boolean isValid = validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(newCase.getPresumptiveResult(), newCase.getConfirmedResult()));
-			isValid = (isValid || validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(newCase.getIdentifiedBy())));
+			isValid = (isValid && validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(newCase.getIdentifiedBy())));
 			
 			if(!isValid)
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
@@ -57,15 +57,35 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	@Override
 	@EthLoggable
 	public ModelCase getModelCase(UUID case_code) throws EthException {
-		if (case_code == null)
-			return null;
-
 		try {
 			PuiInfo info = puiInfoRepository.findByCaseCode(case_code.toString());
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			return ModelCasePuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@EthLoggable
+	@Transactional(rollbackFor = Exception.class)
+	public boolean updateResult(String code, Integer status) throws EthException {
+		try {
+			PuiInfo info = puiInfoRepository.findByCaseCode(code);
+			if(info == null)
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
+			
+			if(!validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(status)))
+				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+			
+			//FIXME add work flow check
+			
+			info.setConfirmedResult(String.valueOf(status));
+			
+			puiInfoRepository.save(info);
+			return true;
 		} catch (Exception ex) {
 			throw ex;
 		}

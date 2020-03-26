@@ -11,4 +11,6 @@ public interface ICaseService {
 	public boolean registerNewCase(RequestSaveCase newCase) throws EthException;
 	
 	public ModelCase getModelCase(UUID case_code) throws EthException;
+	
+	public boolean updateResult(String code, Integer status) throws EthException;
 }

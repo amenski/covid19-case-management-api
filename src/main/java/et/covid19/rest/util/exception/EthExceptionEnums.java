@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  */
 public enum EthExceptionEnums implements Supplier<EthException> {
 
-	VALIDATION_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400001, "Something went wrong, please contact system administrator.")),
+	VALIDATION_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400001, "The data inputed has a mistake, please try again.")),
 
 	USER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404001, "User not found, please try again!")),
 	CASE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404002, "Case not found, please try again!")),

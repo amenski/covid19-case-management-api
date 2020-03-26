@@ -13,6 +13,8 @@ schemes:
 tags:
   - name: Case
     description: 'Case Registration'
+  - name: Questionnier
+    description: 'Questionniers to be filled'
 paths:
   '/v1/case':
       put:
@@ -44,16 +46,94 @@ paths:
         produces:
         - application/json
         parameters:
-          - in: query
-            name: code
-            type: string
-            format: uuid
-            required: true
+          - $ref: '#/parameters/case-code-in-query'
         responses:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-model-case-single'
+              $ref: '#/definitions/response-case-single'
+  '/v1/case/{code}/update-result':
+      post:
+        operationId: updateResult
+        summary: 'Update case result'
+        tags:
+        - Case
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+          - $ref: '#/parameters/confirmed-result'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/questionnier':
+      put:
+        operationId: registerNewQuestionnier
+        summary: 'Register new questionnier'
+        tags:
+        - Questionnier
+        consumes:
+        - application/json
+        parameters:
+          - name: qData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-questionnier'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+      get:
+        operationId: getQuestionnier
+        summary: Get Questionnier
+        tags:
+        - Questionnier
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/question-id-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-questionnier-single'
+parameters:
+  case-code-in-query:
+    in: query
+    name: code
+    type: string
+    format: uuid
+    required: true
+  case-code-in-path:
+    in: path
+    name: code
+    type: string
+    format: uuid
+    required: true
+  confirmed-result:
+    in: body
+    name: confirmedResult
+    schema:
+      type: integer
+      format: int32
+    required: true
+  question-id-in-path:
+    in: path
+    name: id
+    type: integer
+    format: int32
+    required: true
 definitions:
     response-base:
       type: object
@@ -154,6 +234,41 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+    model-questionnier:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        question:
+          type: string
+        options:
+          description: Should be a valid json data
+          type: string
+        category:
+          type: string
+        parentId:
+          type: integer
+          format: int32
+        description:
+          type: string
+        insertDate:
+          type: string
+          format: date-time
+        modifiedDate:
+          type: string
+          format: date-time
+      required:
+        - question
+        - options
+        - category
+    model-questionnier-list:
+      type: object
+      properties:
+        cases:
+          type: array
+          items: 
+            $ref: '#/definitions/model-questionnier'
     model-case-list:
       type: object
       properties:
@@ -164,7 +279,10 @@ definitions:
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
-    response-model-case-single:
+    request-save-questionnier:
+      allOf:
+        - $ref: '#/definitions/model-questionnier'
+    response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
@@ -178,6 +296,16 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-case-list'
+    response-questionnier-single:
+      allOf:
+        - $ref: '#/definitions/model-questionnier'
+    response-questionnier-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-questionnier-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

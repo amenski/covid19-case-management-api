@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 /**
  * The persistent class for the pui_info database table.
@@ -23,8 +25,11 @@ import javax.persistence.Table;
 public class PuiInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// never use only @GeneratedValue(strategy = GenerationType.AUTO) since it generates hibernate_sequence table, and really bad choice
+	// https://vladmihalcea.com/why-should-not-use-the-auto-jpa-generationtype-with-mysql-and-hibernate/
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
 	private Integer id;
 
 	@Column(name="case_code")

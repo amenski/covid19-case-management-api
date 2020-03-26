@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ import et.covid19.rest.swagger.api.CaseApi;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.swagger.model.ResponseBase;
-import et.covid19.rest.swagger.model.ResponseModelCaseSingle;
+import et.covid19.rest.swagger.model.ResponseCaseSingle;
 import et.covid19.rest.util.exception.EthException;
 import io.swagger.annotations.ApiParam;
 
@@ -32,6 +33,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@Autowired
 	private ICaseService caseService;
 	
+	// /v1/case
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseBase> registerNewCase(
@@ -54,16 +56,18 @@ public class CaseController extends AbstractController implements CaseApi {
 		return new ResponseEntity<>(response, status);
 	}
 
+	// /v1/case?code=6220362a-e2ec-4d58-94a8-5764201725d5
 	@Override
-	public ResponseEntity<ResponseModelCaseSingle> getCase(
+	@EthLoggable
+	public ResponseEntity<ResponseCaseSingle> getCase(
 			@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "code", required = true) UUID code) 
 	{
-		Class<ResponseModelCaseSingle> responseClass = ResponseModelCaseSingle.class;
-		ResponseModelCaseSingle response = null;
+		Class<ResponseCaseSingle> responseClass = ResponseCaseSingle.class;
+		ResponseCaseSingle response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
 			ModelCase modelCase = caseService.getModelCase(code);
-			response = fillSuccessResponse(new ResponseModelCaseSingle().returnValue(modelCase));
+			response = fillSuccessResponse(new ResponseCaseSingle().returnValue(modelCase));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);
@@ -74,5 +78,31 @@ public class CaseController extends AbstractController implements CaseApi {
 		
 		return new ResponseEntity<>(response, status);
 	}
+
+	// /v1/case/{code} - confirmedResult as a body
+	@Override
+	@EthLoggable
+	public ResponseEntity<ResponseBase> updateResult(
+			@ApiParam(value = "",required=true) @PathVariable("code") UUID code,
+			@ApiParam(value = "" ,required=true )  @Valid @RequestBody Integer confirmedResult)  
+	{
+		Class<ResponseBase> responseClass = ResponseBase.class;
+		ResponseBase response = null;
+		HttpStatus status = HttpStatus.OK;
+		try{
+			caseService.updateResult(code.toString(), confirmedResult);
+			response = fillSuccessResponse(new ResponseBase());
+		} catch(EthException ex) {
+			status = ex.getHttpCode();
+			response = fillFailResponseEthException(responseClass, ex);
+		} catch (Exception ex) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response = fillFailResponseGeneric(responseClass);
+		}
+		
+		return new ResponseEntity<>(response, status);
+	}
+	
+	
 
 }

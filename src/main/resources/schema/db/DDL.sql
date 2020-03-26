@@ -65,7 +65,7 @@ CREATE TABLE `questionier` (
   `id` 							int(11) NOT NULL AUTO_INCREMENT,
   `question` 				    varchar(4000) NOT NULL,
   `options` 					varchar(250) NOT NULL DEFAULT '{\'Yes\', \'No\', \'Unknown\'}',
-  `categories`					varchar(250) NOT NULL  DEFAULT '{\'user_info\', \'symptom\', \'existing_condition\'}',
+  `category`					varchar(250) NOT NULL  DEFAULT '{\'user_info\', \'symptom\', \'existing_condition\'}',
   `parent_id`					int(11), -- if it depends on an other question
   `description` 				varchar(4000)  NOT NULL  DEFAULT '',
   `modified_by`					int(11) NOT NULL,
