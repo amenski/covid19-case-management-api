@@ -36,6 +36,24 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+      get:
+        operationId: getCase
+        summary: Get case
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - in: query
+            name: code
+            type: string
+            format: uuid
+            required: true
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-model-case-single'
 definitions:
     response-base:
       type: object
@@ -139,14 +157,21 @@ definitions:
     model-case-list:
       type: object
       properties:
-        articles:
+        cases:
           type: array
           items: 
             $ref: '#/definitions/model-case'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
-    def-response-case-list:
+    response-model-case-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-case'
+    response-case-list:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
@@ -165,7 +190,3 @@ responses:
         headers:
           WWW_Authenticate:
             type: string
-    response-case-list:
-      description: Internal Server error
-      schema:
-        $ref: '#/definitions/def-response-case-list'

@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.MDC;
@@ -15,6 +16,7 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.services.ICaseService;
+import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.LogConstants;
@@ -47,6 +49,23 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			return true;
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@EthLoggable
+	public ModelCase getModelCase(UUID case_code) throws EthException {
+		if (case_code == null)
+			return null;
+
+		try {
+			PuiInfo info = puiInfoRepository.findByCaseCode(case_code.toString());
+			if(info == null)
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
+			
+			return ModelCasePuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
 		} catch (Exception ex) {
 			throw ex;
 		}
