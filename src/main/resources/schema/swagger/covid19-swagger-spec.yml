@@ -1,0 +1,171 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title:  Covid19-case-follow-up
+  description: ''
+host: 'localhost:8080'
+basePath: /
+securityDefinitions:
+  basicAuth:
+    type: basic
+schemes:
+  - http
+tags:
+  - name: Case
+    description: 'Case Registration'
+paths:
+  '/v1/case':
+      put:
+        operationId: registerNewCase
+        summary: 'Register new case'
+        tags:
+        - Case
+        consumes:
+        - application/json
+        parameters:
+          - name: caseData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-case'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+definitions:
+    response-base:
+      type: object
+      properties:
+        success:
+          type: boolean
+        resultCode:
+          type: integer
+          format: int32
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+        transactionId:
+          type: string
+        type:
+          type: string
+      discriminator: type
+      required:
+        - success
+        - resultCode
+    model-case:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        caseCode:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dob:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum: 
+          - F
+          - M
+        occupation:
+          type: string
+        passportNumber:
+          type: string
+        incidentContactPhone1:
+          type: string
+        incidentContactPhone2:
+          type: string
+        countryOfResidence:
+          type: string
+        countryOfOrigin:
+          type: string
+        nationality:
+          type: string
+        region:
+          type: string
+        subcityOrZone:
+          type: string
+        woreda:
+          type: string
+        kebele:
+          type: string
+        houseNo:
+          type: string
+        phoneNo:
+          type: string
+        latitude:
+          type: string
+        presumptiveResult:
+          type: integer
+          format: int32
+        confirmedResult:
+          type: integer
+          format: int32
+        identifiedBy:
+          type: integer
+          format: int32
+        parent_case_code:
+          type: string
+        travelIistoryId:
+          type: string
+        modifiedBy:
+          type: string
+        reportingDate:
+          type: string
+          format: date-time
+        modifiedDate:
+          type: string
+          format: date-time
+      required:
+        - firstName
+        - lastName
+        - passportNumber
+        - incidentContactPhone1
+        - countryOfResidence
+        - identifiedBy
+        - modifiedBy
+    model-case-list:
+      type: object
+      properties:
+        articles:
+          type: array
+          items: 
+            $ref: '#/definitions/model-case'
+    request-save-case:
+      allOf:
+        - $ref: '#/definitions/model-case'
+    def-response-case-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-case-list'
+responses:
+    response-internal-server-error-500:
+      description: Internal Server error
+      schema:
+        $ref: '#/definitions/response-base'
+    response-unauthorized:
+        description: Authentication information is missing or invalid
+        schema:
+          $ref: '#/definitions/response-base' 
+        headers:
+          WWW_Authenticate:
+            type: string
+    response-case-list:
+      description: Internal Server error
+      schema:
+        $ref: '#/definitions/def-response-case-list'
