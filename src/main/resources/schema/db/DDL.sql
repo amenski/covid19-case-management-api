@@ -24,8 +24,8 @@ CREATE TABLE `pui_info` (
   `kebele`		 				varchar(50) NOT NULL  DEFAULT '',
   `houseNo`		 				varchar(50) NOT NULL  DEFAULT '',
   `phoneNo`		 				varchar(50) NOT NULL  DEFAULT '',
-  `latitude`		 			varchar(50) NOT NULL  DEFAULT '',
-  `longitude`		 			varchar(50) NOT NULL  DEFAULT '',
+  `latitude`		 			varchar(50) DEFAULT '',
+  `longitude`		 			varchar(50) DEFAULT '',
   
   `presumptive_result`			varchar(50) NOT NULL  DEFAULT 'pending', -- pending, positive, negative
   `confirmed_result`			varchar(50) NOT NULL  DEFAULT 'pending',
@@ -87,4 +87,17 @@ CREATE TABLE `pui_follow_up` (
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- CONSTANTS
+CREATE TABLE `constant_enum` (
+  `enum_id` 						int(11) NOT NULL AUTO_INCREMENT,
+  `enum_code` 						int(11) NOT NULL,
+  `enum_name` 				    	varchar(50) NOT NULL DEFAULT '',
+  `enum_type` 				    	varchar(50) NOT NULL DEFAULT '',
+  `enum_label` 				    	varchar(50) NOT NULL DEFAULT '',
+  `enum_desc` 				    	varchar(250) NOT NULL DEFAULT '',
+  `disabled`						int(1) NOT NULL DEFAULT '0',
+  
+  PRIMARY KEY (`enum_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

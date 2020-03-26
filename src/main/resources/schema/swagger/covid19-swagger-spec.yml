@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.1.0
+  version: 0.0.1
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -37,24 +37,6 @@ paths:
           '500':
             $ref: '#/responses/response-internal-server-error-500'
 definitions:
-    result-options:
-      type: object
-      properties:
-        result:
-          type: string
-          enum:
-          - pending
-          - positive
-          - negative
-    identified-by:
-      type: object
-      properties:
-        result:
-          type: string
-          enum:
-          - clinical_evaluation
-          - contact_tracing
-          - surveillance
     response-base:
       type: object
       properties:
@@ -97,8 +79,6 @@ definitions:
           enum: 
           - F
           - M
-        phone:
-          type: string
         occupation:
           type: string
         passportNumber:
@@ -128,11 +108,14 @@ definitions:
         latitude:
           type: string
         presumptiveResult:
-          $ref: '#/definitions/result-options'
+          type: integer
+          format: int32
         confirmedResult:
-          $ref: '#/definitions/result-options'
+          type: integer
+          format: int32
         identifiedBy:
-          $ref: '#/definitions/identified-by'
+          type: integer
+          format: int32
         parent_case_code:
           type: string
         travelIistoryId:
@@ -145,6 +128,14 @@ definitions:
         modifiedDate:
           type: string
           format: date-time
+      required:
+        - firstName
+        - lastName
+        - passportNumber
+        - incidentContactPhone1
+        - countryOfResidence
+        - identifiedBy
+        - modifiedBy
     model-case-list:
       type: object
       properties:
@@ -153,12 +144,8 @@ definitions:
           items: 
             $ref: '#/definitions/model-case'
     request-save-case:
-      type: object
-      properties:
-        schema:
-          $ref: '#/definitions/model-case'
-      required:
-         - schema
+      allOf:
+        - $ref: '#/definitions/model-case'
     def-response-case-list:
       allOf:
         - $ref: '#/definitions/response-base'

@@ -1,0 +1,35 @@
+#==== spring related ======#
+spring:
+   profiles:
+      active: dev
+   application:
+    name: covid19-Rest
+
+#==== connect to mysql ======#
+   jpa: 
+      hibernate:
+         ddl-auto: update
+      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+   datasource:
+      url: jdbc:mysql://localhost:3306/covid19_rest
+      username: root 
+      password: 
+      driver-class-name: com.mysql.jdbc.Driver
+
+#====== security ======# < ----------------------------- important?
+   security:
+      basic:
+         enabled: true
+      user:
+         password: password
+
+# ====== hibernate ====
+#logging.level.org.hibernate.SQL=TRACE
+#logging.level.org.hibernate.type=debug
+
+
+#logging:
+#   level:
+#      org.hibernate.SQL: TRACE
+#      org.hibernate.type: debug
+#      org.springframework.security: DEBUG

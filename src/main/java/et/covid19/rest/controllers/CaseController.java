@@ -41,7 +41,7 @@ public class CaseController extends AbstractController implements CaseApi {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);
 		} catch (Exception ex) {
-			status = HttpStatus.BAD_REQUEST;
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			response = fillFailResponseGeneric(responseClass);
 		}
 		
