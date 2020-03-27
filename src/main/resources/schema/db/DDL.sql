@@ -27,10 +27,10 @@ CREATE TABLE `pui_info` (
   `latitude`		 			varchar(50) DEFAULT '',
   `longitude`		 			varchar(50) DEFAULT '',
   
-  `presumptive_result`			varchar(50) NOT NULL  DEFAULT 'pending', -- pending, positive, negative
-  `confirmed_result`			varchar(50) NOT NULL  DEFAULT 'pending',
+  `presumptive_result`			int(11) NOT NULL  DEFAULT '1', -- pending, positive, negative => default pending
+  `confirmed_result`			int(11) NOT NULL  DEFAULT '1',
    
-  `identified_by`				varchar(50) NOT NULL  DEFAULT '', -- clinical_eval, contact_tracing, surveilance)
+  `identified_by`				int(11) NOT NULL  DEFAULT '20', -- clinical_eval, contact_tracing, surveilance => default clinical_eval
   `contact_parent_case_code`   varchar(36),
   `travel_history_id`          int(11),
   
@@ -64,8 +64,8 @@ CREATE TABLE `health_official` (
 CREATE TABLE `questionier` (
   `id` 							int(11) NOT NULL AUTO_INCREMENT,
   `question` 				    varchar(4000) NOT NULL,
-  `options` 					varchar(250) NOT NULL DEFAULT '{\'Yes\', \'No\', \'Unknown\'}',
-  `category`					varchar(250) NOT NULL  DEFAULT '{\'user_info\', \'symptom\', \'existing_condition\'}',
+  `options` 					varchar(250) NOT NULL DEFAULT "{\"yes\":\"YES\", \"no\":\"No\", \"unk\":\"Unknown\"}",
+  `category`					int(11) NOT NULL,
   `parent_id`					int(11), -- if it depends on an other question
   `description` 				varchar(4000)  NOT NULL  DEFAULT '',
   `modified_by`					int(11) NOT NULL,

@@ -26,8 +26,10 @@ public class AttributeServiceImpl extends AbstractService implements IAttributeS
 			
 			ModelAttributeList modelAttrList = new ModelAttributeList();
 			attributeList.stream().forEach(attr -> {
-				ModelAttribute model = AttributesMapper.INSTANCE.entityToModelMapper(attr);
-				modelAttrList.addAttributesItem(model);
+				if(!attr.getDisabled()) {
+					ModelAttribute model = AttributesMapper.INSTANCE.entityToModelMapper(attr);
+					modelAttrList.addAttributesItem(model);
+				}
 			});
 			return modelAttrList;
 		} catch (Exception ex) {
