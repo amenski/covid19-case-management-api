@@ -130,6 +130,29 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/{code}/register-follow-up':
+      put:
+        operationId: compileFollowUpQuestionnier
+        summary: 'Register case follow-up forms'
+        tags:
+        - Case Follow up
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+          - name: body
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-follow-up'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -301,6 +324,31 @@ definitions:
           type: string
         attDesc:
           type: string
+    model-pui-follow-up:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        puiId:
+          type: integer
+          format: int32
+        questionierId:
+          type: integer
+          format: int32  
+        optionSelected: 
+          type: string
+        description:
+          type: string
+        modifiedBy:
+          type: integer
+          format: int32 
+        insertDate:
+          type: string
+          format: date-time
+        modifiedDate:
+          type: string
+          format: date-time 
     model-questionnier-list:
       type: object
       properties:
@@ -322,12 +370,36 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-attribute' 
+    model-pui-follow-up-list:
+      type: object
+      properties:
+        puiList:
+          type: array
+          items: 
+            $ref: '#/definitions/model-pui-follow-up'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
     request-save-questionnier:
       allOf:
         - $ref: '#/definitions/model-questionnier'
+    request-save-follow-up:
+      type: object
+      properties:
+        puiId:
+          type: integer
+          format: int32
+        qId: 
+          type: integer
+          format: int32
+        selectedOption:
+          type: string
+        modifiedBy:
+          type: integer
+          format: int32 
+        insertDate:
+          type: string
+          format: date-time
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
@@ -364,6 +436,20 @@ definitions:
             returnValue:
               $ref: '#/definitions/model-attribute'
     response-attributes-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute-list'
+    response-pui-follow-up-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute'
+    response-pui-follow-up-list:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
