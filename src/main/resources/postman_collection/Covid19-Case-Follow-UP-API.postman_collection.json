@@ -226,7 +226,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"question\": \"Question string comes here?\",\n    \"options\": \"{\\\"yes\\\":\\\"YES\\\", \\\"no\\\":\\\"No\\\"}\",\n    \"category\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+							"raw": "{\n    \"question\": \"Question string comes here?\",\n    \"options\": \"{\\\"yes\\\":\\\"YES\\\",\\\"yes \\\":\\\"YES\\\", \\\"no\\\":\\\"No\\\"}\",\n    \"category\": \"3 categories\",\n    \"description\": \"<string>\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -257,18 +257,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/v1/questionnier",
+							"raw": "localhost:8080/covid19-rest/v1/questionnier/:id",
 							"host": [
-								"{{baseUrl}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
+								"covid19-rest",
 								"v1",
-								"questionnier"
+								"questionnier",
+								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "<integer>",
+									"value": "1",
 									"description": {
 										"content": "",
 										"type": "text/plain"
@@ -336,7 +339,7 @@
 	],
 	"variable": [
 		{
-			"id": "a6e3cda0-9c5f-4a2e-9f82-2b08ce787045",
+			"id": "791ad8b5-9aa9-4560-a61b-d27b27100c78",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/",
 			"type": "string"

@@ -14,14 +14,18 @@ public interface QuestionnierMapper {
 
 	QuestionnierMapper INSTANCE = Mappers.getMapper(QuestionnierMapper.class ); 
 	
-	//ignore auto_generated values
+	
 	@Mappings({
-		@Mapping(target = "id", ignore=true),
 		@Mapping(target = "createdDate", source="insertDate")
 	})
 	Questionier modelQuestionierToEntityMapper(ModelQuestionnier q);
 	
 	ModelQuestionnier entityToModelQuestionnierMapper(Questionier q);
 	
+	
+	@Mappings({
+		@Mapping(target = "id", ignore=true),
+		@Mapping(target = "createdDate", source="insertDate"),
+	})
 	Questionier modelQuestionierToEntityMapper(RequestSaveQuestionnier q); //similar fields with ModelQuestionnier
 }

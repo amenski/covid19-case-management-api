@@ -60,12 +60,12 @@ public class Questionier implements Serializable {
 		this.id = id;
 	}
 
-	public String getCategories() {
-		return this.category;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setCategories(String categories) {
-		this.category = categories;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public OffsetDateTime getCreatedDate() {

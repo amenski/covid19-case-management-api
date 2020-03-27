@@ -15,7 +15,7 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.dal.repositories.QuestionnierRepository;
 import et.covid19.rest.services.IQuestionnierService;
-import et.covid19.rest.swagger.model.ModelCase;
+import et.covid19.rest.swagger.model.ModelQuestionnier;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnier;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
@@ -45,7 +45,7 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionierToEntityMapper(question);
 			questionnierRepository.save(entity);
 			return true;
-		}catch(IOException | ConstraintViolationException | DataIntegrityViolationException e) { //jsonMappingException => IOException
+		} catch(IOException | ConstraintViolationException | DataIntegrityViolationException e) { //JsonMappingException => IOException
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 		} catch (Exception ex) {
 			throw ex;
@@ -54,9 +54,16 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 
 	@Override
 	@EthLoggable
-	public ModelCase getQuestionnier(Integer id) throws EthException {
-		// TODO Auto-generated method stub
-		return null;
+	public ModelQuestionnier getQuestionnier(Integer id) throws EthException {
+		try {
+			Questionier info = questionnierRepository.findById(id).orElseThrow(EthExceptionEnums.QUESTIONNIER_NOT_FOUND);
+			if(info == null)
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
+			
+			return QuestionnierMapper.INSTANCE.entityToModelQuestionnierMapper(info);
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 
 }

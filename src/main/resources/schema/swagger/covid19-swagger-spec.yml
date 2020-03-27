@@ -94,6 +94,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/questionnier/{id}':
       get:
         operationId: getQuestionnier
         summary: Get Questionnier
@@ -252,6 +253,8 @@ definitions:
           format: int32
         description:
           type: string
+        modifiedBy:
+          type: string
         insertDate:
           type: string
           format: date-time
@@ -298,7 +301,11 @@ definitions:
               $ref: '#/definitions/model-case-list'
     response-questionnier-single:
       allOf:
-        - $ref: '#/definitions/model-questionnier'
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-questionnier'
     response-questionnier-list:
       allOf:
         - $ref: '#/definitions/response-base'

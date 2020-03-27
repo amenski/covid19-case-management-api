@@ -82,6 +82,8 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			
 			//FIXME add work flow check
 			
+//			info.setModifiedBy(modifiedBy);
+			info.setModifiedDate(OffsetDateTime.now());
 			info.setConfirmedResult(String.valueOf(status));
 			
 			puiInfoRepository.save(info);
