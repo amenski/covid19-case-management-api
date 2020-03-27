@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.Questionier;
@@ -17,6 +19,7 @@ import et.covid19.rest.dal.repositories.QuestionnierRepository;
 import et.covid19.rest.services.IQuestionnierService;
 import et.covid19.rest.swagger.model.ModelQuestionnier;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnier;
+import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.QuestionnierMapper;
@@ -35,12 +38,14 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 	@Transactional(rollbackFor = Exception.class)
 	public boolean registerQuestionnier(RequestSaveQuestionnier question) throws EthException {
 		try{
-			if(StringUtils.isAnyBlank(question.getQuestion(), question.getOptions(), question.getCategory()))
+			if(StringUtils.isAnyBlank(question.getQuestion(), question.getOptions()) || Objects.isNull(question.getCategory()))
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 			
 			//options() => All possible values of the question as json
 			// throws exception on invalid json
 			objectMapper.readValue(question.getOptions(), Object.class);
+			
+			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory()));
 			
 			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionierToEntityMapper(question);
 			questionnierRepository.save(entity);

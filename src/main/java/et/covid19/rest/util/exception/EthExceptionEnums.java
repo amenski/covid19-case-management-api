@@ -13,7 +13,7 @@ public enum EthExceptionEnums implements Supplier<EthException> {
 
 	USER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404001, "User not found.")),
 	CASE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404002, "Case not found.")),
-	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Case not found.")),
+	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Attribute/Constant not found.")),
 	QUESTIONNIER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnier not found.")),
 	
 	USERNAME_OR_EMAIL_INCORECT(new EthException(HttpStatus.UNAUTHORIZED , 401001, "User name or email incorrect!")),

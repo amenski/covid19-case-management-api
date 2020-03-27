@@ -313,6 +313,32 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ATTRIBUTES",
+			"item": [
+				{
+					"name": "GET - ATTRIBUTES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/covid19-rest/v1/attributes",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"covid19-rest",
+								"v1",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -339,7 +365,7 @@
 	],
 	"variable": [
 		{
-			"id": "791ad8b5-9aa9-4560-a61b-d27b27100c78",
+			"id": "10c39654-6f3c-4d25-9c34-ce78eaf30e00",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/",
 			"type": "string"

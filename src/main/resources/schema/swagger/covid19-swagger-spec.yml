@@ -12,7 +12,7 @@ schemes:
   - http
 tags:
   - name: Case
-    description: 'Case Registration'
+    description: 'Case/PUI information Registration'
   - name: Questionnier
     description: 'Questionniers to be filled'
 paths:
@@ -109,6 +109,27 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-questionnier-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/attributes':
+      get:
+        operationId: getAttributes
+        summary: Get Attributes
+        tags:
+        - Attributes
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-attributes-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -247,7 +268,8 @@ definitions:
           description: Should be a valid json data
           type: string
         category:
-          type: string
+          type: integer
+          format: int32
         parentId:
           type: integer
           format: int32
@@ -265,6 +287,19 @@ definitions:
         - question
         - options
         - category
+    model-attribute:
+      type: object
+      properties:
+        attName:
+          type: string
+        attType:
+          type: string
+        attCode:
+          type: string
+        attLabel:
+          type: string
+        attDesc:
+          type: string
     model-questionnier-list:
       type: object
       properties:
@@ -279,6 +314,13 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-case'
+    model-attribute-list:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items: 
+            $ref: '#/definitions/model-attribute' 
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
@@ -313,6 +355,20 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-questionnier-list'
+    response-attribute:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute'
+    response-attributes-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

@@ -20,10 +20,10 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 public class AbstractService {
 	
 	@Autowired
-	private ConstantsEnumRepository constantsEnumRepository;
+	protected ConstantsEnumRepository constantsEnumRepository;
 	
 	@EthLoggable
-	public List<ConstantEnum> getEnumByType(String type) throws EthException {
+	protected List<ConstantEnum> getEnumByType(String type) throws EthException {
 		List<ConstantEnum> result = new ArrayList<>();
 		try{
 			List<ConstantEnum> enums = constantsEnumRepository.findByEnumType(type);
@@ -39,7 +39,7 @@ public class AbstractService {
 	
 	//do a set difference to validate input vs fetched
 	@EthLoggable
-	public boolean validateInputEnumById(String type, Set<Integer> id) throws EthException {
+	protected boolean validateInputEnumById(String type, Set<Integer> id) throws EthException {
 		try{
 			Set<Integer> foundIds = getEnumByType(type).stream().map(ConstantEnum::getEnumCode).collect(Collectors.toSet());
 			return Sets.difference(id, foundIds).isEmpty();

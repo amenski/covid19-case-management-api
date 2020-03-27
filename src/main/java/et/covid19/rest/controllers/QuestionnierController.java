@@ -33,7 +33,8 @@ public class QuestionnierController extends AbstractController implements Questi
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseQuestionnierSingle> getQuestionnier(
-			@ApiParam(value = "",required=true) @PathVariable("id") Integer id) {
+			@ApiParam(value = "",required=true) @PathVariable("id") Integer id) 
+	{
 		Class<ResponseQuestionnierSingle> responseClass = ResponseQuestionnierSingle.class;
 		ResponseQuestionnierSingle response = null;
 		HttpStatus status = HttpStatus.OK;
