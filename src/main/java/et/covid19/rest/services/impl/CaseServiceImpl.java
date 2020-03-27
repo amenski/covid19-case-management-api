@@ -84,7 +84,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			
 //			info.setModifiedBy(modifiedBy);
 			info.setModifiedDate(OffsetDateTime.now());
-			info.setConfirmedResult(String.valueOf(status));
+			info.setConfirmedResult(status);
 			
 			puiInfoRepository.save(info);
 			return true;

@@ -128,17 +128,6 @@
 										<Git-Commit>${GIT_COMMIT}</Git-Commit> <Git-Branch>${GIT_BRANCH}</Git-Branch> -->
 								</manifestEntries>
 							</archive>
-							<packagingExcludes>
-								WEB-INF/classes/*.properties,
-								WEB-INF/classes/*.jks,
-								WEB-INF/classes/*.yml,
-								WEB-INF/classes/*.sql,
-								WEB-INF/classes/*.xml,
-								WEB-INF/classes/*.txt,
-								WEB-INF/classes/database/,
-								WEB-INF/classes/swagger/,
-								src/main/resources/
-							</packagingExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -154,6 +143,9 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+			        <excludes>
+			        	<exclude>**/images</exclude>
+			        </excludes>
 					<annotationProcessorPaths>
 			            <path>
 			                <groupId>org.mapstruct</groupId>

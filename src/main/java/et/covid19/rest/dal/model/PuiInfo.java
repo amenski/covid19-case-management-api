@@ -36,7 +36,7 @@ public class PuiInfo implements Serializable {
 	private String caseCode;
 
 	@Column(name="confirmed_result")
-	private String confirmedResult;
+	private Integer confirmedResult;
 
 	@Column(name="contact_parent_case_code")
 	private String contactParentCaseCode;
@@ -57,7 +57,7 @@ public class PuiInfo implements Serializable {
 	private String houseNo;
 
 	@Column(name="identified_by")
-	private String identifiedBy;
+	private Integer identifiedBy;
 
 	@Column(name="incident_contact_phone_1")
 	private String incidentContactPhone1;
@@ -75,7 +75,7 @@ public class PuiInfo implements Serializable {
 	private String longitude;
 
 	@Column(name="modified_by")
-	private String modifiedBy;
+	private Integer modifiedBy;
 
 	@Column(name="modified_date")
 	private OffsetDateTime modifiedDate;
@@ -102,7 +102,7 @@ public class PuiInfo implements Serializable {
 	private String subcityOrZone;
 
 	@Column(name="travel_history_id")
-	private int travelHistoryId;
+	private Integer travelHistoryId;
 
 	private String woreda;
 
@@ -126,11 +126,11 @@ public class PuiInfo implements Serializable {
 		this.caseCode = caseCode;
 	}
 
-	public String getConfirmedResult() {
+	public Integer getConfirmedResult() {
 		return this.confirmedResult;
 	}
 
-	public void setConfirmedResult(String confirmedResult) {
+	public void setConfirmedResult(Integer confirmedResult) {
 		this.confirmedResult = confirmedResult;
 	}
 
@@ -190,11 +190,11 @@ public class PuiInfo implements Serializable {
 		this.houseNo = houseNo;
 	}
 
-	public String getIdentifiedBy() {
+	public Integer getIdentifiedBy() {
 		return this.identifiedBy;
 	}
 
-	public void setIdentifiedBy(String identifiedBy) {
+	public void setIdentifiedBy(Integer identifiedBy) {
 		this.identifiedBy = identifiedBy;
 	}
 
@@ -246,11 +246,11 @@ public class PuiInfo implements Serializable {
 		this.longitude = longitude;
 	}
 
-	public String getModifiedBy() {
+	public Integer getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(String modifiedBy) {
+	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 

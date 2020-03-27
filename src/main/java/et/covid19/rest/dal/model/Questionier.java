@@ -29,7 +29,7 @@ public class Questionier implements Serializable {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Integer id;
 
-	private String category;
+	private Integer category;
 
 	@Column(name="created_date")
 	private OffsetDateTime createdDate;
@@ -60,11 +60,11 @@ public class Questionier implements Serializable {
 		this.id = id;
 	}
 
-	public String getCategory() {
+	public Integer getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(Integer category) {
 		this.category = category;
 	}
 
