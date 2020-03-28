@@ -92,7 +92,7 @@ public class PuiInfo implements Serializable {
 	private String phoneNo;
 
 	@Column(name="presumptive_result")
-	private String presumptiveResult;
+	private Integer presumptiveResult;
 
 	private String region;
 
@@ -302,11 +302,11 @@ public class PuiInfo implements Serializable {
 		this.phoneNo = phoneNo;
 	}
 
-	public String getPresumptiveResult() {
+	public Integer getPresumptiveResult() {
 		return this.presumptiveResult;
 	}
 
-	public void setPresumptiveResult(String presumptiveResult) {
+	public void setPresumptiveResult(Integer presumptiveResult) {
 		this.presumptiveResult = presumptiveResult;
 	}
 

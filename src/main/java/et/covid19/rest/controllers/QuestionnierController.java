@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +29,7 @@ public class QuestionnierController extends AbstractController implements Questi
 	@Autowired
 	private IQuestionnierService questionnierService;
 	
+	// -- /v1/questionnier/{id}"
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseQuestionnierSingle> getQuestionnier(
@@ -52,9 +52,9 @@ public class QuestionnierController extends AbstractController implements Questi
 		return new ResponseEntity<>(response, status);
 	}
 
+	// --/v1/questionnier
 	@Override
 	@EthLoggable
-	@Transactional(rollbackFor = Exception.class)
 	public ResponseEntity<ResponseBase> registerNewQuestionnier(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveQuestionnier qData) {
 		Class<ResponseBase> responseClass = ResponseBase.class;

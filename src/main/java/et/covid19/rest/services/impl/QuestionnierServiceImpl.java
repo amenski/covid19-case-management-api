@@ -26,9 +26,6 @@ import et.covid19.rest.util.mappers.QuestionnierMapper;
 
 @Service
 public class QuestionnierServiceImpl extends AbstractService implements IQuestionnierService {
-
-	@Autowired
-	private QuestionnierRepository questionnierRepository;
 	
 	@Autowired
 	private ObjectMapper objectMapper;

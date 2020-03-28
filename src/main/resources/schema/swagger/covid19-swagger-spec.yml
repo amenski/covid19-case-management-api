@@ -130,7 +130,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/{code}/register-follow-up':
+  '/v1/register-follow-up':
       put:
         operationId: compileFollowUpQuestionnier
         summary: 'Register case follow-up forms'
@@ -139,9 +139,9 @@ paths:
         consumes:
         - application/json
         parameters:
-          - $ref: '#/parameters/case-code-in-path'
           - name: body
             in: body
+            required: true
             schema:
               $ref: '#/definitions/request-save-follow-up'
         responses:
@@ -327,16 +327,12 @@ definitions:
     model-pui-follow-up:
       type: object
       properties:
-        id:
+        puiCaseCode:
+          type: string
+        qId: 
           type: integer
           format: int32
-        puiId:
-          type: integer
-          format: int32
-        questionierId:
-          type: integer
-          format: int32  
-        optionSelected: 
+        selectedOption:
           type: string
         description:
           type: string
@@ -346,9 +342,10 @@ definitions:
         insertDate:
           type: string
           format: date-time
-        modifiedDate:
-          type: string
-          format: date-time 
+      required:
+        - puiCaseCode
+        - qId
+        - selectedOption
     model-questionnier-list:
       type: object
       properties:
@@ -373,10 +370,12 @@ definitions:
     model-pui-follow-up-list:
       type: object
       properties:
-        puiList:
+        list:
           type: array
           items: 
             $ref: '#/definitions/model-pui-follow-up'
+      required:
+        - list
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
@@ -384,22 +383,9 @@ definitions:
       allOf:
         - $ref: '#/definitions/model-questionnier'
     request-save-follow-up:
-      type: object
-      properties:
-        puiId:
-          type: integer
-          format: int32
-        qId: 
-          type: integer
-          format: int32
-        selectedOption:
-          type: string
-        modifiedBy:
-          type: integer
-          format: int32 
-        insertDate:
-          type: string
-          format: date-time
+      allOf:
+        - $ref: '#/definitions/request-save-case'
+        - $ref: '#/definitions/model-pui-follow-up-list'
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
@@ -448,14 +434,14 @@ definitions:
         - type: object
           properties:
             returnValue:
-              $ref: '#/definitions/model-attribute'
+              $ref: '#/definitions/model-pui-follow-up'
     response-pui-follow-up-list:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
           properties:
             returnValue:
-              $ref: '#/definitions/model-attribute-list'
+              $ref: '#/definitions/model-pui-follow-up-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

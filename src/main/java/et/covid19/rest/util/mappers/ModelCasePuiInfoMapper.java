@@ -7,6 +7,7 @@ import org.mapstruct.factory.Mappers;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
+import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 
 @Mapper
 public interface ModelCasePuiInfoMapper {
@@ -21,4 +22,6 @@ public interface ModelCasePuiInfoMapper {
 	ModelCase puiInfoToModelCaseMapper(PuiInfo puiInfo);
 	
 	PuiInfo modelCaseToPuiInfoMapper(RequestSaveCase newCase); //similar fields with ModelCase
+
+	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
 }

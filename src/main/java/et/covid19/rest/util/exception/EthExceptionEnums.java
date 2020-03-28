@@ -10,10 +10,11 @@ import org.springframework.http.HttpStatus;
 public enum EthExceptionEnums implements Supplier<EthException> {
 
 	VALIDATION_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400001, "The data inputed has a mistake, please try again.")),
-
+	INVALID_OPTION_OR_QUESTION_ID(new EthException(HttpStatus.BAD_REQUEST , 400002, "Invalid questionId or option has been selected.")),
+	
 	USER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404001, "User not found.")),
 	CASE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404002, "Case not found.")),
-	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Attribute/Constant not found.")),
+	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Attribute or Constant not found.")),
 	QUESTIONNIER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnier not found.")),
 	
 	USERNAME_OR_EMAIL_INCORECT(new EthException(HttpStatus.UNAUTHORIZED , 401001, "User name or email incorrect!")),

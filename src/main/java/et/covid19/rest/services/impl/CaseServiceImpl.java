@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,6 @@ import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.PuiInfo;
-import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
@@ -26,25 +24,24 @@ import et.covid19.rest.util.mappers.ModelCasePuiInfoMapper;
 
 @Service
 public class CaseServiceImpl extends AbstractService implements ICaseService {
-	
-	@Autowired
-	private PuiInfoRepository puiInfoRepository;
 
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
 	public boolean registerNewCase(RequestSaveCase newCase) throws EthException {
 		try{
-			boolean isValid = validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(newCase.getPresumptiveResult(), newCase.getConfirmedResult()));
-			isValid = (isValid && validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(newCase.getIdentifiedBy())));
+			//validate parent case
+			if(!caseExists(newCase.getParentCaseCode()))
+				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
 			
-			if(!isValid)
-				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+			OffsetDateTime timeNow = OffsetDateTime.now();
+			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(newCase.getPresumptiveResult(), newCase.getConfirmedResult()));
+			validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(newCase.getIdentifiedBy()));
 			
 			PuiInfo entity = ModelCasePuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
 			entity.setCaseCode(MDC.get(LogConstants.UUID_KEY));
-			entity.setModifiedDate(OffsetDateTime.now());
-			entity.setReportingDate(newCase.getReportingDate() != null ? newCase.getReportingDate() : OffsetDateTime.now());
+			entity.setModifiedDate(timeNow);
+			entity.setReportingDate(newCase.getReportingDate() != null ? newCase.getReportingDate() : timeNow);
 			puiInfoRepository.save(entity);
 			return true;
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
@@ -77,8 +74,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			if(!validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(status)))
-				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(status));
 			
 			//FIXME add work flow check
 			

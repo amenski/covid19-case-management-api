@@ -78,7 +78,7 @@ CREATE TABLE `questionier` (
 -- PUI-FOLLOW-UP
 CREATE TABLE `pui_follow_up` (
   `id` 							int(11) NOT NULL AUTO_INCREMENT,
-  `pui_id` 				    	int(11) NOT NULL,
+  `pui_case_code` 				varchar(36) NOT NULL,
   `questionier_id` 				int(11) NOT NULL,
   `option_selected`				varchar(50) NOT NULL,
   `description` 				varchar(4000),

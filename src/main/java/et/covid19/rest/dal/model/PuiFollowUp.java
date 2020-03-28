@@ -9,27 +9,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 
 /**
- * The persistent class for the questionier database table.
+ * The persistent class for the pui_follow_up database table.
  * 
  */
 @Entity
-@NamedQuery(name="Questionier.findAll", query="SELECT q FROM Questionier q")
-public class Questionier implements Serializable {
+@Table(name="pui_follow_up")
+@NamedQuery(name="PuiFollowUp.findAll", query="SELECT p FROM PuiFollowUp p")
+public class PuiFollowUp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	// never use only @GeneratedValue(strategy = GenerationType.AUTO) since it generates hibernate_sequence table, and really bad choice
-	// https://vladmihalcea.com/why-should-not-use-the-auto-jpa-generationtype-with-mysql-and-hibernate/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Integer id;
-
-	private Integer category;
 
 	@Column(name="created_date")
 	private OffsetDateTime createdDate;
@@ -37,19 +35,21 @@ public class Questionier implements Serializable {
 	private String description;
 
 	@Column(name="modified_by")
-	private int modifiedBy;
+	private Integer modifiedBy;
 
 	@Column(name="modified_date")
 	private OffsetDateTime modifiedDate;
 
-	private String options;
+	@Column(name="option_selected")
+	private String optionSelected;
 
-	@Column(name="parent_id")
-	private int parentId;
+	@Column(name="pui_case_code")
+	private String puiCaseCode;
 
-	private String question;
+	@Column(name="questionier_id")
+	private Integer questionierId;
 
-	public Questionier() {
+	public PuiFollowUp() {
 		//
 	}
 
@@ -59,14 +59,6 @@ public class Questionier implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getCategory() {
-		return category;
-	}
-
-	public void setCategory(Integer category) {
-		this.category = category;
 	}
 
 	public OffsetDateTime getCreatedDate() {
@@ -85,11 +77,11 @@ public class Questionier implements Serializable {
 		this.description = description;
 	}
 
-	public int getModifiedBy() {
+	public Integer getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(int modifiedBy) {
+	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
@@ -101,28 +93,28 @@ public class Questionier implements Serializable {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public String getOptions() {
-		return this.options;
+	public String getOptionSelected() {
+		return this.optionSelected;
 	}
 
-	public void setOptions(String options) {
-		this.options = options;
+	public void setOptionSelected(String optionSelected) {
+		this.optionSelected = optionSelected;
 	}
 
-	public int getParentId() {
-		return this.parentId;
+	public String getPuiCaseCode() {
+		return this.puiCaseCode;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setPuiCaseCode(String puiCaseCode) {
+		this.puiCaseCode = puiCaseCode;
 	}
 
-	public String getQuestion() {
-		return this.question;
+	public Integer getQuestionierId() {
+		return this.questionierId;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setQuestionierId(Integer questionierId) {
+		this.questionierId = questionierId;
 	}
 
 }
