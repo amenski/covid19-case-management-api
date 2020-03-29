@@ -16,14 +16,13 @@ public interface PuiCaseFolowUpMapper {
 	// ignore auto_generated values
 	@Mappings({ 
 		@Mapping(target = "id", ignore = true),
-		@Mapping(target = "questionierId", source = "QId"),
+		@Mapping(target = "questionier.id", source = "QId"),
 		@Mapping(target = "optionSelected", source = "selectedOption"),
 		@Mapping(target = "createdDate", source = "insertDate")
 		})
 	PuiFollowUp modelFollowupToEntityMapper(ModelPuiFollowUp in);
 
 	@Mappings({ 
-		@Mapping(target = "QId", source = "questionierId"),
 		@Mapping(target ="selectedOption" , source = "optionSelected"),
 		@Mapping(target = "insertDate", source = "createdDate")
 		})

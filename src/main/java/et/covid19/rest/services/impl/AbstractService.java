@@ -1,21 +1,29 @@
 package et.covid19.rest.services.impl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
+import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.repositories.ConstantsEnumRepository;
 import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.dal.repositories.QuestionnierRepository;
+import et.covid19.rest.util.EthConstants;
+import et.covid19.rest.util.GeneralUtils;
+import et.covid19.rest.util.LogConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 
@@ -63,6 +71,25 @@ public class AbstractService {
 			return true; //skip faking existence
 		
 		return (puiInfoRepository.findByCaseCode(caseCode) != null);
+	}
+	
+	@Transactional
+	@EthLoggable
+	protected PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
+		OffsetDateTime timeNow = OffsetDateTime.now();
+		validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(
+				GeneralUtils.defaultIfNull(entity::setPresumptiveResult, entity::getPresumptiveResult, EthConstants.CONST_TEST_PENDING).getEnumCode(),
+				GeneralUtils.defaultIfNull(entity::setConfirmedResult, entity::getConfirmedResult, EthConstants.CONST_TEST_PENDING).getEnumCode()));
+		validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(GeneralUtils.defaultIfNull(entity::setIdentifiedBy, entity::getIdentifiedBy, EthConstants.CONST_IDENTIFIED_BY_CLINICAL_EVAL).getEnumCode()));
+		validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(GeneralUtils.defaultIfNull(entity::setStatus, entity::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
+		
+		if(entity.getReportingDate() == null) {
+			entity.setReportingDate(timeNow);
+		}
+		entity.setCaseCode(MDC.get(LogConstants.UUID_KEY));
+		entity.setModifiedDate(timeNow);
+		
+		return puiInfoRepository.save(entity);
 	}
 
 }

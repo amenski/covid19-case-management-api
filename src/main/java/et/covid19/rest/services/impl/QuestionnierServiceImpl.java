@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.Questionier;
-import et.covid19.rest.dal.repositories.QuestionnierRepository;
 import et.covid19.rest.services.IQuestionnierService;
 import et.covid19.rest.swagger.model.ModelQuestionnier;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnier;
@@ -42,7 +41,7 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 			// throws exception on invalid json
 			objectMapper.readValue(question.getOptions(), Object.class);
 			
-			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory()));
+			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
 			
 			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionierToEntityMapper(question);
 			questionnierRepository.save(entity);

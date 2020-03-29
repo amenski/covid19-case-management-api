@@ -1,19 +1,17 @@
 package et.covid19.rest.services.impl;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.MDC;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.PuiFollowUp;
@@ -21,13 +19,13 @@ import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.dal.repositories.CaseFollowUpRepository;
 import et.covid19.rest.services.ICaseFollowUpService;
+import et.covid19.rest.swagger.model.ModelPuiFollowUp;
+import et.covid19.rest.swagger.model.ModelPuiFollowUpList;
 import et.covid19.rest.swagger.model.RequestSaveFollowUp;
-import et.covid19.rest.util.EthConstants;
-import et.covid19.rest.util.LogConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
-import et.covid19.rest.util.mappers.ModelCasePuiInfoMapper;
 import et.covid19.rest.util.mappers.PuiCaseFolowUpMapper;
+import et.covid19.rest.util.mappers.PuiInfoMapper;
 
 @Service
 public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFollowUpService {
@@ -40,7 +38,7 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 	@Transactional(rollbackFor = Exception.class)
 	public boolean addCaseFollowUpQuestionnier(@Valid RequestSaveFollowUp body) throws EthException {
 		try{
-			PuiInfo pui = ModelCasePuiInfoMapper.INSTANCE.modelFollowupToPuiInfoMapper(body);
+			PuiInfo pui = PuiInfoMapper.INSTANCE.modelFollowupToPuiInfoMapper(body);
 			if(pui == null)
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("PUI information may have errors, please try again.");
 			
@@ -48,47 +46,47 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
 				
 			//collect questionnaires and validate
+			PuiInfo newPui = saveAndGetPuiInfo(pui);
 			List<PuiFollowUp> questionnierList = new ArrayList<>();
 			body.getList().stream().forEach(questionnier -> {
-				PuiFollowUp qa = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(questionnier);
-				if(!StringUtils.isAnyBlank(qa.getOptionSelected()) && qa.getQuestionierId() != null) {
-					questionnierList.add(qa);
+				PuiFollowUp followup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(questionnier); //quest mapped here
+				Questionier questionier = followup.getQuestionier();
+				if(!StringUtils.isAnyBlank(followup.getOptionSelected()) && (Objects.nonNull(questionier) && Objects.nonNull(questionier.getId()))) {
+					followup.setPuiInfo(newPui);
+					questionnierList.add(followup);
 				}
 			});
 			
 			if(body.getList().size() != questionnierList.size())
 				throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
 			
-			List<Questionier> questioniers = questionnierRepository.findAllById(questionnierList.stream().map(PuiFollowUp::getQuestionierId).collect(Collectors.toList()));
-			//List<PuiInfo> puiInfos = puiInfoRepository.findAllByCaseCode(questionnierList.stream().map(PuiFollowUp::getPuiCaseCode).collect(Collectors.toList()));
-			
-			if(questioniers.isEmpty() || (questioniers.size() < body.getList().size()))
-				throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
-			
-			String caseCode = saveAndGetCaseCode(pui);
-			for(PuiFollowUp followUp : questionnierList) {
-				followUp.setPuiCaseCode(caseCode);
-			}
-			
 			caseFollowUpRepository.saveAll(questionnierList);
 			return true;
+		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
+			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 		} catch (Exception ex) {
 			throw ex;
 		}
 	}
 
-	private String saveAndGetCaseCode(PuiInfo entity) throws EthException {
-		OffsetDateTime timeNow = OffsetDateTime.now();
-		validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(entity.getPresumptiveResult(), entity.getConfirmedResult()));
-		validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(entity.getIdentifiedBy()));
-
-		if(entity.getReportingDate() == null) {
-			entity.setReportingDate(timeNow);
+	@Override
+	@EthLoggable
+	public ModelPuiFollowUpList getFollowUpData(String caseCode) throws EthException {
+		try {
+			ModelPuiFollowUpList modeFollup = new ModelPuiFollowUpList();
+			List<PuiFollowUp> followupList = caseFollowUpRepository.findWithPuiCaseCode(caseCode.toString());
+			if(followupList == null)
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
+			
+			followupList.stream().forEach(val -> {
+				ModelPuiFollowUp fup = PuiCaseFolowUpMapper.INSTANCE.entityToModelFollowupMapper(val);
+				fup.setQuestion(val.getQuestionier().getQuestion());
+				modeFollup.getList().add(fup);
+			});
+			return modeFollup;
+		} catch (Exception ex) {
+			throw ex;
 		}
-		entity.setCaseCode(MDC.get(LogConstants.UUID_KEY));
-		entity.setModifiedDate(timeNow);
-		puiInfoRepository.save(entity);
-		
-		return entity.getCaseCode();
 	}
+	
 }

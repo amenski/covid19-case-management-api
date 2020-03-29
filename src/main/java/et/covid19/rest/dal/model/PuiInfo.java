@@ -3,13 +3,17 @@ package et.covid19.rest.dal.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -35,8 +39,9 @@ public class PuiInfo implements Serializable {
 	@Column(name="case_code")
 	private String caseCode;
 
-	@Column(name="confirmed_result")
-	private Integer confirmedResult;
+	@ManyToOne
+	@JoinColumn(name = "confirmed_result", referencedColumnName = "enum_code")
+	private ConstantEnum confirmedResult;
 
 	@Column(name="contact_parent_case_code")
 	private String contactParentCaseCode;
@@ -54,10 +59,12 @@ public class PuiInfo implements Serializable {
 
 	private String gender;
 
+	@Column(name="house_no")
 	private String houseNo;
 
-	@Column(name="identified_by")
-	private Integer identifiedBy;
+	@ManyToOne
+	@JoinColumn(name = "identified_by", referencedColumnName = "enum_code")
+	private ConstantEnum identifiedBy;
 
 	@Column(name="incident_contact_phone_1")
 	private String incidentContactPhone1;
@@ -89,23 +96,34 @@ public class PuiInfo implements Serializable {
 
 	private String phone;
 
+	@Column(name="phone_no")
 	private String phoneNo;
 
-	@Column(name="presumptive_result")
-	private Integer presumptiveResult;
+	@ManyToOne
+	@JoinColumn(name = "presumptive_result", referencedColumnName = "enum_code")
+	private ConstantEnum presumptiveResult;
 
 	private String region;
 
 	@Column(name="reporting_date")
 	private OffsetDateTime reportingDate;
 
+	@Column(name="subcity_or_zone")
 	private String subcityOrZone;
 
-	@Column(name="travel_history_id")
-	private Integer travelHistoryId;
+	@Column(name="recent_travel_to")
+	private String recentTravelTo;
+	
+	@ManyToOne
+	@JoinColumn(name = "status", referencedColumnName = "enum_code")
+	private ConstantEnum status;
 
 	private String woreda;
 
+	//bi-directional many-to-one association to PuiFollowUp2
+	@OneToMany(mappedBy="puiInfo")
+	private List<PuiFollowUp> puiFollowUps;
+		
 	public PuiInfo() {
 		//
 	}
@@ -126,11 +144,11 @@ public class PuiInfo implements Serializable {
 		this.caseCode = caseCode;
 	}
 
-	public Integer getConfirmedResult() {
-		return this.confirmedResult;
+	public ConstantEnum getConfirmedResult() {
+		return confirmedResult;
 	}
 
-	public void setConfirmedResult(Integer confirmedResult) {
+	public void setConfirmedResult(ConstantEnum confirmedResult) {
 		this.confirmedResult = confirmedResult;
 	}
 
@@ -190,11 +208,11 @@ public class PuiInfo implements Serializable {
 		this.houseNo = houseNo;
 	}
 
-	public Integer getIdentifiedBy() {
-		return this.identifiedBy;
+	public ConstantEnum getIdentifiedBy() {
+		return identifiedBy;
 	}
 
-	public void setIdentifiedBy(Integer identifiedBy) {
+	public void setIdentifiedBy(ConstantEnum identifiedBy) {
 		this.identifiedBy = identifiedBy;
 	}
 
@@ -302,11 +320,11 @@ public class PuiInfo implements Serializable {
 		this.phoneNo = phoneNo;
 	}
 
-	public Integer getPresumptiveResult() {
-		return this.presumptiveResult;
+	public ConstantEnum getPresumptiveResult() {
+		return presumptiveResult;
 	}
 
-	public void setPresumptiveResult(Integer presumptiveResult) {
+	public void setPresumptiveResult(ConstantEnum presumptiveResult) {
 		this.presumptiveResult = presumptiveResult;
 	}
 
@@ -334,12 +352,12 @@ public class PuiInfo implements Serializable {
 		this.subcityOrZone = subcityOrZone;
 	}
 
-	public int getTravelHistoryId() {
-		return this.travelHistoryId;
+	public String getRecentTravelTo() {
+		return recentTravelTo;
 	}
 
-	public void setTravelHistoryId(int travelHistoryId) {
-		this.travelHistoryId = travelHistoryId;
+	public void setRecentTravelTo(String recentTravelTo) {
+		this.recentTravelTo = recentTravelTo;
 	}
 
 	public String getWoreda() {
@@ -350,4 +368,32 @@ public class PuiInfo implements Serializable {
 		this.woreda = woreda;
 	}
 
+	public ConstantEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(ConstantEnum status) {
+		this.status = status;
+	}
+
+	public List<PuiFollowUp> getPuiFollowUps() {
+		return this.puiFollowUps;
+	}
+	public void setPuiFollowUps(List<PuiFollowUp> puiFollowUps) {
+		this.puiFollowUps = puiFollowUps;
+	}
+
+	public PuiFollowUp addPuiFollowUp(PuiFollowUp puiFollowUp) {
+		getPuiFollowUps().add(puiFollowUp);
+		puiFollowUp.setPuiInfo(this);
+
+		return puiFollowUp;
+	}
+
+	public PuiFollowUp removePuiFollowUp(PuiFollowUp puiFollowUp) {
+		getPuiFollowUps().remove(puiFollowUp);
+		puiFollowUp.setPuiInfo(null);
+
+		return puiFollowUp;
+	}
 }

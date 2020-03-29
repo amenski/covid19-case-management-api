@@ -16,16 +16,22 @@ public interface QuestionnierMapper {
 	
 	
 	@Mappings({
-		@Mapping(target = "createdDate", source="insertDate")
+		@Mapping(target = "createdDate", source="insertDate"),
+		@Mapping(target = "category", source="category.id")
 	})
 	Questionier modelQuestionierToEntityMapper(ModelQuestionnier q);
 	
+	@Mappings({
+		@Mapping(target = "category.id", source="id"),
+		@Mapping(target = "category.value", source="question")
+	})
 	ModelQuestionnier entityToModelQuestionnierMapper(Questionier q);
 	
 	
 	@Mappings({
 		@Mapping(target = "id", ignore=true),
 		@Mapping(target = "createdDate", source="insertDate"),
+		@Mapping(target = "category", source="category.id")
 	})
 	Questionier modelQuestionierToEntityMapper(RequestSaveQuestionnier q); //similar fields with ModelQuestionnier
 }

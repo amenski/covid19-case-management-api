@@ -153,6 +153,25 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/follow-up/{code}':
+      get:
+        operationId: getCaseFollowUpQuestionniers
+        summary: Get follow up questionniers
+        tags:
+        - Case Follow up
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-pui-follow-up-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -251,18 +270,17 @@ definitions:
         latitude:
           type: string
         presumptiveResult:
-          type: integer
-          format: int32
+          $ref: '#/definitions/model-enum-id-value'
         confirmedResult:
-          type: integer
-          format: int32
+          $ref: '#/definitions/model-enum-id-value'
         identifiedBy:
-          type: integer
-          format: int32
-        parent_case_code:
+          $ref: '#/definitions/model-enum-id-value'
+        parentCaseCode:
           type: string
-        travelIistoryId:
+        recentTravelTo:
           type: string
+        status:
+          $ref: '#/definitions/model-enum-id-value'
         modifiedBy:
           type: string
         reportingDate:
@@ -291,8 +309,7 @@ definitions:
           description: Should be a valid json data
           type: string
         category:
-          type: integer
-          format: int32
+          $ref: '#/definitions/model-enum-id-value'
         parentId:
           type: integer
           format: int32
@@ -332,6 +349,8 @@ definitions:
         qId: 
           type: integer
           format: int32
+        question:
+          type: string
         selectedOption:
           type: string
         description:
@@ -346,6 +365,14 @@ definitions:
         - puiCaseCode
         - qId
         - selectedOption
+    model-enum-id-value:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int32
+        value:
+          type: string
     model-questionnier-list:
       type: object
       properties:

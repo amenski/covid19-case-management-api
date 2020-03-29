@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -43,12 +45,15 @@ public class PuiFollowUp implements Serializable {
 	@Column(name="option_selected")
 	private String optionSelected;
 
-	@Column(name="pui_case_code")
-	private String puiCaseCode;
-
-	@Column(name="questionier_id")
-	private Integer questionierId;
-
+	//uni-directional many-to-one association to Questionier
+	@ManyToOne
+	private Questionier questionier;
+	
+	//uni-directional many-to-one association to PuiInfo
+	@ManyToOne
+	@JoinColumn(name = "pui_case_code", referencedColumnName = "case_code")
+	private PuiInfo puiInfo;
+	
 	public PuiFollowUp() {
 		//
 	}
@@ -101,20 +106,20 @@ public class PuiFollowUp implements Serializable {
 		this.optionSelected = optionSelected;
 	}
 
-	public String getPuiCaseCode() {
-		return this.puiCaseCode;
+	public Questionier getQuestionier() {
+		return questionier;
 	}
 
-	public void setPuiCaseCode(String puiCaseCode) {
-		this.puiCaseCode = puiCaseCode;
+	public void setQuestionier(Questionier questionier) {
+		this.questionier = questionier;
 	}
 
-	public Integer getQuestionierId() {
-		return this.questionierId;
+	public PuiInfo getPuiInfo() {
+		return puiInfo;
 	}
 
-	public void setQuestionierId(Integer questionierId) {
-		this.questionierId = questionierId;
+	public void setPuiInfo(PuiInfo puiInfo) {
+		this.puiInfo = puiInfo;
 	}
 
 }

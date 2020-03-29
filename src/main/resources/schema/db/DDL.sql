@@ -13,17 +13,17 @@ CREATE TABLE `pui_info` (
   `occupation`                  varchar(50) DEFAULT NULL,
   
   `passport_number`		        varchar(50) NOT NULL  DEFAULT '',
-  `incident_contact_phone_1`	varchar(50) NOT NULL  DEFAULT '',
-  `incident_contact_phone_2`	varchar(50) NOT NULL  DEFAULT '',
+  `incident_contact_phone_1`	varchar(50),
+  `incident_contact_phone_2`	varchar(50),
   `country_of_residence`		varchar(50) NOT NULL  DEFAULT '',
   `country_of_origin`		 	varchar(50) NOT NULL  DEFAULT '',
   `nationality`		 			varchar(50) NOT NULL  DEFAULT '',
   `region`		 				varchar(50) NOT NULL  DEFAULT '',
-  `subcityOrZone`		 		varchar(50) NOT NULL  DEFAULT '',
+  `subcity_or_zone`		 		varchar(50) NOT NULL  DEFAULT '',
   `woreda`		 				varchar(50) NOT NULL  DEFAULT '',
   `kebele`		 				varchar(50) NOT NULL  DEFAULT '',
-  `houseNo`		 				varchar(50) NOT NULL  DEFAULT '',
-  `phoneNo`		 				varchar(50) NOT NULL  DEFAULT '',
+  `house_no`		 				varchar(50) NOT NULL  DEFAULT '',
+  `phone_no`		 				varchar(50) NOT NULL  DEFAULT '',
   `latitude`		 			varchar(50) DEFAULT '',
   `longitude`		 			varchar(50) DEFAULT '',
   
@@ -32,7 +32,9 @@ CREATE TABLE `pui_info` (
    
   `identified_by`				int(11) NOT NULL  DEFAULT '20', -- clinical_eval, contact_tracing, surveilance => default clinical_eval
   `contact_parent_case_code`   varchar(36),
-  `travel_history_id`          int(11),
+  `recent_travel_to`           varchar(250),
+  
+  `status`						int(11) NOT NULL DEFAULT '1061',
   
   `reporting_date`  			timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -101,3 +103,10 @@ CREATE TABLE `constant_enum` (
   
   PRIMARY KEY (`enum_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE PUI_FOLLOW_UP ADD CONSTRAINT FK_FOLLOW_UP_QUESTIONIER FOREIGN KEY pui_follow_up(questionier_id) REFERENCES questionier(id);
+ALTER TABLE PUI_FOLLOW_UP ADD CONSTRAINT FK_FOLLOW_UP_PUI_INFO FOREIGN KEY pui_follow_up(pui_case_code) REFERENCES pui_info(case_code);
+
+ALTER TABLE constant_enum DROP COLUMN ENUM_ID;
+ALTER TABLE CONSTANT_ENUM ADD PRIMARY KEY(ENUM_CODE);
