@@ -1,6 +1,18 @@
 CREATE DATABASE COVID19_REST;
 USE COVID19_REST;
 
+-- health facility info
+create table health_facility
+(
+    id      int          not null
+        primary key,
+    osm_id  double       null,
+    name    varchar(200) not null,
+    amenity varchar(50)  null,
+    x_cord  double       not null,
+    y_cord  double       not null
+);
+
 -- PERSON UNDER INVESTIGATION(PUI) INFO
 CREATE TABLE `pui_info` (
   `id` 							int(11) NOT NULL AUTO_INCREMENT,

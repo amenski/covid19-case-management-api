@@ -16,6 +16,28 @@ tags:
   - name: Questionnier
     description: 'Questionniers to be filled'
 paths:
+  '/v1/facility':
+      put:
+        operationId: registerNewFacility
+        summary: 'Register new facility'
+        tags:
+          - HealthFacility
+        consumes:
+          - application/json
+        parameters:
+          - name: facilityData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-facility'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/case':
       put:
         operationId: registerNewCase
@@ -221,6 +243,22 @@ definitions:
       required:
         - success
         - resultCode
+    model-health-facility:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        osm_id:
+          type: integer
+        name:
+          type: string
+        amenity:
+          type: string
+        xCord:
+          type: number
+        yCord:
+          type: number
     model-case:
       type: object
       properties:
@@ -469,6 +507,9 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-pui-follow-up-list'
+    request-save-facility:
+      allOf:
+      - $ref: '#/definitions/model-health-facility'
 responses:
     response-internal-server-error-500:
       description: Internal Server error
