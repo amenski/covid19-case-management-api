@@ -3,6 +3,8 @@ import { ROUTES } from "../sidebar/sidebar.component";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {BehaviorSubject} from "rxjs";
+import {User} from '../../models/user';
 
 @Component({
   selector: "app-navbar",
@@ -19,7 +21,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public isCollapsed = true;
 
   closeResult: string;
-
+  private currentUserSubject: BehaviorSubject<User>;
   constructor(
     location: Location,
     private element: ElementRef,
@@ -28,6 +30,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.location = location;
     this.sidebarVisible = false;
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
   }
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
    updateColor = () => {
@@ -53,6 +56,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.mobile_menu_visible = 0;
       }
     });
+  }
+  logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+    //this.currentUserSubject.next(null);
+    this.router.navigate(['/']);
   }
 
   collapse() {

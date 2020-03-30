@@ -1,0 +1,49 @@
+<div class=" card-body">
+  ADD A NEW CASE
+  <form ngNativeValidate [formGroup]="form" (ngSubmit) = addCase()>
+     <div class=" row">
+      <div class=" col-md-6 pr-md-1">
+        <div class=" form-group">
+          <label> Case code</label>
+          <input formControlName="caseCode"
+            class=" form-control"
+            placeholder="Case code"
+            type="text"
+
+          />
+        </div>
+      </div>
+
+    </div>
+    <div class=" row">
+      <div class=" col-md-6 pr-md-1">
+        <div class=" form-group">
+          <label> First name </label>
+          <input formControlName="firstName"
+            class=" form-control"
+            placeholder="First Name"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class=" row">
+      <div class=" col-md-6 pr-md-1">
+        <div class=" form-group">
+          <label> Last name </label>
+          <input formControlName="lastName"s
+                 class=" form-control"
+                 placeholder="Last Name"
+                 type="text"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class=" card-footer">
+      <button class=" btn btn-fill btn-danger" type="submit">Register Case</button>
+    </div>
+  </form>
+</div>
+

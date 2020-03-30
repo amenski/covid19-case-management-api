@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_PATH" value="C:/logs" />
+    <property name="LOG_PATH" value="/home/fasil/logs" />
     <property name="LOG_FILENAME" value="et.covid19.rest" />
     <property name="LOG_MAX_FILE_SIZE" value="70MB" />
     <property name="LOG_MAX_HISTORY" value="10" />
