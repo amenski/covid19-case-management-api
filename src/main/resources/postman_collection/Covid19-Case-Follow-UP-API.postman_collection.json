@@ -462,7 +462,14 @@
 					"name": "Get follow up questionniers",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmIG5hbWUiLCJleHAiOjE1ODU2MzUzMjEsImlhdCI6MTU4NTU5OTMyMX0.7_TZmIX_q2aMROl3jCu13sKPVc_UJ5QRyqlYIJUVjDk",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -599,6 +606,183 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "POST - GENERATE TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user1\",\n\t\"password\": \"pass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "HEALTH FACILITY",
+			"item": [
+				{
+					"name": "Register new facility Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTU4NTYzNzc0MSwiaWF0IjoxNTg1NjAxNzQxfQ.OY08zr2dq2sO2frTrmSavfSxA5iKEVe5pdkp0gJLqTg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"100\",\n    \"osm_id\": \"33\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"addrfull\": \"yeka subcity\",\n    \"xCord\": \"111\",\n    \"yCord\": \"111\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/facility",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"facility"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -625,7 +809,7 @@
 	],
 	"variable": [
 		{
-			"id": "c1d7f2d2-2325-4d97-97b3-cb672a70ced6",
+			"id": "6a820337-c664-4abc-b633-df0c25a427d6",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"

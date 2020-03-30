@@ -2,6 +2,8 @@ package et.covid19.rest.services.impl;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import et.covid19.rest.annotations.EthLoggable;
@@ -14,6 +16,7 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.AttributesMapper;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AttributeServiceImpl extends AbstractService implements IAttributeService {
 
 	@Override

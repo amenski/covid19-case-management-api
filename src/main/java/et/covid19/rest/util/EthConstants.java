@@ -14,6 +14,12 @@ public class EthConstants {
 	public static final Integer CONST_IDENTIFIED_BY_CLINICAL_EVAL = 1020;
 	public static final Integer CONST_STATUS_NA = 1064;
 	
+	// auth
+	public static final long ACCESS_TOKEN_VALIDITY_SECONDS = 5*60*60;
+	public static final String SIGNING_KEY = "covid19";
+	public static final String TOKEN_PREFIX = "Bearer ";
+	public static final String HEADER_STRING = "Authorization";
+	
 	private EthConstants() throws EthException {
 		throw new EthException("Utility class.");
 	}

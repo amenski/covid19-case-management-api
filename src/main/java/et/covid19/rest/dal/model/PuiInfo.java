@@ -82,7 +82,7 @@ public class PuiInfo implements Serializable {
 	private String longitude;
 
 	@Column(name="modified_by")
-	private Integer modifiedBy;
+	private String modifiedBy;
 
 	@Column(name="modified_date")
 	private OffsetDateTime modifiedDate;
@@ -264,11 +264,11 @@ public class PuiInfo implements Serializable {
 		this.longitude = longitude;
 	}
 
-	public Integer getModifiedBy() {
+	public String getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(Integer modifiedBy) {
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 

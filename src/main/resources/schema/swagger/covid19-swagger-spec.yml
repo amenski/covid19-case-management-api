@@ -17,7 +17,7 @@ tags:
     description: 'Questionniers to be filled'
 paths:
   '/v1/authenticate':
-    put:
+    post:
       operationId: authenticateUser
       summary: 'Authenticate user to have access to full api'
       tags:
@@ -265,29 +265,6 @@ definitions:
       required:
         - success
         - resultCode
-#  user:
-#    type: object
-#    properties:
-#      id:
-#        type: integer
-#      email:
-#        type: string
-#      password:
-#        type: string
-#      name:
-#        type: string
-#      surName:
-#        type: string
-#      dob:
-#        type: string
-#      phoneNumber:
-#        type: string
-#    required:
-#      - email
-#      - password
-#      - name
-#      - surName
-#      - phoneNumber
     jwt-request:
       type: object
       properties:
@@ -296,21 +273,26 @@ definitions:
         password:
           type: string
     jwt-response:
-      type: object
-      properties:
-        jwtToken:
-          type: string
+      allOf: 
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            jwtToken:
+              type: string
     model-health-facility:
       type: object
       properties:
         id:
           type: integer
-          format: int64
+          format: int32
         osm_id:
           type: integer
+          format: int64
         name:
           type: string
         amenity:
+          type: string
+        addrfull:
           type: string
         xCord:
           type: number

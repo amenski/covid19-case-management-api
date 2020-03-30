@@ -37,7 +37,7 @@ public class PuiFollowUp implements Serializable {
 	private String description;
 
 	@Column(name="modified_by")
-	private Integer modifiedBy;
+	private String modifiedBy;
 
 	@Column(name="modified_date")
 	private OffsetDateTime modifiedDate;
@@ -82,11 +82,11 @@ public class PuiFollowUp implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getModifiedBy() {
+	public String getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(Integer modifiedBy) {
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 

@@ -1,47 +1,52 @@
 package et.covid19.rest.dal.model.security;
 
+import java.io.Serializable;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
+
+/**
+ * The persistent class for the role database table.
+ * 
+ */
 @Entity
-public class Role {
-    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int roleId;
+@Table(name="role")
+@NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
+public class Role implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private String name;
+	@Id
+	private int id;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<UserRole> userRoles = new HashSet<>();
+	private boolean enabled;
 
-    public Role() {
+	private String name;
 
-    }
+	public Role() {
+		//
+	}
 
-    public int getRoleId() {
-        return roleId;
-    }
+	public int getId() {
+		return this.id;
+	}
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public boolean getEnabled() {
+		return this.enabled;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
-
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }

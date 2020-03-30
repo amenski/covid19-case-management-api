@@ -37,7 +37,7 @@ public class Questionier implements Serializable {
 	private String description;
 
 	@Column(name="modified_by")
-	private int modifiedBy;
+	private String modifiedBy;
 
 	@Column(name="modified_date")
 	private OffsetDateTime modifiedDate;
@@ -85,11 +85,11 @@ public class Questionier implements Serializable {
 		this.description = description;
 	}
 
-	public int getModifiedBy() {
+	public String getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(int modifiedBy) {
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 

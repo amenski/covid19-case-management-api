@@ -1,6 +1,8 @@
 package et.covid19.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +16,7 @@ import et.covid19.rest.swagger.model.ResponseAttributesList;
 import et.covid19.rest.util.exception.EthException;
 
 @RestController
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AttributesController extends AbstractController implements AttributesApi {
 
 	@Autowired
