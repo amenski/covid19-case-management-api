@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ import et.covid19.rest.util.mappers.PuiCaseFolowUpMapper;
 import et.covid19.rest.util.mappers.PuiInfoMapper;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFollowUpService {
 	
 	@Autowired
@@ -48,11 +51,13 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 			//collect questionnaires and validate
 			PuiInfo newPui = saveAndGetPuiInfo(pui);
 			List<PuiFollowUp> questionnierList = new ArrayList<>();
+			final String userId = getCurrentLoggedInUserId();
 			body.getList().stream().forEach(questionnier -> {
 				PuiFollowUp followup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(questionnier); //quest mapped here
 				Questionier questionier = followup.getQuestionier();
 				if(!StringUtils.isAnyBlank(followup.getOptionSelected()) && (Objects.nonNull(questionier) && Objects.nonNull(questionier.getId()))) {
 					followup.setPuiInfo(newPui);
+					followup.setModifiedBy(userId);
 					questionnierList.add(followup);
 				}
 			});

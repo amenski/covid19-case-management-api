@@ -1,40 +1,49 @@
 package et.covid19.rest.controllers;
 
-import et.covid19.rest.config.JwtTokenUtil;
-import et.covid19.rest.dal.model.User;
-import et.covid19.rest.services.impl.AuthenticationServiceImpl;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import et.covid19.rest.config.AbstractController;
+import et.covid19.rest.services.auth.AuthenticationServiceImpl;
 import et.covid19.rest.swagger.api.AuthenticateApi;
 import et.covid19.rest.swagger.model.JwtRequest;
 import et.covid19.rest.swagger.model.JwtResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
+import et.covid19.rest.util.exception.EthExceptionEnums;
+import io.swagger.annotations.ApiParam;
 
 @RestController
-public class AuthenticationController implements AuthenticateApi {
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class AuthenticationController extends AbstractController implements AuthenticateApi {
 
-    final AuthenticationServiceImpl authenticationService;
-    private static final Logger logger = LogManager.getLogger(AuthenticationController.class);
-    private final JwtTokenUtil jwtTokenUtil;
-
-    public AuthenticationController(AuthenticationServiceImpl authenticationService, JwtTokenUtil jwtTokenUtil) {
-        this.authenticationService = authenticationService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
-
+	@Autowired
+	private AuthenticationServiceImpl authenticationService;
+	
     @Override
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid JwtRequest jwtRequest) {
-        logger.info("Received1 login request: POST "+jwtRequest.getEmail()+", "+jwtRequest.getPassword());
-        final UserDetails userDetails = authenticationService
-                .loadUserByUsername(jwtRequest.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        logger.info("Token: "+token+ " sent to User: "+jwtRequest.getEmail());
-        JwtResponse jwtResponse = new JwtResponse();
-        jwtResponse.setJwtToken(token);
-        return ResponseEntity.ok(new JwtResponse());
+    public ResponseEntity<JwtResponse> authenticateUser(
+    		@ApiParam(value = ""  )  @Valid @RequestBody JwtRequest jwtRequest) 
+    {
+		Class<JwtResponse> responseClass = JwtResponse.class;
+		JwtResponse response = null;
+		HttpStatus status = HttpStatus.OK;
+    	try{
+	        final String token = authenticationService.generateJwtToken(jwtRequest.getEmail(), jwtRequest.getPassword());
+	        response = fillSuccessResponse(new JwtResponse().jwtToken(token));
+    	} catch(AuthenticationException ex){
+			status = HttpStatus.UNAUTHORIZED;
+			response = fillFailResponseEthException(responseClass, EthExceptionEnums.USERNAME_OR_EMAIL_INCORECT.get());
+    	}catch (Exception ex) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response = fillFailResponseGeneric(responseClass);
+		}
+		
+		return new ResponseEntity<>(response, status);
     }
 }

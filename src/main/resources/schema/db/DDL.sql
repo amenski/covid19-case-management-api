@@ -1,17 +1,53 @@
 CREATE DATABASE COVID19_REST;
 USE COVID19_REST;
 
+-- USER TABLE
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `account_non_expired` int(1) NOT NULL,
+  `account_non_locked` int(1) NOT NULL,
+  `enabled` int(1) NOT NULL,
+  `last_access` timestamp DEFAULT current_timestamp,
+  
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDb DEFAULT CHARSET=utf8;
+
+-- ROLE
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `enabled` int(1) not null default 1,
+  
+  PRIMARY KEY(`ID`)
+) ENGINE=InnoDb DEFAULT CHARSET=utf8;
+
+-- JOIN
+CREATE TABLE `user_roles` (
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  
+  PRIMARY KEY(`role_id`, `user_id`)
+) ENGINE=InnoDb DEFAULT CHARSET=utf8;
+
+alter table user_roles add CONSTRAINT fk_user_role_user FOREIGN KEY user_roles(user_id) REFERENCES user(id);
+alter table user_roles add CONSTRAINT fk_user_roles_role FOREIGN KEY user_roles(role_id) REFERENCES role(id);
+
 -- health facility info
-create table health_facility
-(
-    id      int          not null
-        primary key,
-    osm_id  double       null,
-    name    varchar(200) not null,
-    amenity varchar(50)  null,
-    x_cord  double       not null,
-    y_cord  double       not null
-);
+CREATE TABLE `HEALTH_FACILITY` (
+	`ID` 				INT(11) NOT NULL AUTO_INCREMENT,
+	`OSM_ID`  			DOUBLE  NULL,
+	`NAME`    			VARCHAR(200) NOT NULL,
+	`ADDRFULL` 			VARCHAR(250) NOT NULL,
+	`AMENITY` 			VARCHAR(50)  NULL,
+	`X_CORD`  			DOUBLE  NOT NULL,
+	`Y_CORD`  			DOUBLE NOT NULL,
+	
+	PRIMARY KEY(`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;;
 
 -- PERSON UNDER INVESTIGATION(PUI) INFO
 CREATE TABLE `pui_info` (
@@ -50,7 +86,7 @@ CREATE TABLE `pui_info` (
   
   `reporting_date`  			timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modified_by` 				varchar(50) NOT NULL, -- health official table id
+  `modified_by` 				varchar(250) NOT NULL, -- health official table id
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -82,7 +118,7 @@ CREATE TABLE `questionier` (
   `category`					int(11) NOT NULL,
   `parent_id`					int(11), -- if it depends on an other question
   `description` 				varchar(4000)  NOT NULL  DEFAULT '',
-  `modified_by`					int(11) NOT NULL,
+  `modified_by`					varchar(250) NOT NULL,
   `created_date`  				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   
@@ -96,7 +132,7 @@ CREATE TABLE `pui_follow_up` (
   `questionier_id` 				int(11) NOT NULL,
   `option_selected`				varchar(50) NOT NULL,
   `description` 				varchar(4000),
-  `modified_by`					int(11) NOT NULL,
+  `modified_by`					varchar(250) NOT NULL,
   `created_date`  				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` 				timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   

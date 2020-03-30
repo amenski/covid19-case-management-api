@@ -1,6 +1,13 @@
 package et.covid19.rest.config;
 
-import io.jsonwebtoken.JwtException;
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,12 +18,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
+import et.covid19.rest.util.EthConstants;
+import io.jsonwebtoken.JwtException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -29,11 +32,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String header = httpServletRequest.getHeader(Constants.HEADER_STRING);
+        String header = httpServletRequest.getHeader(EthConstants.HEADER_STRING);
         String username = null;
         String authToken = null;
-        if (header != null && header.startsWith(Constants.TOKEN_PREFIX)) {
-            authToken = header.replace(Constants.TOKEN_PREFIX,"");
+        if (header != null && header.startsWith(EthConstants.TOKEN_PREFIX)) {
+            authToken = header.replace(EthConstants.TOKEN_PREFIX,"");
             try {
                 username = jwtTokenUtil.extractUsername(authToken);
             } catch (IllegalArgumentException e) {

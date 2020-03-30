@@ -6,6 +6,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.QuestionnierMapper;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class QuestionnierServiceImpl extends AbstractService implements IQuestionnierService {
 	
 	@Autowired
@@ -44,6 +47,7 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
 			
 			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionierToEntityMapper(question);
+			entity.setModifiedBy(getCurrentLoggedInUserId());
 			questionnierRepository.save(entity);
 			return true;
 		} catch(IOException | ConstraintViolationException | DataIntegrityViolationException e) { //JsonMappingException => IOException

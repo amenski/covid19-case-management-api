@@ -5,5 +5,8 @@
 		<class>et.covid19.rest.dal.model.ConstantEnum</class>
 		<class>et.covid19.rest.dal.model.Questionier</class>
 		<class>et.covid19.rest.dal.model.PuiFollowUp</class>
+		<class>et.covid19.rest.dal.model.HealthFacility</class>
+		<class>et.covid19.rest.dal.model.User</class>
+		<class>et.covid19.rest.dal.model.security.Role</class>
 	</persistence-unit>
 </persistence>

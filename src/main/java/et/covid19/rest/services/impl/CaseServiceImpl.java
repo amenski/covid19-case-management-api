@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.PuiInfoMapper;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CaseServiceImpl extends AbstractService implements ICaseService {
 
 	@Override
@@ -73,7 +76,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			
 			//FIXME add work flow check
 			
-//			info.setModifiedBy(modifiedBy);
+			info.setModifiedBy(getCurrentLoggedInUserId());
 			info.setModifiedDate(OffsetDateTime.now());
 			
 			puiInfoRepository.save(info);

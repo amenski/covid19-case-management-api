@@ -6,10 +6,14 @@ import et.covid19.rest.swagger.api.HealthFacilityApi;
 import et.covid19.rest.swagger.model.RequestSaveFacility;
 import et.covid19.rest.swagger.model.ResponseBase;
 import et.covid19.rest.util.exception.EthException;
+import io.swagger.annotations.ApiParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -18,14 +22,13 @@ import javax.validation.Valid;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class HealthFacilityController extends AbstractController implements HealthFacilityApi {
 
-    final IHealthFacilityService healthFacilityService;
-
-    public HealthFacilityController(IHealthFacilityService healthFacilityService) {
-        this.healthFacilityService = healthFacilityService;
-    }
+	@Autowired
+    private IHealthFacilityService healthFacilityService;
 
     @Override
-    public ResponseEntity<ResponseBase> registerNewFacility(@Valid RequestSaveFacility facilityData) {
+    public ResponseEntity<ResponseBase> registerNewFacility(
+    		@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveFacility facilityData) 
+    {
         Class<ResponseBase> responseClass = ResponseBase.class;
         ResponseBase response = null;
         HttpStatus status = HttpStatus.OK;

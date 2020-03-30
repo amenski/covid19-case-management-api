@@ -1,138 +1,143 @@
 package et.covid19.rest.dal.model;
 
-import et.covid19.rest.dal.model.security.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import java.io.Serializable;
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import et.covid19.rest.dal.model.security.Role;
+
+import java.time.OffsetDateTime;
 import java.util.List;
 
+
+/**
+ * The persistent class for the user database table.
+ * 
+ */
 @Entity
-public class User implements UserDetails {
+@Table(name="user")
+@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
+	private Integer id;
 
-    private String username;
+	@Column(name="account_non_expired")
+	private boolean accountNonExpired;
 
-    private String password;
+	@Column(name="account_non_locked")
+	private boolean accountNonLocked;
 
-    private String name;
-    private String surName;
-    private LocalDate dob;
-    private String phoneNumber;
+	private boolean enabled;
 
-    private boolean accountNonExpired;
+	@Column(name="first_name")
+	private String firstName;
 
-    private boolean accountNonLocked;
+	@Column(name="last_access")
+	private OffsetDateTime lastAccess;
 
-    private boolean credentialsNonExpired;
+	@Column(name="last_name")
+	private String lastName;
 
-    private boolean enabled;
+	private String password;
 
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Role> roles;
+	private String username;
 
-    public User() {
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.credentialsNonExpired = true;
-        this.enabled = true;
-    }
+	//uni-directional many-to-many association to Role1
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		name="user_roles", 
+		joinColumns={@JoinColumn(name="user_id")}, 
+		inverseJoinColumns={@JoinColumn(name="role_id")}
+	)
+	private List<Role> roles;
 
-    public Long getId() {
-        return id;
-    }
+	public User() {
+		//
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return this.id;
+	}
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public boolean getAccountNonExpired() {
+		return this.accountNonExpired;
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public boolean getAccountNonLocked() {
+		return this.accountNonLocked;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public boolean getEnabled() {
+		return this.enabled;
+	}
 
-    public String getSurName() {
-        return surName;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    public void setSurName(String surName) {
-        this.surName = surName;
-    }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
-    public LocalDate getDob() {
-        return dob;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
+	public OffsetDateTime getLastAccess() {
+		return this.lastAccess;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public void setLastAccess(OffsetDateTime lastAccess) {
+		this.lastAccess = lastAccess;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public String getLastName() {
+		return this.lastName;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	public String getUsername() {
+		return this.username;
+	}
 
-    public void grantAuthority(Role authority) {
-        if ( roles == null ) roles = new ArrayList<>();
-        roles.add(authority);
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    @Override
-    public List<GrantedAuthority> getAuthorities(){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.toString())));
-        return authorities;
-    }
+	public List<Role> getRoles() {
+		return this.roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 
 }

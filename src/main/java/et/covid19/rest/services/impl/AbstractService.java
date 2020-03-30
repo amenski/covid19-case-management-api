@@ -3,12 +3,17 @@ package et.covid19.rest.services.impl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +33,7 @@ import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AbstractService {
 	
 	@Autowired
@@ -73,14 +79,15 @@ public class AbstractService {
 		return (puiInfoRepository.findByCaseCode(caseCode) != null);
 	}
 	
-	@Transactional
 	@EthLoggable
+	@Transactional(rollbackFor = Exception.class)
 	protected PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
 		OffsetDateTime timeNow = OffsetDateTime.now();
 		validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(
 				GeneralUtils.defaultIfNull(entity::setPresumptiveResult, entity::getPresumptiveResult, EthConstants.CONST_TEST_PENDING).getEnumCode(),
 				GeneralUtils.defaultIfNull(entity::setConfirmedResult, entity::getConfirmedResult, EthConstants.CONST_TEST_PENDING).getEnumCode()));
-		validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(GeneralUtils.defaultIfNull(entity::setIdentifiedBy, entity::getIdentifiedBy, EthConstants.CONST_IDENTIFIED_BY_CLINICAL_EVAL).getEnumCode()));
+		validateInputEnumById(EthConstants.CONST_TYPE_IDENTIFIED_BY, ImmutableSet.of(
+				GeneralUtils.defaultIfNull(entity::setIdentifiedBy, entity::getIdentifiedBy, EthConstants.CONST_IDENTIFIED_BY_CLINICAL_EVAL).getEnumCode()));
 		validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(GeneralUtils.defaultIfNull(entity::setStatus, entity::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
 		
 		if(entity.getReportingDate() == null) {
@@ -88,8 +95,17 @@ public class AbstractService {
 		}
 		entity.setCaseCode(MDC.get(LogConstants.UUID_KEY));
 		entity.setModifiedDate(timeNow);
+		entity.setModifiedBy(getCurrentLoggedInUserId());
 		
 		return puiInfoRepository.save(entity);
 	}
 
+	protected String getCurrentLoggedInUserId() {
+		String userId = null;
+		SecurityContext context = SecurityContextHolder.getContext();
+		if(Objects.nonNull(context.getAuthentication())) {
+			userId = (String) context.getAuthentication().getPrincipal();
+		}
+		return userId;
+	}
 }
