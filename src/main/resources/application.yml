@@ -11,9 +11,9 @@ spring:
          ddl-auto: create
       properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
    datasource:
-      url: postgres://gveovhgoiuvnmv:cba7f844276fd13c605cc552e4dbf023f18576ee27f9c8fa3da1dd44a75619ed@ec2-52-200-119-0.compute-1.amazonaws.com:5432/db9qllu6irsv8m
-      username: gveovhgoiuvnmv
-      password: cba7f844276fd13c605cc552e4dbf023f18576ee27f9c8fa3da1dd44a75619ed
+      url: postgres://cykymjompzdids:f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3@ec2-34-204-22-76.compute-1.amazonaws.com:5432/daolqn7tndm42n
+      username: cykymjompzdids
+      password: f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3
       driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
