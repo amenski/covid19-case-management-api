@@ -16,6 +16,28 @@ tags:
   - name: Questionnier
     description: 'Questionniers to be filled'
 paths:
+  '/v1/authenticate':
+    put:
+      operationId: authenticateUser
+      summary: 'Authenticate user to have access to full api'
+      tags:
+        - Authenticate
+      consumes:
+        - application/json
+      parameters:
+        - name: jwtRequest
+          in: body
+          schema:
+            $ref: '#/definitions/jwt-request'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/jwt-response'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
   '/v1/facility':
       put:
         operationId: registerNewFacility
@@ -243,6 +265,41 @@ definitions:
       required:
         - success
         - resultCode
+#  user:
+#    type: object
+#    properties:
+#      id:
+#        type: integer
+#      email:
+#        type: string
+#      password:
+#        type: string
+#      name:
+#        type: string
+#      surName:
+#        type: string
+#      dob:
+#        type: string
+#      phoneNumber:
+#        type: string
+#    required:
+#      - email
+#      - password
+#      - name
+#      - surName
+#      - phoneNumber
+    jwt-request:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    jwt-response:
+      type: object
+      properties:
+        jwtToken:
+          type: string
     model-health-facility:
       type: object
       properties:

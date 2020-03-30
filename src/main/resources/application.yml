@@ -8,13 +8,13 @@ spring:
 #==== connect to mysql ======#
    jpa: 
       hibernate:
-         ddl-auto: update
-      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+         ddl-auto: create
+      properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
    datasource:
-      url: jdbc:mysql://localhost:3306/covid19_rest
-      username: root 
-      password: 
-      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:postgresql://localhost:5432/covid19_rest
+      username: postgres
+      password: password
+      driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
    security:

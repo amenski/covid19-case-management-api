@@ -11,7 +11,6 @@ import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.LogConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
-import et.covid19.rest.util.mappers.ModelCasePuiInfoMapper;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.MDC;
 import org.springframework.dao.DataIntegrityViolationException;

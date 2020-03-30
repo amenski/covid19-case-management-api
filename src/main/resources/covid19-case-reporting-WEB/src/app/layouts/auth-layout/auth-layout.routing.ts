@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { RtlComponent } from '../../pages/rtl/rtl.component';
+import {LoginComponent} from "../../pages/login/login.component";
 
 
 export const AuthLayoutRoutes: Routes = [
-    { path: 'rtl',          component: RtlComponent },
+    { path: '', redirectTo: "login", pathMatch: "full" },
+    { path: 'login', component: LoginComponent },
 ];

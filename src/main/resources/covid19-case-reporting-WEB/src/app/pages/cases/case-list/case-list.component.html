@@ -1,0 +1,31 @@
+<div class=" card-body">
+  List of Person Under Investigation (PUI) cases
+  <div class=" card-body">
+    <div class=" table-responsive">
+      <table class=" table tablesorter" id="">
+        <thead class=" text-primary">
+        <tr>
+          <th>Case Code</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Presumptive result</th>
+          <th>Confirmed result</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let case of cases">
+          <td>{{case.caseCode}}</td>
+          <td>{{case.firstName}}</td>
+          <td>{{case.lastName}}</td>
+          <td>{{case.presumptiveResult}}</td>
+          <td>{{case.confirmedResult}}</td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
