@@ -11,9 +11,9 @@ spring:
          ddl-auto: create
       properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
    datasource:
-      url: jdbc:postgresql://localhost:5432/covid19_rest
-      username: postgres
-      password: password
+      url: postgres://gveovhgoiuvnmv:cba7f844276fd13c605cc552e4dbf023f18576ee27f9c8fa3da1dd44a75619ed@ec2-52-200-119-0.compute-1.amazonaws.com:5432/db9qllu6irsv8m
+      username: gveovhgoiuvnmv
+      password: cba7f844276fd13c605cc552e4dbf023f18576ee27f9c8fa3da1dd44a75619ed
       driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
