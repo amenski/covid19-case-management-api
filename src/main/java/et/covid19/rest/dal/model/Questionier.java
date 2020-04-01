@@ -9,8 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.SequenceGenerator;
 
 
 /**
@@ -22,12 +21,10 @@ import org.hibernate.annotations.GenericGenerator;
 public class Questionier implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	// never use only @GeneratedValue(strategy = GenerationType.AUTO) since it generates hibernate_sequence table, and really bad choice
-	// https://vladmihalcea.com/why-should-not-use-the-auto-jpa-generationtype-with-mysql-and-hibernate/
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionier_id_gen")
+	@SequenceGenerator(name="questionier_id_gen", sequenceName = "questionier_id_seq", allocationSize=1)
+	private Long id;
 
 	private Integer category;
 
@@ -53,11 +50,11 @@ public class Questionier implements Serializable {
 		//
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

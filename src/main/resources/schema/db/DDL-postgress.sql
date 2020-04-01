@@ -1,6 +1,6 @@
 /*
 File name: C:\Users\prg\Desktop\projects\covid19-Rest-api\src\main\resources\schema\db\DDL-postgress.sql
-Creation date: 03/31/2020
+Creation date: 04/01/2020
 Created by MySQL to PostgreSQL 4.5 [Demo]
 --------------------------------------------------
 More conversion tools at http://www.convert-in.com
@@ -26,7 +26,8 @@ Table structure for table 'public.health_facility'
 */
 
 DROP TABLE IF EXISTS "public"."health_facility" CASCADE;
-CREATE TABLE "public"."health_facility" ("ID" SERIAL NOT NULL, "OSM_ID" DOUBLE PRECISION, "NAME" VARCHAR(200)  DEFAULT '' NOT NULL, "ADDRFULL" VARCHAR(250)  DEFAULT '' NOT NULL, "AMENITY" VARCHAR(50) , "X_CORD" DOUBLE PRECISION NOT NULL, "Y_CORD" DOUBLE PRECISION NOT NULL);
+CREATE TABLE "public"."health_facility" ("ID" SERIAL NOT NULL, "OSM_ID" DOUBLE PRECISION, "NAME" VARCHAR(200)  DEFAULT '' NOT NULL, "ADDRFULL" VARCHAR(250)  DEFAULT '' NOT NULL, "AMENITY" VARCHAR(50) , "X_CORD" DOUBLE PRECISION NOT NULL, "Y_CORD" DOUBLE PRECISION NOT NULL, "MODIFIED_BY" VARCHAR(250)  DEFAULT '' NOT NULL, "MODIFIED_DATE" TIMESTAMP NOT NULL);
+ALTER SEQUENCE "public"."health_facility_id_seq" RESTART WITH 1 INCREMENT BY 1;
 DROP INDEX IF EXISTS "PRIMARY00000";
 ALTER TABLE "public"."health_facility" ADD CONSTRAINT "PRIMARY00000" PRIMARY KEY ("ID");
 
@@ -74,7 +75,7 @@ Table structure for table 'public.pui_info'
 */
 
 DROP TABLE IF EXISTS "public"."pui_info" CASCADE;
-CREATE TABLE "public"."pui_info" ("id" SERIAL NOT NULL, "case_code" VARCHAR(255) , "contact_parent_case_code" VARCHAR(255) , "country_of_origin" VARCHAR(255) , "country_of_residence" VARCHAR(255) , "dob" DATE, "first_name" VARCHAR(255) , "gender" VARCHAR(255) , "house_no" VARCHAR(255) , "incident_contact_phone_1" VARCHAR(255) , "incident_contact_phone_2" VARCHAR(255) , "kebele" VARCHAR(255) , "last_name" VARCHAR(255) , "latitude" VARCHAR(255) , "longitude" VARCHAR(255) , "modified_by" VARCHAR(250) , "modified_date" TIMESTAMP, "nationality" VARCHAR(255) , "occupation" VARCHAR(255) , "passport_number" VARCHAR(255) , "phone" VARCHAR(255) , "phone_no" VARCHAR(255) , "recent_travel_to" VARCHAR(255) , "region" VARCHAR(255) , "reporting_date" TIMESTAMP, "subcity_or_zone" VARCHAR(255) , "woreda" VARCHAR(255) , "confirmed_result" INTEGER, "identified_by" INTEGER, "presumptive_result" INTEGER, "status" INTEGER);
+CREATE TABLE "public"."pui_info" ("id" SERIAL NOT NULL, "case_code" VARCHAR(255) , "contact_parent_case_code" VARCHAR(255) , "country_of_origin" VARCHAR(255) , "country_of_residence" VARCHAR(255) , "dob" DATE, "first_name" VARCHAR(255) , "gender" VARCHAR(255) , "house_no" VARCHAR(255) , "incident_contact_phone_1" VARCHAR(255) , "incident_contact_phone_2" VARCHAR(255) , "kebele" VARCHAR(255) , "last_name" VARCHAR(255) , "latitude" VARCHAR(255) , "longitude" VARCHAR(255) , "modified_by" VARCHAR(250) , "modified_date" TIMESTAMP, "nationality" VARCHAR(255) , "occupation" VARCHAR(255) , "passport_number" VARCHAR(255) , "phone" VARCHAR(255) , "phone_no" VARCHAR(255) , "recent_travel_to" VARCHAR(255) , "region" VARCHAR(255) , "reporting_date" TIMESTAMP, "subcity_or_zone" VARCHAR(255) , "woreda" VARCHAR(255) , "confirmed_result" INTEGER, "identified_by" INTEGER, "presumptive_result" INTEGER, "status" INTEGER, "admitted_to_facility" INTEGER);
 ALTER SEQUENCE "public"."pui_info_id_seq" RESTART WITH 1 INCREMENT BY 1;
 DROP INDEX IF EXISTS "PRIMARY00003";
 ALTER TABLE "public"."pui_info" ADD CONSTRAINT "PRIMARY00003" PRIMARY KEY ("id");
@@ -124,16 +125,16 @@ Dumping data for table 'public.role'
 
 
 /*
-Table structure for table 'public.user'
+Table structure for table 'public.eth_user'
 */
 
-DROP TABLE IF EXISTS "public"."user" CASCADE;
-CREATE TABLE "public"."user" ("id" INTEGER NOT NULL, "username" VARCHAR(255)  DEFAULT '' NOT NULL, "password" VARCHAR(255)  DEFAULT '' NOT NULL, "first_name" VARCHAR(255)  DEFAULT '' NOT NULL, "last_name" VARCHAR(255) , "account_non_expired" INTEGER NOT NULL, "account_non_locked" INTEGER NOT NULL, "enabled" INTEGER NOT NULL, "last_access" TIMESTAMP NOT NULL);
+DROP TABLE IF EXISTS "public"."eth_user" CASCADE;
+CREATE TABLE "public"."eth_user" ("id" INTEGER NOT NULL, "username" VARCHAR(255)  DEFAULT '' NOT NULL, "password" VARCHAR(255)  DEFAULT '' NOT NULL, "first_name" VARCHAR(255)  DEFAULT '' NOT NULL, "last_name" VARCHAR(255) , "account_non_expired" INTEGER NOT NULL, "account_non_locked" INTEGER NOT NULL, "enabled" INTEGER NOT NULL, "last_access" TIMESTAMP NOT NULL);
 DROP INDEX IF EXISTS "PRIMARY00006";
-ALTER TABLE "public"."user" ADD CONSTRAINT "PRIMARY00006" PRIMARY KEY ("id");
+ALTER TABLE "public"."eth_user" ADD CONSTRAINT "PRIMARY00006" PRIMARY KEY ("id");
 
 /*
-Dumping data for table 'public.user'
+Dumping data for table 'public.eth_user'
 */
 
 

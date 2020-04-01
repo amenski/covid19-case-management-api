@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import et.covid19.rest.dal.model.User;
+import et.covid19.rest.dal.model.EthUser;
 import et.covid19.rest.dal.model.security.UserPrincipal;
 import et.covid19.rest.dal.repositories.UserRepository;
 
@@ -24,7 +24,7 @@ public class UserDetailserviceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        final User user = userRepository.findByUsername(email);
+        final EthUser user = userRepository.findByUsername(email);
         if(user==null){
             throw new UsernameNotFoundException("User " + email + " not found");
         }

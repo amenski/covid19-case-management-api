@@ -1,14 +1,20 @@
 package et.covid19.rest.dal.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import et.covid19.rest.dal.model.security.Role;
-
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import et.covid19.rest.dal.model.security.Role;
 
 
 /**
@@ -16,14 +22,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="user")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
-public class User implements Serializable {
+@Table(name="eth_user")
+@NamedQuery(name="EthUser.findAll", query="SELECT u FROM EthUser u")
+public class EthUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
 	private Integer id;
 
 	@Column(name="account_non_expired")
@@ -56,7 +60,7 @@ public class User implements Serializable {
 	)
 	private List<Role> roles;
 
-	public User() {
+	public EthUser() {
 		//
 	}
 

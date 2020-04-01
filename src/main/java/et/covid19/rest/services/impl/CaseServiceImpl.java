@@ -61,7 +61,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
 				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
 				modelCase.admittedToFacility(new ModelEnumIdValue()
-													.id(facility.getId())
+													.id(facility.getId().intValue())
 													.value(facility.getName()));
 			}
 			return modelCase;
