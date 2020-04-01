@@ -22,7 +22,6 @@ import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.dal.repositories.CaseFollowUpRepository;
 import et.covid19.rest.services.ICaseFollowUpService;
 import et.covid19.rest.swagger.model.ModelPuiFollowUp;
-import et.covid19.rest.swagger.model.ModelPuiFollowUpList;
 import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
@@ -76,19 +75,17 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 
 	@Override
 	@EthLoggable
-	public ModelPuiFollowUpList getFollowUpData(String caseCode) throws EthException {
+	public ModelPuiFollowUp getFollowUpData(String caseCode) throws EthException {
 		try {
-			ModelPuiFollowUpList modeFollup = new ModelPuiFollowUpList();
-			List<PuiFollowUp> followupList = caseFollowUpRepository.findWithPuiCaseCode(caseCode.toString());
-			if(followupList == null)
+			PuiFollowUp followup = caseFollowUpRepository.findWithPuiCaseCode(caseCode.toString());
+			if(followup == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			followupList.stream().forEach(val -> {
-				ModelPuiFollowUp fup = PuiCaseFolowUpMapper.INSTANCE.entityToModelFollowupMapper(val);
-				fup.setQuestion(val.getQuestionier().getQuestion());
-				modeFollup.getList().add(fup);
-			});
-			return modeFollup;
+			
+			ModelPuiFollowUp fup = PuiCaseFolowUpMapper.INSTANCE.entityToModelFollowupMapper(followup);
+			fup.setQuestion(followup.getQuestionier().getQuestion());
+			
+			return fup;
 		} catch (Exception ex) {
 			throw ex;
 		}

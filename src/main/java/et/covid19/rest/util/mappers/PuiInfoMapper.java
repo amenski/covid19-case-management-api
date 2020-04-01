@@ -23,13 +23,14 @@ public interface PuiInfoMapper {
 		@Mapping(target = "confirmedResult.enumCode", source = "confirmedResult.id"),
 		@Mapping(target = "identifiedBy.enumCode", source = "identifiedBy.id"),
 		@Mapping(target = "status.enumCode", source = "status.id"),
-		
+		@Mapping(target = "admittedToFacility", source = "admittedToFacility.id"),
 	})
 	PuiInfo modelCaseToPuiInfoMapper(ModelCase newCase);
 	
 	@Mappings({
 		@Mapping(target = "id", ignore=true),
 		@Mapping(target = "caseCode", ignore=true),
+		@Mapping(target = "admittedToFacility", ignore=true),
 		@Mapping(target = "presumptiveResult.id", source = "presumptiveResult.enumCode"),
 		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.enumName"),
 		@Mapping(target = "confirmedResult.id", source = "confirmedResult.enumCode"),
@@ -40,13 +41,14 @@ public interface PuiInfoMapper {
 		@Mapping(target = "status.value", source = "status.enumName"),
 		
 	})
-	ModelCase puiInfoToModelCaseMapper(PuiInfo puiInfo);
+	ModelCase puiInfoToModelCaseMapper(PuiInfo puiInfo); //admittedToFacility will be set outside
 	
 	@Mappings({
 		@Mapping(target = "presumptiveResult.enumCode", source = "presumptiveResult.id"),
 		@Mapping(target = "confirmedResult.enumCode", source = "confirmedResult.id"),
 		@Mapping(target = "identifiedBy.enumCode", source = "identifiedBy.id"),
 		@Mapping(target = "status.enumCode", source = "status.id"),
+		@Mapping(target = "admittedToFacility", source = "admittedToFacility.id"),
 		
 	})
 	PuiInfo modelCaseToPuiInfoMapper(RequestSaveCase newCase); //similar fields with ModelCase
@@ -56,6 +58,7 @@ public interface PuiInfoMapper {
 		@Mapping(target = "confirmedResult.enumCode", source = "confirmedResult.id"),
 		@Mapping(target = "identifiedBy.enumCode", source = "identifiedBy.id"),
 		@Mapping(target = "status.enumCode", source = "status.id"),
+		@Mapping(target = "admittedToFacility", source = "admittedToFacility.id"),
 		
 	})
 	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);

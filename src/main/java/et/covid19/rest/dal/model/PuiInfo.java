@@ -77,6 +77,9 @@ public class PuiInfo implements Serializable {
 	@Column(name="last_name")
 	private String lastName;
 
+	@Column(name = "admitted_to_facility")
+	private Integer admittedToFacility;
+	
 	private String latitude;
 
 	private String longitude;
@@ -246,6 +249,14 @@ public class PuiInfo implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public Integer getAdmittedToFacility() {
+		return admittedToFacility;
+	}
+
+	public void setAdmittedToFacility(Integer admittedToFacility) {
+		this.admittedToFacility = admittedToFacility;
 	}
 
 	public String getLatitude() {

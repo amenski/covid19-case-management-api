@@ -14,9 +14,11 @@ import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
+import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.model.ModelCase;
+import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.GeneralUtils;
@@ -55,7 +57,14 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			return PuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
+			ModelCase modelCase = PuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
+			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
+				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
+				modelCase.admittedToFacility(new ModelEnumIdValue()
+													.id(facility.getId())
+													.value(facility.getName()));
+			}
+			return modelCase;
 		} catch (Exception ex) {
 			throw ex;
 		}
