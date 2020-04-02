@@ -17,10 +17,10 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.ICaseFollowUpService;
 import et.covid19.rest.swagger.api.CaseFollowUpApi;
-import et.covid19.rest.swagger.model.ModelPuiFollowUpList;
+import et.covid19.rest.swagger.model.ModelPuiFollowUp;
 import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 import et.covid19.rest.swagger.model.ResponseBase;
-import et.covid19.rest.swagger.model.ResponsePuiFollowUpList;
+import et.covid19.rest.swagger.model.ResponsePuiFollowUpSingle;
 import et.covid19.rest.util.exception.EthException;
 import io.swagger.annotations.ApiParam;
 
@@ -55,15 +55,15 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 
 	@Override
 	@EthLoggable
-	public ResponseEntity<ResponsePuiFollowUpList> getCaseFollowUpQuestionniers(
+	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionniers(
 			@ApiParam(value = "",required=true) @PathVariable("code") UUID code) 
 	{
-		Class<ResponsePuiFollowUpList> responseClass = ResponsePuiFollowUpList.class;
-		ResponsePuiFollowUpList response = null;
+		Class<ResponsePuiFollowUpSingle> responseClass = ResponsePuiFollowUpSingle.class;
+		ResponsePuiFollowUpSingle response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			ModelPuiFollowUpList quest = caseFollowUpService.getFollowUpData(code.toString());
-			response = fillSuccessResponse(new ResponsePuiFollowUpList().returnValue(quest));
+			ModelPuiFollowUp quest = caseFollowUpService.getFollowUpData(code.toString());
+			response = fillSuccessResponse(new ResponsePuiFollowUpSingle().returnValue(quest));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);

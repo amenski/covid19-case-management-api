@@ -9,12 +9,13 @@ spring:
    jpa: 
       hibernate:
          ddl-auto: update
-      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL9Dialect
+      properties.hibernate.jdbc.lob.non_contextual_creation: true
    datasource:
-      url: jdbc:mysql://localhost:3306/covid19_rest
-      username: root 
-      password: 
-      driver-class-name: com.mysql.jdbc.Driver
+      url: postgres://cykymjompzdids:f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3@ec2-34-204-22-76.compute-1.amazonaws.com:5432/daolqn7tndm42n
+      username: cykymjompzdids
+      password: f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3
+      driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
    security:

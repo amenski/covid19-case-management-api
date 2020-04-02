@@ -14,9 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 
 /**
@@ -29,12 +28,10 @@ import org.hibernate.annotations.GenericGenerator;
 public class PuiInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	// never use only @GeneratedValue(strategy = GenerationType.AUTO) since it generates hibernate_sequence table, and really bad choice
-	// https://vladmihalcea.com/why-should-not-use-the-auto-jpa-generationtype-with-mysql-and-hibernate/
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pui_info_id_gen")
+	@SequenceGenerator(name="pui_info_id_gen", sequenceName = "pui_info_id_seq", allocationSize=1)
+	private Long id;
 
 	@Column(name="case_code")
 	private String caseCode;
@@ -77,6 +74,9 @@ public class PuiInfo implements Serializable {
 	@Column(name="last_name")
 	private String lastName;
 
+	@Column(name = "admitted_to_facility")
+	private Integer admittedToFacility;
+	
 	private String latitude;
 
 	private String longitude;
@@ -128,11 +128,11 @@ public class PuiInfo implements Serializable {
 		//
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -246,6 +246,14 @@ public class PuiInfo implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public Integer getAdmittedToFacility() {
+		return admittedToFacility;
+	}
+
+	public void setAdmittedToFacility(Integer admittedToFacility) {
+		this.admittedToFacility = admittedToFacility;
 	}
 
 	public String getLatitude() {

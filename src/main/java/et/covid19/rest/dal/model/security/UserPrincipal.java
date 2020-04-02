@@ -18,4 +18,9 @@ public class UserPrincipal extends User {
 							Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	}
+	
+	@Override
+	public String toString() {
+		return getUsername(); 
+	}
 }

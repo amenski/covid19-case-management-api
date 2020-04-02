@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import et.covid19.rest.swagger.model.JwtResponse;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import io.swagger.annotations.ApiParam;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuthenticationController extends AbstractController implements AuthenticateApi {

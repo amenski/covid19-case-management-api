@@ -60,6 +60,33 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+      get:
+        operationId: getAllHealthFacility
+        summary: Get health facility info
+        tags:
+        - HealthFacility
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-health-facility-list'
+  '/v1/facility/{id}':
+      get:
+        operationId: getHealthFacility
+        summary: Get all health facility info
+        tags:
+        - HealthFacility
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/question-id-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-health-facility-single'
   '/v1/case':
       put:
         operationId: registerNewCase
@@ -211,7 +238,7 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-pui-follow-up-list'
+              $ref: '#/definitions/response-pui-follow-up-single'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
@@ -356,6 +383,8 @@ definitions:
           type: string
         recentTravelTo:
           type: string
+        admittedToFacility:
+          $ref: '#/definitions/model-enum-id-value'
         status:
           $ref: '#/definitions/model-enum-id-value'
         modifiedBy:
@@ -450,10 +479,17 @@ definitions:
           format: int32
         value:
           type: string
+    model-health-facility-list:
+      type: object
+      properties:
+        facilities:
+          type: array
+          items: 
+            $ref: '#/definitions/model-health-facility'
     model-questionnier-list:
       type: object
       properties:
-        cases:
+        questions:
           type: array
           items: 
             $ref: '#/definitions/model-questionnier'
@@ -490,6 +526,9 @@ definitions:
       allOf:
         - $ref: '#/definitions/request-save-case'
         - $ref: '#/definitions/model-pui-follow-up-list'
+    request-save-facility:
+      allOf:
+      - $ref: '#/definitions/model-health-facility'
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
@@ -518,7 +557,7 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-questionnier-list'
-    response-attribute:
+    response-attribute-single:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
@@ -546,9 +585,20 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-pui-follow-up-list'
-    request-save-facility:
+    response-health-facility-single:
       allOf:
-      - $ref: '#/definitions/model-health-facility'
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-health-facility'
+    response-health-facility-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-health-facility-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

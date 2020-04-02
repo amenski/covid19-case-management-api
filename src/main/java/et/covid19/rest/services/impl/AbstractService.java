@@ -24,6 +24,7 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.repositories.ConstantsEnumRepository;
+import et.covid19.rest.dal.repositories.HealthFacilityRepository;
 import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.dal.repositories.QuestionnierRepository;
 import et.covid19.rest.util.EthConstants;
@@ -44,6 +45,9 @@ public class AbstractService {
 	
 	@Autowired
 	protected QuestionnierRepository questionnierRepository;
+	
+	@Autowired
+	protected HealthFacilityRepository healthFacilityRepository;
 	
 	@EthLoggable
 	protected List<ConstantEnum> getEnumByType(String type) throws EthException {
@@ -74,7 +78,7 @@ public class AbstractService {
 	
 	protected boolean caseExists(String caseCode) {
 		if(StringUtils.isBlank(caseCode))
-			return true; //skip faking existence
+			return true; //skip faking it exists
 		
 		return (puiInfoRepository.findByCaseCode(caseCode) != null);
 	}
@@ -90,6 +94,10 @@ public class AbstractService {
 				GeneralUtils.defaultIfNull(entity::setIdentifiedBy, entity::getIdentifiedBy, EthConstants.CONST_IDENTIFIED_BY_CLINICAL_EVAL).getEnumCode()));
 		validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(GeneralUtils.defaultIfNull(entity::setStatus, entity::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
 		
+		if(entity.getAdmittedToFacility() != null) {
+			healthFacilityRepository.findById(entity.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
+		}
+		
 		if(entity.getReportingDate() == null) {
 			entity.setReportingDate(timeNow);
 		}
@@ -104,7 +112,7 @@ public class AbstractService {
 		String userId = null;
 		SecurityContext context = SecurityContextHolder.getContext();
 		if(Objects.nonNull(context.getAuthentication())) {
-			userId = (String) context.getAuthentication().getPrincipal();
+			userId = context.getAuthentication().getPrincipal().toString();
 		}
 		return userId;
 	}

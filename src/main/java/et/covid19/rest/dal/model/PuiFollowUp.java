@@ -11,9 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 
 /**
@@ -27,9 +26,9 @@ public class PuiFollowUp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pui_follow_up_gen")
+	@SequenceGenerator(name="pui_follow_up_gen", sequenceName = "pui_follow_up_id_seq", allocationSize=1)
+	private Long id;
 
 	@Column(name="created_date")
 	private OffsetDateTime createdDate;
@@ -58,11 +57,11 @@ public class PuiFollowUp implements Serializable {
 		//
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
