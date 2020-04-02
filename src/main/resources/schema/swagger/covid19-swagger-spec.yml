@@ -12,8 +12,81 @@ schemes:
   - http
 tags:
   - name: Case
-    description: 'Case Registration'
+    description: 'Case/PUI information Registration'
+  - name: Questionnier
+    description: 'Questionniers to be filled'
 paths:
+  '/v1/authenticate':
+    post:
+      operationId: authenticateUser
+      summary: 'Authenticate user to have access to full api'
+      tags:
+        - Authenticate
+      consumes:
+        - application/json
+      parameters:
+        - name: jwtRequest
+          in: body
+          schema:
+            $ref: '#/definitions/jwt-request'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/jwt-response'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/facility':
+      put:
+        operationId: registerNewFacility
+        summary: 'Register new facility'
+        tags:
+          - HealthFacility
+        consumes:
+          - application/json
+        parameters:
+          - name: facilityData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-facility'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+      get:
+        operationId: getAllHealthFacility
+        summary: Get health facility info
+        tags:
+        - HealthFacility
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-health-facility-list'
+  '/v1/facility/{id}':
+      get:
+        operationId: getHealthFacility
+        summary: Get all health facility info
+        tags:
+        - HealthFacility
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/question-id-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-health-facility-single'
   '/v1/case':
       put:
         operationId: registerNewCase
@@ -36,6 +109,166 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+      get:
+        operationId: getCase
+        summary: Get case
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-query'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-single'
+  '/v1/case/{code}/update-result':
+      post:
+        operationId: updateResult
+        summary: 'Update case result'
+        tags:
+        - Case
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+          - $ref: '#/parameters/confirmed-result'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/questionnier':
+      put:
+        operationId: registerNewQuestionnier
+        summary: 'Register new questionnier'
+        tags:
+        - Questionnier
+        consumes:
+        - application/json
+        parameters:
+          - name: qData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-questionnier'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/questionnier/{id}':
+      get:
+        operationId: getQuestionnier
+        summary: Get Questionnier
+        tags:
+        - Questionnier
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/question-id-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-questionnier-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/attributes':
+      get:
+        operationId: getAttributes
+        summary: Get Attributes
+        tags:
+        - Attributes
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-attributes-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/register-follow-up':
+      put:
+        operationId: compileFollowUpQuestionnier
+        summary: 'Register case follow-up forms'
+        tags:
+        - Case Follow up
+        consumes:
+        - application/json
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/request-save-follow-up'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/follow-up/{code}':
+      get:
+        operationId: getCaseFollowUpQuestionniers
+        summary: Get follow up questionniers
+        tags:
+        - Case Follow up
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-pui-follow-up-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+parameters:
+  case-code-in-query:
+    in: query
+    name: code
+    type: string
+    format: uuid
+    required: true
+  case-code-in-path:
+    in: path
+    name: code
+    type: string
+    format: uuid
+    required: true
+  confirmed-result:
+    in: body
+    name: confirmedResult
+    schema:
+      type: integer
+      format: int32
+    required: true
+  question-id-in-path:
+    in: path
+    name: id
+    type: integer
+    format: int32
+    required: true
 definitions:
     response-base:
       type: object
@@ -59,6 +292,39 @@ definitions:
       required:
         - success
         - resultCode
+    jwt-request:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    jwt-response:
+      allOf: 
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            jwtToken:
+              type: string
+    model-health-facility:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        osm_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        amenity:
+          type: string
+        addrfull:
+          type: string
+        xCord:
+          type: number
+        yCord:
+          type: number
     model-case:
       type: object
       properties:
@@ -108,18 +374,19 @@ definitions:
         latitude:
           type: string
         presumptiveResult:
-          type: integer
-          format: int32
+          $ref: '#/definitions/model-enum-id-value'
         confirmedResult:
-          type: integer
-          format: int32
+          $ref: '#/definitions/model-enum-id-value'
         identifiedBy:
-          type: integer
-          format: int32
-        parent_case_code:
+          $ref: '#/definitions/model-enum-id-value'
+        parentCaseCode:
           type: string
-        travelIistoryId:
+        recentTravelTo:
           type: string
+        admittedToFacility:
+          $ref: '#/definitions/model-enum-id-value'
+        status:
+          $ref: '#/definitions/model-enum-id-value'
         modifiedBy:
           type: string
         reportingDate:
@@ -136,23 +403,202 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+    model-questionnier:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        question:
+          type: string
+        options:
+          description: Should be a valid json data
+          type: string
+        category:
+          $ref: '#/definitions/model-enum-id-value'
+        parentId:
+          type: integer
+          format: int32
+        description:
+          type: string
+        modifiedBy:
+          type: integer
+          format: int32
+        insertDate:
+          type: string
+          format: date-time
+        modifiedDate:
+          type: string
+          format: date-time
+      required:
+        - question
+        - options
+        - category
+    model-attribute:
+      type: object
+      properties:
+        attName:
+          type: string
+        attType:
+          type: string
+        attCode:
+          type: string
+        attLabel:
+          type: string
+        attDesc:
+          type: string
+    model-pui-follow-up:
+      type: object
+      properties:
+        puiCaseCode:
+          type: string
+        qId: 
+          type: integer
+          format: int32
+        question:
+          type: string
+        selectedOption:
+          type: string
+        description:
+          type: string
+        modifiedBy:
+          type: integer
+          format: int32 
+        insertDate:
+          type: string
+          format: date-time
+      required:
+        - puiCaseCode
+        - qId
+        - selectedOption
+    model-enum-id-value:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int32
+        value:
+          type: string
+    model-health-facility-list:
+      type: object
+      properties:
+        facilities:
+          type: array
+          items: 
+            $ref: '#/definitions/model-health-facility'
+    model-questionnier-list:
+      type: object
+      properties:
+        questions:
+          type: array
+          items: 
+            $ref: '#/definitions/model-questionnier'
     model-case-list:
       type: object
       properties:
-        articles:
+        cases:
           type: array
           items: 
             $ref: '#/definitions/model-case'
+    model-attribute-list:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items: 
+            $ref: '#/definitions/model-attribute' 
+    model-pui-follow-up-list:
+      type: object
+      properties:
+        list:
+          type: array
+          items: 
+            $ref: '#/definitions/model-pui-follow-up'
+      required:
+        - list
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
-    def-response-case-list:
+    request-save-questionnier:
+      allOf:
+        - $ref: '#/definitions/model-questionnier'
+    request-save-follow-up:
+      allOf:
+        - $ref: '#/definitions/request-save-case'
+        - $ref: '#/definitions/model-pui-follow-up-list'
+    request-save-facility:
+      allOf:
+      - $ref: '#/definitions/model-health-facility'
+    response-case-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-case'
+    response-case-list:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
           properties:
             returnValue:
               $ref: '#/definitions/model-case-list'
+    response-questionnier-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-questionnier'
+    response-questionnier-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-questionnier-list'
+    response-attribute-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute'
+    response-attributes-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-attribute-list'
+    response-pui-follow-up-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-pui-follow-up'
+    response-pui-follow-up-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-pui-follow-up-list'
+    response-health-facility-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-health-facility'
+    response-health-facility-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-health-facility-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error
@@ -165,7 +611,3 @@ responses:
         headers:
           WWW_Authenticate:
             type: string
-    response-case-list:
-      description: Internal Server error
-      schema:
-        $ref: '#/definitions/def-response-case-list'

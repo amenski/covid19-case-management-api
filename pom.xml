@@ -13,7 +13,7 @@
 	<version>0.0.1</version>
 	<packaging>${packaging.type}</packaging>
 	<name>covid19-rest</name>
-	<description>Data collection and survelance</description>
+	<description>Data collection and surveilance</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,7 @@
         <io.springfox.version>2.9.2</io.springfox.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
-        <start-class>et.covid19.rest.ApiApplication</start-class>
+        <start-class>et.covid19.rest.Application</start-class>
         <sonar.exclusions>**/resources/*,**/resources/**</sonar.exclusions>
 	</properties>
 
@@ -95,6 +95,16 @@
 		    <version>28.2-jre</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -129,17 +139,6 @@
 										<Git-Commit>${GIT_COMMIT}</Git-Commit> <Git-Branch>${GIT_BRANCH}</Git-Branch> -->
 								</manifestEntries>
 							</archive>
-							<packagingExcludes>
-								WEB-INF/classes/*.properties,
-								WEB-INF/classes/*.jks,
-								WEB-INF/classes/*.yml,
-								WEB-INF/classes/*.sql,
-								WEB-INF/classes/*.xml,
-								WEB-INF/classes/*.txt,
-								WEB-INF/classes/database/,
-								WEB-INF/classes/swagger/,
-								src/main/resources/
-							</packagingExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -149,12 +148,76 @@
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
+<!--			<plugin>-->
+<!--			   <groupId>org.codehaus.mojo</groupId>-->
+<!--			   <artifactId>exec-maven-plugin</artifactId>-->
+<!--			   <version>1.6.0</version>-->
+<!--			   <executions>-->
+<!--				   <execution>-->
+<!--					   <phase>validate</phase>-->
+<!--					   <goals>-->
+<!--						   <goal>exec</goal>-->
+<!--					   </goals>-->
+<!--				   </execution>-->
+<!--			   </executions>-->
+<!--			   <configuration>-->
+<!--				   <executable>ng</executable>-->
+<!--				   <workingDirectory>src/main/resources/covid19-case-reporting-WEB</workingDirectory>-->
+<!--				   <arguments>-->
+<!--					   <argument>build</argument>-->
+<!--				   </arguments>-->
+<!--			   </configuration>-->
+<!--		   </plugin>-->
+
+			<!--<plugin>
+			   <groupId>org.codehaus.mojo</groupId>
+			   <artifactId>exec-maven-plugin</artifactId>
+			   <version>1.6.0</version>
+			   <executions>
+				   <execution>
+					   <phase>validate</phase>
+					   <goals>
+						   <goal>exec</goal>
+					   </goals>
+				   </execution>
+			   </executions>
+			   <configuration>
+				   <executable>ng</executable>
+				   <workingDirectory>src/main/resources/covid19-case-reporting-WEB</workingDirectory>
+				   <arguments>
+					   <argument>build</argument>
+				   </arguments>
+			   </configuration>
+		   </plugin>-->
+<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals><goal>copy</goal></goals>
+                    <configuration>
+                        <artifactItems>
+                            <artifactItem>
+                                <groupId>com.heroku</groupId>
+                                <artifactId>webapp-runner</artifactId>
+                                <version>9.0.30.0</version>
+                                <destFileName>webapp-runner.jar</destFileName>
+                            </artifactItem>
+                        </artifactItems>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+			        <excludes>
+			        	<exclude>**/images</exclude>
+			        </excludes>
 					<annotationProcessorPaths>
 			            <path>
 			                <groupId>org.mapstruct</groupId>

@@ -28,8 +28,8 @@
 
     <springProfile name="dev">
         <root level="debug">
-           <appender-ref ref="et.covid19.rest.default.file.appender" />
-           <!--   <appender-ref ref="et.covid19.rest.default.console.appender" /> -->
+           <!--  <appender-ref ref="et.covid19.rest.default.file.appender" /> -->
+           <appender-ref ref="et.covid19.rest.default.console.appender" />
         </root>
     </springProfile>
 

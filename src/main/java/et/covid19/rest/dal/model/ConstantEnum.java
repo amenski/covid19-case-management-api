@@ -15,13 +15,10 @@ public class ConstantEnum implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="enum_id")
-	private int enumId;
-
-	private boolean disabled;
-	
 	@Column(name="enum_code")
 	private Integer enumCode;
+	
+	private boolean disabled;
 	
 	@Column(name="enum_desc")
 	private String enumDesc;
@@ -39,14 +36,10 @@ public class ConstantEnum implements Serializable {
 		//
 	}
 
-	public int getEnumId() {
-		return this.enumId;
+	public ConstantEnum(Integer code) {
+		this.enumCode = code;
 	}
-
-	public void setEnumId(int enumId) {
-		this.enumId = enumId;
-	}
-
+	
 	public boolean getDisabled() {
 		return this.disabled;
 	}

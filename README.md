@@ -14,3 +14,5 @@ To run the application you need:
 - Mysql(MariaDb) server
 - Run DDL and then DMl found inside `resources/schema/db`
 - Deploy and Test(if you use post man, there is postman collection inside resources/schema/)
+
+![Swagger spec](src/main/resources/images/spec.png?raw=true "Swagger spec")

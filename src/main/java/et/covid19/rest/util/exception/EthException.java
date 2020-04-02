@@ -3,6 +3,7 @@ package et.covid19.rest.util.exception;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 public class EthException extends Exception {
@@ -73,5 +74,11 @@ public class EthException extends Exception {
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
-	
+
+	public EthException message(String newMessage) {
+		if(!StringUtils.isBlank(newMessage)) {
+			this.message = newMessage;
+		}
+		return this;
+	}
 }

@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "d3262e95-7a0d-450a-b957-9fcf448012be",
+		"name": "Covid19-Case-Follow-UP-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CASE",
+			"item": [
+				{
+					"name": "REGISTER NEW CASE",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"first name\",\n    \"lastName\": \"last name\",\n    \"dob\": \"2020-10-03\",\n    \"gender\": \"M\",\n    \"occupation\": \"dev\",\n    \"passportNumber\": \"005\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"presumptiveResult\": {\"id\":\"1001\"},\n    \"confirmedResult\": {\"id\":\"1001\"},\n    \"identifiedBy\": {\"id\":\"1020\"},\n    \"recentTravelTo\": \"<string>\",\n    \"status\": {\"id\":\"1060\"},\n    \"modifiedBy\": \"2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/case",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"case"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schema\": {\n        \"id\": \"<integer>\",\n        \"caseCode\": \"<string>\",\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"dob\": \"<date>\",\n        \"gender\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"occupation\": \"<string>\",\n        \"passportNumber\": \"<string>\",\n        \"incidentContactPhone1\": \"<string>\",\n        \"incidentContactPhone2\": \"<string>\",\n        \"countryOfResidence\": \"<string>\",\n        \"countryOfOrigin\": \"<string>\",\n        \"nationality\": \"<string>\",\n        \"region\": \"<string>\",\n        \"subcityOrZone\": \"<string>\",\n        \"woreda\": \"<string>\",\n        \"kebele\": \"<string>\",\n        \"houseNo\": \"<string>\",\n        \"phoneNo\": \"<string>\",\n        \"latitude\": \"<string>\",\n        \"presumptiveResult\": {\n            \"result\": \"<string>\"\n        },\n        \"confirmedResult\": {\n            \"result\": \"<string>\"\n        },\n        \"identifiedBy\": {\n            \"result\": \"<string>\"\n        },\n        \"parent_case_code\": \"<string>\",\n        \"travelIistoryId\": \"<string>\",\n        \"modifiedBy\": \"<string>\",\n        \"reportingDate\": \"<dateTime>\",\n        \"modifiedDate\": \"<dateTime>\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/case/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"case",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schema\": {\n        \"id\": \"<integer>\",\n        \"caseCode\": \"<string>\",\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"dob\": \"<date>\",\n        \"gender\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"occupation\": \"<string>\",\n        \"passportNumber\": \"<string>\",\n        \"incidentContactPhone1\": \"<string>\",\n        \"incidentContactPhone2\": \"<string>\",\n        \"countryOfResidence\": \"<string>\",\n        \"countryOfOrigin\": \"<string>\",\n        \"nationality\": \"<string>\",\n        \"region\": \"<string>\",\n        \"subcityOrZone\": \"<string>\",\n        \"woreda\": \"<string>\",\n        \"kebele\": \"<string>\",\n        \"houseNo\": \"<string>\",\n        \"phoneNo\": \"<string>\",\n        \"latitude\": \"<string>\",\n        \"presumptiveResult\": {\n            \"result\": \"<string>\"\n        },\n        \"confirmedResult\": {\n            \"result\": \"<string>\"\n        },\n        \"identifiedBy\": {\n            \"result\": \"<string>\"\n        },\n        \"parent_case_code\": \"<string>\",\n        \"travelIistoryId\": \"<string>\",\n        \"modifiedBy\": \"<string>\",\n        \"reportingDate\": \"<dateTime>\",\n        \"modifiedDate\": \"<dateTime>\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/case/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"case",
+										"create"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schema\": {\n        \"id\": \"<integer>\",\n        \"caseCode\": \"<string>\",\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"dob\": \"<date>\",\n        \"gender\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"occupation\": \"<string>\",\n        \"passportNumber\": \"<string>\",\n        \"incidentContactPhone1\": \"<string>\",\n        \"incidentContactPhone2\": \"<string>\",\n        \"countryOfResidence\": \"<string>\",\n        \"countryOfOrigin\": \"<string>\",\n        \"nationality\": \"<string>\",\n        \"region\": \"<string>\",\n        \"subcityOrZone\": \"<string>\",\n        \"woreda\": \"<string>\",\n        \"kebele\": \"<string>\",\n        \"houseNo\": \"<string>\",\n        \"phoneNo\": \"<string>\",\n        \"latitude\": \"<string>\",\n        \"presumptiveResult\": {\n            \"result\": \"<string>\"\n        },\n        \"confirmedResult\": {\n            \"result\": \"<string>\"\n        },\n        \"identifiedBy\": {\n            \"result\": \"<string>\"\n        },\n        \"parent_case_code\": \"<string>\",\n        \"travelIistoryId\": \"<string>\",\n        \"modifiedBy\": \"<string>\",\n        \"reportingDate\": \"<dateTime>\",\n        \"modifiedDate\": \"<dateTime>\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/case/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"case",
+										"create"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "GET - CASE BY CODE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/case?code=f1545371-cedc-4324-be63-c3257199a1ff",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"case"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "f1545371-cedc-4324-be63-c3257199a1ff"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - UPDATE TEST RESULT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "1001",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/case/c215fec9-5c70-42d8-a4be-b588562a3190/update-result",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"case",
+								"c215fec9-5c70-42d8-a4be-b588562a3190",
+								"update-result"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "QUESTIONNIER",
+			"item": [
+				{
+					"name": "PUT - ADD NEW QUESTIONNIER",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"Question string comes here?\",\n    \"options\": \"{\\\"yes\\\":\\\"YES\\\",\\\"yes \\\":\\\"YES\\\", \\\"no\\\":\\\"No\\\"}\",\n    \"category\": {\"id\":\"1040\"},\n    \"description\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/questionnier",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"questionnier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - QUESTIONNIER",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/questionnier/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"questionnier",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/questionnier",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"questionnier"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"question\": \"<string>\",\n \"options\": \"<string>\",\n \"category\": \"<string>\",\n \"id\": \"<integer>\",\n \"parentId\": \"<integer>\",\n \"description\": \"<string>\",\n \"insertDate\": \"<dateTime>\",\n \"modifiedDate\": \"<dateTime>\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ATTRIBUTES",
+			"item": [
+				{
+					"name": "GET - ATTRIBUTES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/attributes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FOLLOW UP",
+			"item": [
+				{
+					"name": "REGISTER CASE FOLLOW-UP FORMS",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"first name\",\n    \"lastName\": \"last name\",\n    \"dob\": \"2019-10-03\",\n    \"gender\": \"M\",\n    \"occupation\": \"dev\",\n    \"passportNumber\": \"005\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n     \"presumptiveResult\": {\"id\":\"1001\"},\n    \"confirmedResult\": {\"id\":\"1001\"},\n    \"identifiedBy\": {\"id\":\"1020\"},\n    \"recentTravelTo\": \"<string>\",\n    \"modifiedBy\": \"2\",\n    \"list\": [\n        {\n            \"puiCaseCode\": \"aa\",\n            \"qId\": \"2\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"2\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/register-follow-up",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"register-follow-up"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<integer>\",\n    \"caseCode\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dob\": \"<date>\",\n    \"gender\": \"<string>\",\n    \"occupation\": \"<string>\",\n    \"passportNumber\": \"<string>\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"presumptiveResult\": \"<integer>\",\n    \"confirmedResult\": \"<integer>\",\n    \"identifiedBy\": \"<integer>\",\n    \"parent_case_code\": \"<string>\",\n    \"travelIistoryId\": \"<string>\",\n    \"modifiedBy\": \"<string>\",\n    \"reportingDate\": \"<dateTime>\",\n    \"modifiedDate\": \"<dateTime>\",\n    \"list\": [\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        },\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/register-follow-up",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"register-follow-up"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<integer>\",\n    \"caseCode\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dob\": \"<date>\",\n    \"gender\": \"<string>\",\n    \"occupation\": \"<string>\",\n    \"passportNumber\": \"<string>\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"presumptiveResult\": \"<integer>\",\n    \"confirmedResult\": \"<integer>\",\n    \"identifiedBy\": \"<integer>\",\n    \"parent_case_code\": \"<string>\",\n    \"travelIistoryId\": \"<string>\",\n    \"modifiedBy\": \"<string>\",\n    \"reportingDate\": \"<dateTime>\",\n    \"modifiedDate\": \"<dateTime>\",\n    \"list\": [\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        },\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/register-follow-up",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"register-follow-up"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<integer>\",\n    \"caseCode\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dob\": \"<date>\",\n    \"gender\": \"<string>\",\n    \"occupation\": \"<string>\",\n    \"passportNumber\": \"<string>\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"presumptiveResult\": \"<integer>\",\n    \"confirmedResult\": \"<integer>\",\n    \"identifiedBy\": \"<integer>\",\n    \"parent_case_code\": \"<string>\",\n    \"travelIistoryId\": \"<string>\",\n    \"modifiedBy\": \"<string>\",\n    \"reportingDate\": \"<dateTime>\",\n    \"modifiedDate\": \"<dateTime>\",\n    \"list\": [\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        },\n        {\n            \"puiCaseCode\": \"<integer>\",\n            \"qId\": \"<integer>\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"<integer>\",\n            \"insertDate\": \"<dateTime>\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/register-follow-up",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"register-follow-up"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get follow up questionniers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmIG5hbWUiLCJleHAiOjE1ODU2MzUzMjEsImlhdCI6MTU4NTU5OTMyMX0.7_TZmIX_q2aMROl3jCu13sKPVc_UJ5QRyqlYIJUVjDk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/follow-up/:code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"follow-up",
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "f1545371-cedc-4324-be63-c3257199a1ff",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/follow-up/:code",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"follow-up",
+										":code"
+									],
+									"variable": [
+										{
+											"key": "code"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/follow-up/:code",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"follow-up",
+										":code"
+									],
+									"variable": [
+										{
+											"key": "code"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/follow-up/:code",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"follow-up",
+										":code"
+									],
+									"variable": [
+										{
+											"key": "code"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\",\n \"returnValue\": {\n  \"list\": [\n   {\n    \"puiCaseCode\": \"<string>\",\n    \"qId\": \"<integer>\",\n    \"selectedOption\": \"<string>\",\n    \"question\": \"<string>\",\n    \"description\": \"<string>\",\n    \"modifiedBy\": \"<integer>\",\n    \"insertDate\": \"<dateTime>\"\n   },\n   {\n    \"puiCaseCode\": \"<string>\",\n    \"qId\": \"<integer>\",\n    \"selectedOption\": \"<string>\",\n    \"question\": \"<string>\",\n    \"description\": \"<string>\",\n    \"modifiedBy\": \"<integer>\",\n    \"insertDate\": \"<dateTime>\"\n   }\n  ]\n }\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "POST - GENERATE TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user1\",\n\t\"password\": \"pass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "HEALTH FACILITY",
+			"item": [
+				{
+					"name": "Register new facility Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTU4NTYzNzc0MSwiaWF0IjoxNTg1NjAxNzQxfQ.OY08zr2dq2sO2frTrmSavfSxA5iKEVe5pdkp0gJLqTg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"100\",\n    \"osm_id\": \"33\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"addrfull\": \"yeka subcity\",\n    \"xCord\": \"111\",\n    \"yCord\": \"111\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/facility",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"facility"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"<long>\",\n    \"osm_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "70633eff-e9c5-402b-a57c-406eabb5e3c8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6c7652ed-e1de-4bab-b537-5ab4e25fa8ce",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6a820337-c664-4abc-b633-df0c25a427d6",
+			"key": "baseUrl",
+			"value": "http://localhost:8080/covid19-rest",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
