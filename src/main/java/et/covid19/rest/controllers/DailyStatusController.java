@@ -10,7 +10,9 @@ import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.IDailyCaseStatus;
 import et.covid19.rest.swagger.api.DailyStatusApi;
 import et.covid19.rest.swagger.model.ModelDailyCaseStatus;
+import et.covid19.rest.swagger.model.ModelDailyCaseStatusList;
 import et.covid19.rest.swagger.model.ResponseDailyCaseStatus;
+import et.covid19.rest.swagger.model.ResponseDailyCaseStatusList;
 import et.covid19.rest.util.exception.EthException;
 
 @RestController
@@ -38,5 +40,27 @@ public class DailyStatusController extends AbstractController implements DailySt
 		
 		return new ResponseEntity<>(response, status);
 	}
+
+	@Override
+	@EthLoggable
+	public ResponseEntity<ResponseDailyCaseStatusList> getAllDailyStatus() {
+		Class<ResponseDailyCaseStatusList> responseClass = ResponseDailyCaseStatusList.class;
+		ResponseDailyCaseStatusList response = null;
+		HttpStatus status = HttpStatus.OK;
+		try{
+			ModelDailyCaseStatusList stat = dailyCaseService.getAllDailyCaseStatus();
+			response = fillSuccessResponse(new ResponseDailyCaseStatusList().returnValue(stat));
+		} catch(EthException ex) {
+			status = ex.getHttpCode();
+			response = fillFailResponseEthException(responseClass, ex);
+		} catch (Exception ex) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response = fillFailResponseGeneric(responseClass);
+		}
+		
+		return new ResponseEntity<>(response, status);
+	}
+	
+	
 
 }

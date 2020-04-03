@@ -1,16 +1,20 @@
 package et.covid19.rest.services.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.CaseStat;
 import et.covid19.rest.dal.repositories.DailyStatusRepository;
 import et.covid19.rest.services.IDailyCaseStatus;
 import et.covid19.rest.swagger.model.ModelDailyCaseStatus;
+import et.covid19.rest.swagger.model.ModelDailyCaseStatusList;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
+import et.covid19.rest.util.mappers.DailyStatusMapper;
 
 @Service
 public class DailyCaseStatusImpl implements IDailyCaseStatus {
@@ -19,20 +23,29 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	private DailyStatusRepository dailyStatusRepository;
 	
 	@Override
+	@EthLoggable
 	public ModelDailyCaseStatus getDailyCaseStatus() throws EthException {
 		try {
 			CaseStat stat = dailyStatusRepository.findByReportDate(LocalDate.now())
 					.stream().findFirst()
 					.orElseThrow(EthExceptionEnums.DAILY_STAT_NOT_FOUND);
 			
-			return new ModelDailyCaseStatus()
-					.activeCases(stat.getActiveCases())
-					.newCases(stat.getNewCases())
-					.newDeaths(stat.getNewDeaths())
-					.totalDeaths(stat.getTotalDeaths())
-					.recovered(stat.getTotalRecovered())
-					.criticalCases(stat.getSeriousCriticalCases())
-					.totalCases(stat.getTotalCases());
+			return DailyStatusMapper.INSTANCE.entityToDto(stat);
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@EthLoggable
+	public ModelDailyCaseStatusList getAllDailyCaseStatus() throws EthException {
+		try {
+			List<CaseStat> stat = dailyStatusRepository.findAll();
+			ModelDailyCaseStatusList dailies = new ModelDailyCaseStatusList();
+			stat.stream().forEach(val -> {
+				dailies.addListItem(DailyStatusMapper.INSTANCE.entityToDto(val));
+			});
+			return dailies;
 		} catch (Exception ex) {
 			throw ex;
 		}
