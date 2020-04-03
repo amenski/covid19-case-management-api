@@ -17,6 +17,7 @@ public enum EthExceptionEnums implements Supplier<EthException> {
 	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Attribute or Constant not found.")),
 	QUESTIONNIER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnier not found.")),
 	HEALTH_FACILITY_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404005, "Health facility not found.")),
+	DAILY_STAT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404006, "Daily status empty.")),
 	
 	USERNAME_OR_EMAIL_INCORECT(new EthException(HttpStatus.UNAUTHORIZED , 401001, "User name or email incorrect!")),
 	AUTHENTICATION_REQUIRED(new EthException(HttpStatus.UNAUTHORIZED , 401002, "Authentication is requred, please try again!")),
