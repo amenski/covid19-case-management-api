@@ -538,7 +538,8 @@ definitions:
           type: integer
           format: int32
         reportDate:
-          type: date
+          type: string
+          format: date
     model-health-facility-list:
       type: object
       properties:
