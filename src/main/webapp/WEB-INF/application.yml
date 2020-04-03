@@ -12,9 +12,9 @@ spring:
       properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL9Dialect
       properties.hibernate.jdbc.lob.non_contextual_creation: true
    datasource:
-      url: postgres://cykymjompzdids:f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3@ec2-34-204-22-76.compute-1.amazonaws.com:5432/daolqn7tndm42n
-      username: cykymjompzdids
-      password: f3aca4895acdf28d4baba8be75c77104d61bbbdb590d9f23cb72bb59d996eab3
+      url: postgres://vdspfgqdscyrcn:ca3a740aca33db04aafb82e32f720d2f7348cae6c52f561ee1a4335a1b6cdfff@ec2-18-210-214-86.compute-1.amazonaws.com:5432/dcgj2f3hr21i4q
+      username: vdspfgqdscyrcn
+      password: ca3a740aca33db04aafb82e32f720d2f7348cae6c52f561ee1a4335a1b6cdfff
       driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
