@@ -243,6 +243,23 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/daily-status':
+      get:
+        operationId: getDailyStatus
+        summary: Get daily status
+        tags:
+        - Daily status
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-daily-case-status'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -479,6 +496,33 @@ definitions:
           format: int32
         value:
           type: string
+    model-daily-case-status:
+      type: object
+      properties:
+        newCases:
+          type: integer
+          format: int32
+        newDeaths:
+          type: integer
+          format: int32
+        totalDeaths:
+          type: integer
+          format: int32
+        newRecovered:
+          type: integer
+          format: int32
+        activeCases:
+          type: integer
+          format: int32
+        criticalCases:
+          type: integer
+          format: int32
+        totalCases:
+          type: integer
+          format: int32
+        reportDate:
+          type: integer
+          format: int32
     model-health-facility-list:
       type: object
       properties:
@@ -599,6 +643,13 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-health-facility-list'
+    response-daily-case-status:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-daily-case-status'
 responses:
     response-internal-server-error-500:
       description: Internal Server error
