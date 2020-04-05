@@ -9,4 +9,6 @@ public interface IDailyCaseStatus {
 	public ModelDailyCaseStatus getDailyCaseStatus() throws EthException;
 	
 	public ModelDailyCaseStatusList getAllDailyCaseStatus() throws EthException;
+	
+	public boolean addDailyStatus(ModelDailyCaseStatus model) throws EthException;
 }
