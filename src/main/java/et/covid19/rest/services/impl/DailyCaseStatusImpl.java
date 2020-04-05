@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import et.covid19.rest.dal.repositories.DailyStatusRepository;
 import et.covid19.rest.services.IDailyCaseStatus;
 import et.covid19.rest.swagger.model.ModelDailyCaseStatus;
 import et.covid19.rest.swagger.model.ModelDailyCaseStatusList;
+import et.covid19.rest.util.GeneralUtils;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.DailyStatusMapper;
@@ -46,6 +48,27 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 				dailies.addListItem(DailyStatusMapper.INSTANCE.entityToDto(val));
 			});
 			return dailies;
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@EthLoggable
+	public boolean addDailyStatus(ModelDailyCaseStatus model) throws EthException {
+		try {
+			if(!GeneralUtils.validateCaseCount(Arrays.asList(
+					model::getActiveCases,
+					model::getCriticalCases,
+					model::getNewCases,
+					model::getNewDeaths,
+					model::getRecovered,
+					model::getTotalCases,
+					model::getTotalDeaths))) 
+				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+			
+			dailyStatusRepository.save(DailyStatusMapper.INSTANCE.dtoToEntity(model));
+			return true;
 		} catch (Exception ex) {
 			throw ex;
 		}

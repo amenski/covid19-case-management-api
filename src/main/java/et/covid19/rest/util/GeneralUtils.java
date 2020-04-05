@@ -1,5 +1,6 @@
 package et.covid19.rest.util;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -18,6 +19,11 @@ public class GeneralUtils {
 		return supplier.get();
 	}
 	
+	public static boolean validateCaseCount(List<Supplier<Integer>> suppliers) {
+		if(Objects.isNull(suppliers) || suppliers.isEmpty() )
+			return false;
+		return suppliers.stream().allMatch(val -> (val.get() != null && val.get() > 0));
+	}
 	
 	private  GeneralUtils() {
 		throw new IllegalStateException("Utility class.");

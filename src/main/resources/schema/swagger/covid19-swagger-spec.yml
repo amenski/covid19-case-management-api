@@ -244,6 +244,28 @@ paths:
           '500':
             $ref: '#/responses/response-internal-server-error-500'
   '/v1/daily-status':
+      put:
+        operationId: addDailyStatus
+        summary: Add daily status
+        tags:
+        - Daily status
+        produces:
+        - application/json
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/model-daily-case-status'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
       get:
         operationId: getDailyStatus
         summary: Get daily status
