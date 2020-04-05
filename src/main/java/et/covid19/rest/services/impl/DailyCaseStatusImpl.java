@@ -67,7 +67,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 					model::getTotalDeaths))) 
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 			
-			dailyStatusRepository.save(DailyStatusMapper.INSTANCE.dtoToEntity(model));
+			dailyStatusRepository.save(DailyStatusMapper.INSTANCE.dtoToEntity(model.reportDate(LocalDate.now())));
 			return true;
 		} catch (Exception ex) {
 			throw ex;

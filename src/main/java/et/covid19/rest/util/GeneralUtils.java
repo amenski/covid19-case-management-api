@@ -22,7 +22,7 @@ public class GeneralUtils {
 	public static boolean validateCaseCount(List<Supplier<Integer>> suppliers) {
 		if(Objects.isNull(suppliers) || suppliers.isEmpty() )
 			return false;
-		return suppliers.stream().allMatch(val -> (val.get() != null && val.get() > 0));
+		return suppliers.stream().allMatch(val -> (val.get() != null && val.get() >= 0));
 	}
 	
 	private  GeneralUtils() {
