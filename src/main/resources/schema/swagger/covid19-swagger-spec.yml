@@ -289,6 +289,8 @@ paths:
         - Daily status
         produces:
         - application/json
+        parameters:
+          - $ref: '#/parameters/parameter-date-in-query'
         responses:
           '200':
             description: ''
@@ -341,6 +343,11 @@ parameters:
     type: integer
     format: int32
     required: true
+  parameter-date-in-query:
+    in: query
+    name: reportingDate
+    type: string
+    format: date
 definitions:
     response-base:
       type: object

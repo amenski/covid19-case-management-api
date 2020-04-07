@@ -26,9 +26,10 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	
 	@Override
 	@EthLoggable
-	public ModelDailyCaseStatus getDailyCaseStatus() throws EthException {
+	public ModelDailyCaseStatus getDailyCaseStatus(LocalDate reportingDate) throws EthException {
 		try {
-			CaseStat stat = dailyStatusRepository.findByReportDate(LocalDate.now())
+			LocalDate repDate = reportingDate !=null ? reportingDate : LocalDate.now();
+			CaseStat stat = dailyStatusRepository.findByReportDate(repDate)
 					.stream().findFirst()
 					.orElseThrow(EthExceptionEnums.DAILY_STAT_NOT_FOUND);
 			
@@ -58,16 +59,30 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	public boolean addDailyStatus(ModelDailyCaseStatus model) throws EthException {
 		try {
 			if(!GeneralUtils.validateCaseCount(Arrays.asList(
-					model::getActiveCases,
 					model::getCriticalCases,
 					model::getNewCases,
 					model::getNewDeaths,
-					model::getRecovered,
-					model::getTotalCases,
-					model::getTotalDeaths))) 
+					model::getRecovered))) 
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 			
-			dailyStatusRepository.save(DailyStatusMapper.INSTANCE.dtoToEntity(model.reportDate(LocalDate.now())));
+			CaseStat lastStatusData = dailyStatusRepository.findLastUpdated();
+			
+			CaseStat newStat = DailyStatusMapper.INSTANCE.dtoToEntity(model.reportDate(LocalDate.now()));
+			if(lastStatusData != null) {
+				newStat.setSeriousCriticalCases(Integer.sum(model.getCriticalCases(), lastStatusData.getSeriousCriticalCases()));
+				newStat.setTotalCases(Integer.sum(model.getNewCases(), lastStatusData.getTotalCases()));
+				newStat.setTotalDeaths(Integer.sum(model.getNewDeaths(), lastStatusData.getTotalDeaths()));
+				newStat.setTotalRecovered(Integer.sum(model.getRecovered(), lastStatusData.getTotalRecovered()));
+				
+				Integer active = lastStatusData.getActiveCases() + model.getNewCases();
+				active = active - model.getNewDeaths() - model.getRecovered();
+				if(Integer.signum(active) == -1) 
+					throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+				
+				newStat.setActiveCases(active);
+			}
+			
+			dailyStatusRepository.save(newStat);
 			return true;
 		} catch (Exception ex) {
 			throw ex;
