@@ -1,11 +1,14 @@
 package et.covid19.rest.controllers;
 
+import java.time.LocalDate;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import et.covid19.rest.annotations.EthLoggable;
@@ -28,12 +31,13 @@ public class DailyStatusController extends AbstractController implements DailySt
 	
 	@Override
 	@EthLoggable
-	public ResponseEntity<ResponseDailyCaseStatus> getDailyStatus() {
+	public ResponseEntity<ResponseDailyCaseStatus> getDailyStatus(
+			@ApiParam(value = "") @Valid @RequestParam(value = "reportingDate", required = false) LocalDate reportingDate) {
 		Class<ResponseDailyCaseStatus> responseClass = ResponseDailyCaseStatus.class;
 		ResponseDailyCaseStatus response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			ModelDailyCaseStatus stat = dailyCaseService.getDailyCaseStatus();
+			ModelDailyCaseStatus stat = dailyCaseService.getDailyCaseStatus(reportingDate);
 			response = fillSuccessResponse(new ResponseDailyCaseStatus().returnValue(stat));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();

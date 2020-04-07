@@ -11,21 +11,6 @@
 				{
 					"name": "REGISTER NEW CASE",
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -461,16 +446,6 @@
 				{
 					"name": "Get follow up questionniers",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmIG5hbWUiLCJleHAiOjE1ODU2MzUzMjEsImlhdCI6MTU4NTU5OTMyMX0.7_TZmIX_q2aMROl3jCu13sKPVc_UJ5QRyqlYIJUVjDk",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -617,7 +592,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"user1\",\n\t\"password\": \"pass\"\n}",
+							"raw": "{\n\t\"email\": \"user\",\n\t\"password\": \"pass\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -644,18 +619,8 @@
 			"name": "HEALTH FACILITY",
 			"item": [
 				{
-					"name": "Register new facility Copy",
+					"name": "PUT - Register new facility",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTU4NTYzNzc0MSwiaWF0IjoxNTg1NjAxNzQxfQ.OY08zr2dq2sO2frTrmSavfSxA5iKEVe5pdkp0gJLqTg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -780,11 +745,340 @@
 							"body": ""
 						}
 					]
+				},
+				{
+					"name": "GET - Get all health facility info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/facility",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"facility"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\",\n \"returnValue\": {\n  \"facilities\": [\n   {\n    \"id\": \"<integer>\",\n    \"osm_id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"addrfull\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n   },\n   {\n    \"id\": \"<integer>\",\n    \"osm_id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"amenity\": \"<string>\",\n    \"addrfull\": \"<string>\",\n    \"xCord\": \"<number>\",\n    \"yCord\": \"<number>\"\n   }\n  ]\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get health facility info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/facility/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"facility",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/facility/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"facility",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\",\n \"returnValue\": {\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"passportNumber\": \"<string>\",\n  \"incidentContactPhone1\": \"<string>\",\n  \"countryOfResidence\": \"<string>\",\n  \"identifiedBy\": {\n   \"id\": \"<integer>\",\n   \"value\": \"<string>\"\n  },\n  \"modifiedBy\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"caseCode\": \"<string>\",\n  \"dob\": \"<date>\",\n  \"gender\": \"<string>\",\n  \"occupation\": \"<string>\",\n  \"incidentContactPhone2\": \"<string>\",\n  \"countryOfOrigin\": \"<string>\",\n  \"nationality\": \"<string>\",\n  \"region\": \"<string>\",\n  \"subcityOrZone\": \"<string>\",\n  \"woreda\": \"<string>\",\n  \"kebele\": \"<string>\",\n  \"houseNo\": \"<string>\",\n  \"phoneNo\": \"<string>\",\n  \"latitude\": \"<string>\",\n  \"presumptiveResult\": {\n   \"id\": \"<integer>\",\n   \"value\": \"<string>\"\n  },\n  \"confirmedResult\": {\n   \"id\": \"<integer>\",\n   \"value\": \"<string>\"\n  },\n  \"parentCaseCode\": \"<string>\",\n  \"recentTravelTo\": \"<string>\",\n  \"admittedToFacility\": {\n   \"id\": \"<integer>\",\n   \"value\": \"<string>\"\n  },\n  \"status\": {\n   \"id\": \"<integer>\",\n   \"value\": \"<string>\"\n  },\n  \"reportingDate\": \"<dateTime>\",\n  \"modifiedDate\": \"<dateTime>\"\n }\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DAILY STATUS",
+			"item": [
+				{
+					"name": "GET - DAILY STATUS HISTORY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/daily-status/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"daily-status",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  - DAILY STATUS BY DATE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/daily-status?reportingDate=2020-04-03",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"daily-status"
+							],
+							"query": [
+								{
+									"key": "reportingDate",
+									"value": "2020-04-03"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT - Add daily status Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newCases\": \"1\",\n    \"newDeaths\": \"1\",\n    \"totalDeaths\": \"1\",\n    \"recovered\": \"4\",\n    \"activeCases\": \"3\",\n    \"criticalCases\": \"3\",\n    \"totalCases\": 22\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/daily-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"daily-status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"newCases\": \"<integer>\",\n    \"newDeaths\": \"<integer>\",\n    \"totalDeaths\": \"<integer>\",\n    \"recovered\": \"<integer>\",\n    \"activeCases\": \"<integer>\",\n    \"criticalCases\": \"<integer>\",\n    \"totalCases\": \"<integer>\",\n    \"reportDate\": \"<date>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/daily-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"daily-status"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"newCases\": \"<integer>\",\n    \"newDeaths\": \"<integer>\",\n    \"totalDeaths\": \"<integer>\",\n    \"recovered\": \"<integer>\",\n    \"activeCases\": \"<integer>\",\n    \"criticalCases\": \"<integer>\",\n    \"totalCases\": \"<integer>\",\n    \"reportDate\": \"<date>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/daily-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"daily-status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\"\n}"
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"newCases\": \"<integer>\",\n    \"newDeaths\": \"<integer>\",\n    \"totalDeaths\": \"<integer>\",\n    \"recovered\": \"<integer>\",\n    \"activeCases\": \"<integer>\",\n    \"criticalCases\": \"<integer>\",\n    \"totalCases\": \"<integer>\",\n    \"reportDate\": \"<date>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/daily-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"daily-status"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>"
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CONTACT TRACING",
+			"item": [
+				{
+					"name": "GET - CONTACT TRACE BY CASE CODE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/contact-trace/:code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"contact-trace",
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "f8260e2c-2990-4d90-8491-a4bb0958dfed"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg2MzAwNDAyLCJpYXQiOjE1ODYyNjQ0MDJ9.jmXyL0qvjtwchmeeuLW_zlJiHN8JvOVahD1lZOB_Db4",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -809,10 +1103,17 @@
 	],
 	"variable": [
 		{
-			"id": "6a820337-c664-4abc-b633-df0c25a427d6",
+			"id": "fc83c021-d285-429b-af63-e018a88bd004",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
+		},
+		{
+			"id": "b4c9486a-57d9-46c4-86da-cfec81a1c1fc",
+			"key": "baseUrl",
+			"value": "https://covid19-eth.herokuapp.com",
+			"type": "string",
+			"disabled": true
 		}
 	],
 	"protocolProfileBehavior": {}

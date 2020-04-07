@@ -26,9 +26,10 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	
 	@Override
 	@EthLoggable
-	public ModelDailyCaseStatus getDailyCaseStatus() throws EthException {
+	public ModelDailyCaseStatus getDailyCaseStatus(LocalDate reportingDate) throws EthException {
 		try {
-			CaseStat stat = dailyStatusRepository.findByReportDate(LocalDate.now())
+			LocalDate repDate = reportingDate !=null ? reportingDate : LocalDate.now();
+			CaseStat stat = dailyStatusRepository.findByReportDate(repDate)
 					.stream().findFirst()
 					.orElseThrow(EthExceptionEnums.DAILY_STAT_NOT_FOUND);
 			
