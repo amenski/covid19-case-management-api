@@ -6,8 +6,10 @@ info:
 host: 'localhost:8080'
 basePath: /
 securityDefinitions:
-  basicAuth:
-    type: basic
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 schemes:
   - http
 tags:
@@ -44,6 +46,8 @@ paths:
         summary: 'Register new facility'
         tags:
           - HealthFacility
+        security:
+          - Bearer: []
         consumes:
           - application/json
         parameters:
@@ -65,6 +69,8 @@ paths:
         summary: Get health facility info
         tags:
         - HealthFacility
+        security:
+          - Bearer: []
         produces:
         - application/json
         responses:
@@ -91,6 +97,8 @@ paths:
       put:
         operationId: registerNewCase
         summary: 'Register new case'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -127,6 +135,8 @@ paths:
       post:
         operationId: updateResult
         summary: 'Update case result'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -149,6 +159,8 @@ paths:
         summary: 'Register new questionnier'
         tags:
         - Questionnier
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
@@ -207,6 +219,8 @@ paths:
         summary: 'Register case follow-up forms'
         tags:
         - Case Follow up
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
@@ -249,6 +263,8 @@ paths:
         summary: Add daily status
         tags:
         - Daily status
+        security:
+          - Bearer: []
         produces:
         - application/json
         parameters:
@@ -261,7 +277,7 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-base'
+              $ref: '#/definitions/response-daily-case-status'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
