@@ -40,7 +40,7 @@ paths:
           $ref: '#/responses/response-unauthorized'
         '500':
           $ref: '#/responses/response-internal-server-error-500'
-  '/v1/facility':
+  '/v1/api/facility':
       put:
         operationId: registerNewFacility
         summary: 'Register new facility'
@@ -64,13 +64,12 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/facility':
       get:
         operationId: getAllHealthFacility
         summary: Get health facility info
         tags:
         - HealthFacility
-        security:
-          - Bearer: []
         produces:
         - application/json
         responses:
@@ -93,7 +92,7 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-health-facility-single'
-  '/v1/case':
+  '/v1/api/case':
       put:
         operationId: registerNewCase
         summary: 'Register new case'
@@ -117,6 +116,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/case':
       get:
         operationId: getCase
         summary: Get case
@@ -131,7 +131,7 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-case-single'
-  '/v1/case/{code}/update-result':
+  '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
         summary: 'Update case result'
@@ -153,7 +153,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/questionnier':
+  '/v1/api/questionnier':
       put:
         operationId: registerNewQuestionnier
         summary: 'Register new questionnier'
@@ -213,7 +213,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/register-follow-up':
+  '/v1/api/register-follow-up':
       put:
         operationId: compileFollowUpQuestionnier
         summary: 'Register case follow-up forms'
@@ -257,7 +257,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/daily-status':
+  '/v1/api/daily-status':
       put:
         operationId: addDailyStatus
         summary: Add daily status
@@ -277,11 +277,12 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-daily-case-status'
+              $ref: '#/definitions/response-base'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/daily-status':
       get:
         operationId: getDailyStatus
         summary: Get daily status
