@@ -453,6 +453,8 @@ definitions:
           type: string
         latitude:
           type: string
+        longitude:
+          type: string
         presumptiveResult:
           $ref: '#/definitions/model-enum-id-value'
         confirmedResult:
