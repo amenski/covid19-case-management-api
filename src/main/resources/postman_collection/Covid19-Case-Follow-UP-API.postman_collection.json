@@ -23,12 +23,13 @@
 							"raw": "{\n    \"firstName\": \"first name\",\n    \"lastName\": \"last name\",\n    \"dob\": \"2020-10-03\",\n    \"gender\": \"M\",\n    \"occupation\": \"dev\",\n    \"passportNumber\": \"005\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"presumptiveResult\": {\"id\":\"1001\"},\n    \"confirmedResult\": {\"id\":\"1001\"},\n    \"identifiedBy\": {\"id\":\"1020\"},\n    \"recentTravelTo\": \"<string>\",\n    \"status\": {\"id\":\"1060\"},\n    \"modifiedBy\": \"2\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/case",
+							"raw": "{{baseUrl}}/v1/api/case",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
+								"api",
 								"case"
 							]
 						}
@@ -196,10 +197,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "QUESTIONNIER",
+			"name": "QUESTIONNAIRE",
 			"item": [
 				{
-					"name": "PUT - ADD NEW QUESTIONNIER",
+					"name": "PUT - ADD NEW QUESTIONNAIRE",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -213,34 +214,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/questionnier",
+							"raw": "{{baseUrl}}/v1/questionnaire",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
-								"questionnier"
+								"questionnaire"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GET - QUESTIONNIER",
+					"name": "GET - QUESTIONNAIERE",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/v1/questionnier/:id",
+							"raw": "{{baseUrl}}/v1/questionnaire/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
-								"questionnier",
+								"questionnaire",
 								":id"
 							],
 							"variable": [
@@ -281,6 +279,47 @@
 							"body": "{\n \"question\": \"<string>\",\n \"options\": \"<string>\",\n \"category\": \"<string>\",\n \"id\": \"<integer>\",\n \"parentId\": \"<integer>\",\n \"description\": \"<string>\",\n \"insertDate\": \"<dateTime>\",\n \"modifiedDate\": \"<dateTime>\"\n}"
 						}
 					]
+				},
+				{
+					"name": "GET - ALL QUESTIONNAIRES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/questionnaire/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"questionnaire",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a15a1d45-0ba4-4647-944b-3ae4aa315c90",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e046517d-c166-4865-9cad-a0c02acc958d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -918,7 +957,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"newCases\": \"1\",\n    \"newDeaths\": \"1\",\n    \"totalDeaths\": \"1\",\n    \"recovered\": \"4\",\n    \"activeCases\": \"3\",\n    \"criticalCases\": \"3\",\n    \"totalCases\": 22\n}"
+							"raw": "{\n    \"newCases\": \"8\",\n    \"newDeaths\": \"0\",\n    \"totalDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/daily-status",
@@ -1074,7 +1113,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg2MzAwNDAyLCJpYXQiOjE1ODYyNjQ0MDJ9.jmXyL0qvjtwchmeeuLW_zlJiHN8JvOVahD1lZOB_Db4",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg2NTQ4NDE5LCJpYXQiOjE1ODY1MTI0MTl9.BlSeiqIBz4FMyNSh1Cbg9H8MiNFIoxjI9q5fr7iy-V8",
 				"type": "string"
 			}
 		]
@@ -1103,13 +1142,13 @@
 	],
 	"variable": [
 		{
-			"id": "fc83c021-d285-429b-af63-e018a88bd004",
+			"id": "2a27587a-d545-46e2-a736-6e16c5366beb",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "b4c9486a-57d9-46c4-86da-cfec81a1c1fc",
+			"id": "054de8ca-ec38-4099-86c4-da7acd5ca877",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

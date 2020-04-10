@@ -24,7 +24,7 @@ public class Questionier implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionier_id_gen")
 	@SequenceGenerator(name="questionier_id_gen", sequenceName = "questionier_id_seq", allocationSize=1)
-	private Long id;
+	private Integer id;
 
 	private Integer category;
 
@@ -50,11 +50,11 @@ public class Questionier implements Serializable {
 		//
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
