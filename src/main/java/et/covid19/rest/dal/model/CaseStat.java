@@ -52,7 +52,14 @@ public class CaseStat implements Serializable {
 	@Column(name="total_recovered")
 	private Integer totalRecovered;
 
+	@Column(name="new_tests")
+	private Integer newTests;
+	
+	@Column(name="total_tests")
+	private Integer totalTests;
+	
 	public CaseStat() {
+		//
 	}
 
 	public Integer getId() {
@@ -125,6 +132,22 @@ public class CaseStat implements Serializable {
 
 	public void setTotalRecovered(Integer totalRecovered) {
 		this.totalRecovered = totalRecovered;
+	}
+
+	public Integer getNewTests() {
+		return newTests;
+	}
+
+	public void setNewTests(Integer newTests) {
+		this.newTests = newTests;
+	}
+
+	public Integer getTotalTests() {
+		return totalTests;
+	}
+
+	public void setTotalTests(Integer totalTests) {
+		this.totalTests = totalTests;
 	}
 
 }
