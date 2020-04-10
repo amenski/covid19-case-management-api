@@ -957,15 +957,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"newCases\": \"8\",\n    \"newDeaths\": \"0\",\n    \"totalDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\"\n}"
+							"raw": "{\n    \"newCases\": \"9\",\n    \"newDeaths\": \"1\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\",\n    \"newTests\": 442\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/daily-status",
+							"raw": "{{baseUrl}}/v1/api/daily-status",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
+								"api",
 								"daily-status"
 							]
 						}
@@ -1142,13 +1143,13 @@
 	],
 	"variable": [
 		{
-			"id": "2a27587a-d545-46e2-a736-6e16c5366beb",
+			"id": "6d077a8a-1ffd-4fe2-8799-192adcf7f5ce",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "054de8ca-ec38-4099-86c4-da7acd5ca877",
+			"id": "93e86150-0450-40d2-9fb3-508239907902",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",
