@@ -21,7 +21,7 @@ public class HealthFacility implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "health_facility_id_seq_gen")
 	@SequenceGenerator(name="health_facility_id_seq_gen", sequenceName = "health_facility_ID_seq", allocationSize=1)
-	private Long id;
+	private Integer id;
 
 	private String addrfull;
 
@@ -48,11 +48,11 @@ public class HealthFacility implements Serializable {
 		//
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

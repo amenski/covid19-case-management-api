@@ -10,11 +10,10 @@ spring:
       hibernate:
          ddl-auto: update
       properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL9Dialect
-      properties.hibernate.jdbc.lob.non_contextual_creation: true
    datasource:
-      url: postgres://vdspfgqdscyrcn:ca3a740aca33db04aafb82e32f720d2f7348cae6c52f561ee1a4335a1b6cdfff@ec2-18-210-214-86.compute-1.amazonaws.com:5432/dcgj2f3hr21i4q
-      username: vdspfgqdscyrcn
-      password: ca3a740aca33db04aafb82e32f720d2f7348cae6c52f561ee1a4335a1b6cdfff
+      url: jdbc:postgresql://localhost:5432/covid19_rest
+      username: postgres
+      password: postgres
       driver-class-name: org.postgresql.Driver
 
 #====== security ======# < ----------------------------- important?
