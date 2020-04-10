@@ -33,7 +33,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 	
 	@Override
 	@EthLoggable
-	public ResponseEntity<ResponseBase> compileFollowUpQuestionnier(
+	public ResponseEntity<ResponseBase> compileFollowUpQuestionnaire(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveFollowUp body) 
 	{
 		Class<ResponseBase> responseClass = ResponseBase.class;
@@ -55,7 +55,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 
 	@Override
 	@EthLoggable
-	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionniers(
+	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionnaires(
 			@ApiParam(value = "",required=true) @PathVariable("code") UUID code) 
 	{
 		Class<ResponsePuiFollowUpSingle> responseClass = ResponsePuiFollowUpSingle.class;
