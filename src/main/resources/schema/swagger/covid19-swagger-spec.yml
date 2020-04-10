@@ -6,8 +6,10 @@ info:
 host: 'localhost:8080'
 basePath: /
 securityDefinitions:
-  basicAuth:
-    type: basic
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 schemes:
   - http
 tags:
@@ -38,12 +40,14 @@ paths:
           $ref: '#/responses/response-unauthorized'
         '500':
           $ref: '#/responses/response-internal-server-error-500'
-  '/v1/facility':
+  '/v1/api/facility':
       put:
         operationId: registerNewFacility
         summary: 'Register new facility'
         tags:
           - HealthFacility
+        security:
+          - Bearer: []
         consumes:
           - application/json
         parameters:
@@ -60,6 +64,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/facility':
       get:
         operationId: getAllHealthFacility
         summary: Get health facility info
@@ -87,10 +92,12 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-health-facility-single'
-  '/v1/case':
+  '/v1/api/case':
       put:
         operationId: registerNewCase
         summary: 'Register new case'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -109,6 +116,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/case':
       get:
         operationId: getCase
         summary: Get case
@@ -123,10 +131,12 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-case-single'
-  '/v1/case/{code}/update-result':
+  '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
         summary: 'Update case result'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -143,12 +153,14 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/questionnaire':
+  '/v1/api/questionnaire':
       put:
         operationId: registerNewQuestionnaire
         summary: 'Register new questionnaire'
         tags:
         - Questionnaire
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
@@ -218,12 +230,14 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/register-follow-up':
+  '/v1/api/register-follow-up':
       put:
         operationId: compileFollowUpQuestionnaire
         summary: 'Register case follow-up forms'
         tags:
         - Case Follow up
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
@@ -260,12 +274,14 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/daily-status':
+  '/v1/api/daily-status':
       put:
         operationId: addDailyStatus
         summary: Add daily status
         tags:
         - Daily status
+        security:
+          - Bearer: []
         produces:
         - application/json
         parameters:
@@ -283,6 +299,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/daily-status':
       get:
         operationId: getDailyStatus
         summary: Get daily status
@@ -452,6 +469,8 @@ definitions:
         phoneNo:
           type: string
         latitude:
+          type: string
+        longitude:
           type: string
         presumptiveResult:
           $ref: '#/definitions/model-enum-id-value'
