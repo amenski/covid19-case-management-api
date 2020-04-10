@@ -22,7 +22,7 @@ public class GeneralUtils {
 	public static boolean validateNumericValues(List<Supplier<Integer>> suppliers) {
 		if(Objects.isNull(suppliers) || suppliers.isEmpty() )
 			return false;
-		return suppliers.stream().allMatch(val -> (val.get() != null && Integer.signum(val.get()) == -1));
+		return suppliers.stream().allMatch(val -> (val.get() != null && Integer.signum(val.get()) != -1));
 	}
 	
 	private  GeneralUtils() {
