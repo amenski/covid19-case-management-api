@@ -602,6 +602,12 @@ definitions:
         totalCases:
           type: integer
           format: int32
+        newTests:
+          type: integer
+          format: int32
+        totalTests:
+          type: integer
+          format: int32
         reportDate:
           type: string
           format: date

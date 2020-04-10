@@ -10,9 +10,9 @@ import et.covid19.rest.swagger.model.ModelQuestionnaire;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
 
 @Mapper
-public interface QuestionnierMapper {
+public interface QuestionnaireMapper {
 
-	QuestionnierMapper INSTANCE = Mappers.getMapper(QuestionnierMapper.class ); 
+	QuestionnaireMapper INSTANCE = Mappers.getMapper(QuestionnaireMapper.class ); 
 	
 	
 	@Mappings({

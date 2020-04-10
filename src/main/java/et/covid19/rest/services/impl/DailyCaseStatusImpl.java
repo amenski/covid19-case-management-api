@@ -58,11 +58,12 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	@EthLoggable
 	public boolean addDailyStatus(ModelDailyCaseStatus model) throws EthException {
 		try {
-			if(!GeneralUtils.validateCaseCount(Arrays.asList(
+			if(!GeneralUtils.validateNumericValues(Arrays.asList(
 					model::getCriticalCases,
 					model::getNewCases,
 					model::getNewDeaths,
-					model::getRecovered))) 
+					model::getRecovered,
+					model::getNewTests))) 
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 			
 			CaseStat lastStatusData = dailyStatusRepository.findLastUpdated();
@@ -73,6 +74,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 				newStat.setTotalCases(Integer.sum(model.getNewCases(), lastStatusData.getTotalCases()));
 				newStat.setTotalDeaths(Integer.sum(model.getNewDeaths(), lastStatusData.getTotalDeaths()));
 				newStat.setTotalRecovered(Integer.sum(model.getRecovered(), lastStatusData.getTotalRecovered()));
+				newStat.setTotalTests(Integer.sum(model.getNewTests(), lastStatusData.getTotalTests()));
 				
 				Integer active = lastStatusData.getActiveCases() + model.getNewCases();
 				active = active - model.getNewDeaths() - model.getRecovered();

@@ -25,7 +25,7 @@ import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
 import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
-import et.covid19.rest.util.mappers.QuestionnierMapper;
+import et.covid19.rest.util.mappers.QuestionnaireMapper;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -48,7 +48,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 			
 			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
 			
-			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
+			Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
 			entity.setModifiedBy(getCurrentLoggedInUserId());
 			questionnierRepository.save(entity);
 			return true;
@@ -67,7 +67,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 			if(info == null)
 				throw EthExceptionEnums.QUESTIONNIER_NOT_FOUND.get();
 			
-			return QuestionnierMapper.INSTANCE.entityToModelQuestionnaireMapper(info);
+			return QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(info);
 		} catch (Exception ex) {
 			throw ex;
 		}
@@ -79,7 +79,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 			ModelQuestionnaireList list = new ModelQuestionnaireList();
 			List<Questionier> questionList = questionnierRepository.findAll();
 			questionList.stream().forEach(q -> {
-				list.addQuestionsItem(QuestionnierMapper.INSTANCE.entityToModelQuestionnaireMapper(q));
+				list.addQuestionsItem(QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(q));
 			});
 			return list;
 		} catch (Exception ex) {
