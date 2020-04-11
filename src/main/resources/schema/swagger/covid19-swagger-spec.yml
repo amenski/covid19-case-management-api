@@ -335,6 +335,29 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/user/register':
+      put:
+        operationId: registerUser
+        summary: User registration
+        tags:
+        - User
+        produces:
+        - application/json
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/model-user'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -611,6 +634,22 @@ definitions:
         reportDate:
           type: string
           format: date
+    model-user:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
     model-health-facility-list:
       type: object
       properties:
@@ -752,6 +791,13 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-daily-case-status-list'
+    response-user-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-user'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

@@ -2,16 +2,18 @@ package et.covid19.rest.dal.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import et.covid19.rest.dal.model.security.Role;
@@ -28,6 +30,8 @@ public class EthUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eth_user_id_gen")
+	@SequenceGenerator(name="eth_user_id_gen", sequenceName = "eth_user_id_seq", allocationSize=1)
 	private Integer id;
 
 	@Column(name="account_non_expired")
@@ -51,13 +55,8 @@ public class EthUser implements Serializable {
 
 	private String username;
 
-	//uni-directional many-to-many association to Role1
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name="user_roles", 
-		joinColumns={@JoinColumn(name="user_id")}, 
-		inverseJoinColumns={@JoinColumn(name="role_id")}
-	)
+	//bi-directional many-to-many association to Role
+	@ManyToMany(mappedBy="ethUsers", fetch = FetchType.LAZY)
 	private List<Role> roles;
 
 	public EthUser() {
@@ -137,6 +136,9 @@ public class EthUser implements Serializable {
 	}
 
 	public List<Role> getRoles() {
+		if(this.roles == null || this.roles.isEmpty()) {
+			return new ArrayList<>();
+		}
 		return this.roles;
 	}
 

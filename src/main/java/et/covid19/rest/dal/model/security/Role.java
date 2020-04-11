@@ -1,7 +1,16 @@
 package et.covid19.rest.dal.model.security;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+
+import et.covid19.rest.dal.model.EthUser;
 
 
 /**
@@ -9,35 +18,46 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="role")
 @NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int id;
+	private Integer id;
 
-	private boolean enabled;
+	private Boolean enabled;
 
 	private String name;
 
+	//bi-directional many-to-many association to EthUser
+	@ManyToMany
+	@JoinTable(
+		name="user_roles"
+		, joinColumns={
+			@JoinColumn(name="role_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="user_id")
+			}
+		)
+	private List<EthUser> ethUsers;
+
 	public Role() {
-		//
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public boolean getEnabled() {
+	public Boolean getEnabled() {
 		return this.enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -47,6 +67,14 @@ public class Role implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<EthUser> getEthUsers() {
+		return this.ethUsers;
+	}
+
+	public void setEthUsers(List<EthUser> ethUsers) {
+		this.ethUsers = ethUsers;
 	}
 
 }
