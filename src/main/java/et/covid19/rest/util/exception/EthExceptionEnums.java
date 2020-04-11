@@ -19,6 +19,7 @@ public enum EthExceptionEnums implements Supplier<EthException> {
 	QUESTIONNIER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnier not found.")),
 	HEALTH_FACILITY_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404005, "Health facility not found.")),
 	DAILY_STAT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404006, "Daily status empty.")),
+	USER_ROLE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 400007, "A user was associated with invalid role.")),
 	
 	USERNAME_OR_EMAIL_INCORECT(new EthException(HttpStatus.UNAUTHORIZED , 401001, "User name or email incorrect!")),
 	AUTHENTICATION_REQUIRED(new EthException(HttpStatus.UNAUTHORIZED , 401002, "Authentication is requred, please try again!")),

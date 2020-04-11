@@ -5,10 +5,9 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import et.covid19.rest.dal.model.EthUser;
 
@@ -18,6 +17,7 @@ import et.covid19.rest.dal.model.EthUser;
  * 
  */
 @Entity
+@Table(name="role")
 @NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,16 +30,7 @@ public class Role implements Serializable {
 	private String name;
 
 	//bi-directional many-to-many association to EthUser
-	@ManyToMany
-	@JoinTable(
-		name="user_roles"
-		, joinColumns={
-			@JoinColumn(name="role_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="user_id")
-			}
-		)
+	@ManyToMany(mappedBy="roles")
 	private List<EthUser> ethUsers;
 
 	public Role() {
