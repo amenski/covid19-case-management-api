@@ -22,8 +22,10 @@ import com.google.common.collect.Sets;
 
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
+import et.covid19.rest.dal.model.ContactTracing;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.repositories.ConstantsEnumRepository;
+import et.covid19.rest.dal.repositories.ContactTracingRepository;
 import et.covid19.rest.dal.repositories.HealthFacilityRepository;
 import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.dal.repositories.QuestionnierRepository;
@@ -48,6 +50,9 @@ public class AbstractService {
 	
 	@Autowired
 	protected HealthFacilityRepository healthFacilityRepository;
+	
+	@Autowired
+	private ContactTracingRepository contactTracingRepository;
 	
 	@EthLoggable
 	protected List<ConstantEnum> getEnumByType(String type) throws EthException {
@@ -76,11 +81,11 @@ public class AbstractService {
 		}
 	}
 	
-	protected boolean caseExists(String caseCode) {
+	protected PuiInfo getParentCase(String caseCode) {
 		if(StringUtils.isBlank(caseCode))
-			return true; //skip faking it exists
+			return null;
 		
-		return (puiInfoRepository.findByCaseCode(caseCode) != null);
+		return puiInfoRepository.findByCaseCode(caseCode);
 	}
 	
 	@EthLoggable
@@ -108,6 +113,24 @@ public class AbstractService {
 		return puiInfoRepository.save(entity);
 	}
 
+	@EthLoggable
+	@Transactional(rollbackFor = Exception.class)
+	protected void addContactTracingInfo(String parentCode, String childCode) throws EthException {
+		if(StringUtils.isAnyEmpty(parentCode, childCode)) 
+			return;
+		
+		ContactTracing parent = contactTracingRepository.findById(parentCode).orElse(new ContactTracing());
+		ContactTracing child = new ContactTracing();
+		child.setParentCaseCode(childCode);
+		
+		parent.setParentCaseCode(parentCode);
+		parent.setModifiedBy(getCurrentLoggedInUserId());
+		parent.setModifiedDate(OffsetDateTime.now());
+		parent.getChildren().add(child);
+		
+		contactTracingRepository.save(parent);
+	}
+	
 	protected String getCurrentLoggedInUserId() {
 		String userId = null;
 		SecurityContext context = SecurityContextHolder.getContext();
