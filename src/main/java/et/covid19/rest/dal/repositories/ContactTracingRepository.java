@@ -8,5 +8,5 @@ import et.covid19.rest.dal.model.ContactTracing;
 @Repository
 public interface ContactTracingRepository extends JpaRepository<ContactTracing, String> {
 	
-	ContactTracing findByParentCaseCode(String code);
+//	ContactTracing findByParentCaseCode(String code);
 }

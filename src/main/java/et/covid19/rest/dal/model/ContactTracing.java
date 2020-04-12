@@ -2,6 +2,7 @@ package et.covid19.rest.dal.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -58,6 +59,9 @@ public class ContactTracing implements Serializable {
 	}
 
 	public List<ContactTracing> getChildren() {
+		if(this.children == null) {
+			this.children = new ArrayList<>();
+		}
 		return this.children;
 	}
 
