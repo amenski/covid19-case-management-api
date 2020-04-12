@@ -58,9 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//authorizeRequests() order is important
 		http
 		.csrf().disable()
-		.authorizeRequests().antMatchers("/v1/authenticate").permitAll()
+		.authorizeRequests().antMatchers("/v1/api/**").authenticated()
 		.and()
-		.authorizeRequests().antMatchers("/**").authenticated()
+		.authorizeRequests().antMatchers("/**").permitAll()
 		.and()
 		.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 		.and()

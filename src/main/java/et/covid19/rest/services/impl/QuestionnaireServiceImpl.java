@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,16 +19,17 @@ import com.google.common.collect.ImmutableSet;
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.services.IQuestionnierService;
-import et.covid19.rest.swagger.model.ModelQuestionnier;
-import et.covid19.rest.swagger.model.RequestSaveQuestionnier;
+import et.covid19.rest.swagger.model.ModelQuestionnaire;
+import et.covid19.rest.swagger.model.ModelQuestionnaireList;
+import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
 import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
-import et.covid19.rest.util.mappers.QuestionnierMapper;
+import et.covid19.rest.util.mappers.QuestionnaireMapper;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class QuestionnierServiceImpl extends AbstractService implements IQuestionnierService {
+public class QuestionnaireServiceImpl extends AbstractService implements IQuestionnierService {
 	
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -35,7 +37,7 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean registerQuestionnier(RequestSaveQuestionnier question) throws EthException {
+	public boolean registerQuestionnier(RequestSaveQuestionnaire question) throws EthException {
 		try{
 			if(StringUtils.isAnyBlank(question.getQuestion(), question.getOptions()) || Objects.isNull(question.getCategory()))
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
@@ -46,7 +48,7 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 			
 			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
 			
-			Questionier entity = QuestionnierMapper.INSTANCE.modelQuestionierToEntityMapper(question);
+			Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
 			entity.setModifiedBy(getCurrentLoggedInUserId());
 			questionnierRepository.save(entity);
 			return true;
@@ -59,13 +61,27 @@ public class QuestionnierServiceImpl extends AbstractService implements IQuestio
 
 	@Override
 	@EthLoggable
-	public ModelQuestionnier getQuestionnier(Integer id) throws EthException {
+	public ModelQuestionnaire getQuestionnaire(Integer id) throws EthException {
 		try {
 			Questionier info = questionnierRepository.findById(id).orElseThrow(EthExceptionEnums.QUESTIONNIER_NOT_FOUND);
 			if(info == null)
-				throw EthExceptionEnums.CASE_NOT_FOUND.get();
+				throw EthExceptionEnums.QUESTIONNIER_NOT_FOUND.get();
 			
-			return QuestionnierMapper.INSTANCE.entityToModelQuestionnierMapper(info);
+			return QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(info);
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	public ModelQuestionnaireList getAllQuestionnaire() throws EthException {
+		try {
+			ModelQuestionnaireList list = new ModelQuestionnaireList();
+			List<Questionier> questionList = questionnierRepository.findAll();
+			questionList.stream().forEach(q -> {
+				list.addQuestionsItem(QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(q));
+			});
+			return list;
 		} catch (Exception ex) {
 			throw ex;
 		}

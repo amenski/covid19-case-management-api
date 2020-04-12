@@ -6,15 +6,17 @@ info:
 host: 'localhost:8080'
 basePath: /
 securityDefinitions:
-  basicAuth:
-    type: basic
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 schemes:
   - http
 tags:
   - name: Case
     description: 'Case/PUI information Registration'
-  - name: Questionnier
-    description: 'Questionniers to be filled'
+  - name: Questionnaire
+    description: 'Questionnaires to be filled'
 paths:
   '/v1/authenticate':
     post:
@@ -38,12 +40,14 @@ paths:
           $ref: '#/responses/response-unauthorized'
         '500':
           $ref: '#/responses/response-internal-server-error-500'
-  '/v1/facility':
+  '/v1/api/facility':
       put:
         operationId: registerNewFacility
         summary: 'Register new facility'
         tags:
           - HealthFacility
+        security:
+          - Bearer: []
         consumes:
           - application/json
         parameters:
@@ -60,6 +64,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/facility':
       get:
         operationId: getAllHealthFacility
         summary: Get health facility info
@@ -87,10 +92,12 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-health-facility-single'
-  '/v1/case':
+  '/v1/api/case':
       put:
         operationId: registerNewCase
         summary: 'Register new case'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -109,6 +116,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/case':
       get:
         operationId: getCase
         summary: Get case
@@ -123,10 +131,12 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-case-single'
-  '/v1/case/{code}/update-result':
+  '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
         summary: 'Update case result'
+        security:
+          - Bearer: []
         tags:
         - Case
         consumes:
@@ -143,19 +153,21 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/questionnier':
+  '/v1/api/questionnaire':
       put:
-        operationId: registerNewQuestionnier
-        summary: 'Register new questionnier'
+        operationId: registerNewQuestionnaire
+        summary: 'Register new questionnaire'
         tags:
-        - Questionnier
+        - Questionnaire
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
           - name: qData
             in: body
             schema:
-              $ref: '#/definitions/request-save-questionnier'
+              $ref: '#/definitions/request-save-questionnaire'
         responses:
           '200':
             description: ''
@@ -165,12 +177,12 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/questionnier/{id}':
+  '/v1/questionnaire/{id}':
       get:
-        operationId: getQuestionnier
-        summary: Get Questionnier
+        operationId: getQuestionnaire
+        summary: Get questionnaire
         tags:
-        - Questionnier
+        - Questionnaire
         produces:
         - application/json
         parameters:
@@ -179,7 +191,24 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-questionnier-single'
+              $ref: '#/definitions/response-questionnaire-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/questionnaire/all':
+      get:
+        operationId: getAllQuestionnaires
+        summary: Get all questionnaires
+        tags:
+        - Questionnaire
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-questionnaire-list'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
@@ -201,12 +230,14 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/register-follow-up':
+  '/v1/api/register-follow-up':
       put:
-        operationId: compileFollowUpQuestionnier
+        operationId: compileFollowUpQuestionnaire
         summary: 'Register case follow-up forms'
         tags:
         - Case Follow up
+        security:
+          - Bearer: []
         consumes:
         - application/json
         parameters:
@@ -226,8 +257,8 @@ paths:
             $ref: '#/responses/response-internal-server-error-500'
   '/v1/follow-up/{code}':
       get:
-        operationId: getCaseFollowUpQuestionniers
-        summary: Get follow up questionniers
+        operationId: getCaseFollowUpQuestionnaires
+        summary: Get follow up questionnaires
         tags:
         - Case Follow up
         parameters:
@@ -239,6 +270,67 @@ paths:
             description: ''
             schema:
               $ref: '#/definitions/response-pui-follow-up-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/daily-status':
+      put:
+        operationId: addDailyStatus
+        summary: Add daily status
+        tags:
+        - Daily status
+        security:
+          - Bearer: []
+        produces:
+        - application/json
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/model-daily-case-status'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/daily-status':
+      get:
+        operationId: getDailyStatus
+        summary: Get daily status
+        tags:
+        - Daily status
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/parameter-date-in-query'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-daily-case-status'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/daily-status/all':
+      get:
+        operationId: getAllDailyStatus
+        summary: Get all daily status data
+        tags:
+        - Daily status
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-daily-case-status-list'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
@@ -269,6 +361,11 @@ parameters:
     type: integer
     format: int32
     required: true
+  parameter-date-in-query:
+    in: query
+    name: reportingDate
+    type: string
+    format: date
 definitions:
     response-base:
       type: object
@@ -373,6 +470,8 @@ definitions:
           type: string
         latitude:
           type: string
+        longitude:
+          type: string
         presumptiveResult:
           $ref: '#/definitions/model-enum-id-value'
         confirmedResult:
@@ -403,7 +502,7 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
-    model-questionnier:
+    model-questionnaire:
       type: object
       properties:
         id:
@@ -479,6 +578,39 @@ definitions:
           format: int32
         value:
           type: string
+    model-daily-case-status:
+      type: object
+      properties:
+        newCases:
+          type: integer
+          format: int32
+        newDeaths:
+          type: integer
+          format: int32
+        totalDeaths:
+          type: integer
+          format: int32
+        recovered:
+          type: integer
+          format: int32
+        activeCases:
+          type: integer
+          format: int32
+        criticalCases:
+          type: integer
+          format: int32
+        totalCases:
+          type: integer
+          format: int32
+        newTests:
+          type: integer
+          format: int32
+        totalTests:
+          type: integer
+          format: int32
+        reportDate:
+          type: string
+          format: date
     model-health-facility-list:
       type: object
       properties:
@@ -486,13 +618,13 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-health-facility'
-    model-questionnier-list:
+    model-questionnaire-list:
       type: object
       properties:
         questions:
           type: array
           items: 
-            $ref: '#/definitions/model-questionnier'
+            $ref: '#/definitions/model-questionnaire'
     model-case-list:
       type: object
       properties:
@@ -516,12 +648,19 @@ definitions:
             $ref: '#/definitions/model-pui-follow-up'
       required:
         - list
+    model-daily-case-status-list:
+      type: object
+      properties:
+        list:
+          type: array
+          items: 
+            $ref: '#/definitions/model-daily-case-status'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
-    request-save-questionnier:
+    request-save-questionnaire:
       allOf:
-        - $ref: '#/definitions/model-questionnier'
+        - $ref: '#/definitions/model-questionnaire'
     request-save-follow-up:
       allOf:
         - $ref: '#/definitions/request-save-case'
@@ -543,20 +682,20 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-case-list'
-    response-questionnier-single:
+    response-questionnaire-single:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
           properties:
             returnValue:
-              $ref: '#/definitions/model-questionnier'
-    response-questionnier-list:
+              $ref: '#/definitions/model-questionnaire'
+    response-questionnaire-list:
       allOf:
         - $ref: '#/definitions/response-base'
         - type: object
           properties:
             returnValue:
-              $ref: '#/definitions/model-questionnier-list'
+              $ref: '#/definitions/model-questionnaire-list'
     response-attribute-single:
       allOf:
         - $ref: '#/definitions/response-base'
@@ -599,6 +738,20 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-health-facility-list'
+    response-daily-case-status:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-daily-case-status'
+    response-daily-case-status-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-daily-case-status-list'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

@@ -6,26 +6,26 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import et.covid19.rest.dal.model.Questionier;
-import et.covid19.rest.swagger.model.ModelQuestionnier;
-import et.covid19.rest.swagger.model.RequestSaveQuestionnier;
+import et.covid19.rest.swagger.model.ModelQuestionnaire;
+import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
 
 @Mapper
-public interface QuestionnierMapper {
+public interface QuestionnaireMapper {
 
-	QuestionnierMapper INSTANCE = Mappers.getMapper(QuestionnierMapper.class ); 
+	QuestionnaireMapper INSTANCE = Mappers.getMapper(QuestionnaireMapper.class ); 
 	
 	
 	@Mappings({
 		@Mapping(target = "createdDate", source="insertDate"),
 		@Mapping(target = "category", source="category.id")
 	})
-	Questionier modelQuestionierToEntityMapper(ModelQuestionnier q);
+	Questionier modelQuestionnaireToEntityMapper(ModelQuestionnaire q);
 	
 	@Mappings({
 		@Mapping(target = "category.id", source="id"),
 		@Mapping(target = "category.value", source="question")
 	})
-	ModelQuestionnier entityToModelQuestionnierMapper(Questionier q);
+	ModelQuestionnaire entityToModelQuestionnaireMapper(Questionier q);
 	
 	
 	@Mappings({
@@ -33,5 +33,5 @@ public interface QuestionnierMapper {
 		@Mapping(target = "createdDate", source="insertDate"),
 		@Mapping(target = "category", source="category.id")
 	})
-	Questionier modelQuestionierToEntityMapper(RequestSaveQuestionnier q); //similar fields with ModelQuestionnier
+	Questionier modelQuestionnaireToEntityMapper(RequestSaveQuestionnaire q); //similar fields with ModelQuestionnier
 }

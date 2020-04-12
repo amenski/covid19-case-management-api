@@ -20,6 +20,8 @@ public class EthConstants {
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
 	
+	public static final String LESS_THAN = "<";
+	
 	private EthConstants() throws EthException {
 		throw new EthException("Utility class.");
 	}
