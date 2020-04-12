@@ -42,8 +42,8 @@ public class CaseController extends AbstractController implements CaseApi {
 		ResponseBase response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			caseService.registerNewCase(caseData);
-			response = fillSuccessResponse(new ResponseBase());
+			String caseCode = caseService.registerNewCase(caseData);
+			response = fillSuccessResponse(new ResponseBase().message(caseCode));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);

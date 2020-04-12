@@ -8,7 +8,7 @@ import et.covid19.rest.util.exception.EthException;
 
 public interface ICaseService {
 
-	public boolean registerNewCase(RequestSaveCase newCase) throws EthException;
+	public String registerNewCase(RequestSaveCase newCase) throws EthException;
 	
 	public ModelCase getModelCase(UUID case_code) throws EthException;
 	

@@ -35,7 +35,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean registerNewCase(RequestSaveCase newCase) throws EthException {
+	public String registerNewCase(RequestSaveCase newCase) throws EthException {
 		try{
 			//validate parent case
 			PuiInfo parentCase = getParentCase(newCase.getParentCaseCode()); 
@@ -43,9 +43,12 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
 			
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
+			if(parentCase != null) {
+				entity.setContactParentCaseCode(parentCase.getCaseCode());
+			}
 			entity = saveAndGetPuiInfo(entity);
 			addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
-			return true;
+			return entity.getCaseCode();
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 		} catch (Exception ex) {

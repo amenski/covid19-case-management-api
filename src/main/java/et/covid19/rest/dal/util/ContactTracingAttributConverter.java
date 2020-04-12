@@ -19,6 +19,7 @@ public class ContactTracingAttributConverter implements AttributeConverter<List<
 	public String convertToDatabaseColumn(List<ContactTracing> attribute) {
 		StringBuilder sb = new StringBuilder();
 		attribute.forEach(val -> sb.append(val.toString()).append(SEPARATOR));
+		sb.setLength(sb.length() -1); //remove the last SEPARATOR char
 		return sb.toString();
 	}
 

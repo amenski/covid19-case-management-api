@@ -62,4 +62,26 @@ public interface PuiInfoMapper {
 		
 	})
 	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
+	
+	// get-all cases
+	@Mappings({
+		@Mapping(target = "id", ignore = true),
+		@Mapping(target = "contactParentCaseCode", ignore = true),
+		@Mapping(target = "firstName", ignore = true),
+		@Mapping(target = "lastName", ignore = true),
+		@Mapping(target = "houseNo", ignore = true),
+		@Mapping(target = "incidentContactPhone1", ignore = true),
+		@Mapping(target = "incidentContactPhone2", ignore = true),
+		@Mapping(target = "modifiedBy", ignore = true),
+		@Mapping(target = "phoneNo", ignore = true),
+		@Mapping(target = "puiFollowUps", ignore = true),
+		
+		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.value"),
+		@Mapping(target = "confirmedResult.value", source = "confirmedResult.value"),
+		@Mapping(target = "identifiedBy.value", source = "identifiedBy.value"),
+		@Mapping(target = "status.value", source = "status.value"),
+		@Mapping(target = "admittedToFacility", source = "admittedToFacility.value"),
+		
+	})
+	ModelCase modelCaseToReturn(PuiInfo body);
 }
