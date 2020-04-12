@@ -335,6 +335,25 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/contact-trace/{code}':
+      get:
+        operationId: contactTraceByCaseCode
+        summary: Trace contacts from parent code
+        tags:
+        - Contact Tracing
+        produces:
+        - application/json
+        parameters:
+        - $ref: '#/parameters/case-code-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-contact-tracing'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/user/register':
       put:
         operationId: registerUser
@@ -791,6 +810,13 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-daily-case-status-list'
+    response-contact-tracing:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              type: string
     response-user-single:
       allOf:
         - $ref: '#/definitions/response-base'
