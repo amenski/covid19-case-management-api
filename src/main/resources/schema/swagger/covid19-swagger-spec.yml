@@ -462,8 +462,10 @@ definitions:
           type: string
         xCord:
           type: number
+          format: double
         yCord:
           type: number
+          format: double
     model-case:
       type: object
       properties:
@@ -724,8 +726,14 @@ definitions:
         - $ref: '#/definitions/request-save-case'
         - $ref: '#/definitions/model-pui-follow-up-list'
     request-save-facility:
-      allOf:
-      - $ref: '#/definitions/model-health-facility'
+      type: object
+      properties:
+        facilities:
+          type: array
+          items: 
+            $ref: '#/definitions/model-health-facility'
+      required:
+        - facilities
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
