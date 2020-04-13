@@ -5,7 +5,6 @@ import org.mapstruct.factory.Mappers;
 
 import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.swagger.model.ModelHealthFacility;
-import et.covid19.rest.swagger.model.RequestSaveFacility;
 
 @Mapper
 public interface HealthFacilityMapper {
@@ -16,5 +15,4 @@ public interface HealthFacilityMapper {
 	
 	ModelHealthFacility entityToModel(HealthFacility entity);
 	
-	HealthFacility modelToEntity(RequestSaveFacility facilityModel);
 }
