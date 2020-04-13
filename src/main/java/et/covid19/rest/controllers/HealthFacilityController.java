@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import et.covid19.rest.annotations.EthLoggable;
-import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.IHealthFacilityService;
 import et.covid19.rest.swagger.api.HealthFacilityApi;
 import et.covid19.rest.swagger.model.ModelHealthFacility;

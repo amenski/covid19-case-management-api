@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import et.covid19.rest.annotations.EthLoggable;
-import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.ICaseFollowUpService;
 import et.covid19.rest.swagger.api.CaseFollowUpApi;
 import et.covid19.rest.swagger.model.ModelPuiFollowUp;
