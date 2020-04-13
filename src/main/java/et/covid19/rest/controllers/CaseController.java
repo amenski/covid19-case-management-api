@@ -21,6 +21,7 @@ import et.covid19.rest.swagger.api.CaseApi;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.swagger.model.ResponseBase;
+import et.covid19.rest.swagger.model.ResponseCaseList;
 import et.covid19.rest.swagger.model.ResponseCaseSingle;
 import et.covid19.rest.util.exception.EthException;
 import io.swagger.annotations.ApiParam;
@@ -101,7 +102,18 @@ public class CaseController extends AbstractController implements CaseApi {
 		
 		return new ResponseEntity<>(response, status);
 	}
-	
+
+	@Override
+	public ResponseEntity<ResponseCaseList> searchCases(
+			@ApiParam(value = ""  )  @Valid @RequestBody Integer testResultId,
+			@ApiParam(value = ""  )  @Valid @RequestBody Integer statusId,
+			@ApiParam(value = ""  )  @Valid @RequestBody String region,
+			@ApiParam(value = ""  )  @Valid @RequestBody String recentTravelTo)
+	{
+		// TODO Auto-generated method stub
+		return CaseApi.super.searchCases(testResultId, statusId, region, recentTravelTo);
+	}
+
 	
 
 }

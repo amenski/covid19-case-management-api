@@ -130,7 +130,32 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-case-single'
+              $ref: '#/definitions/response-case-single' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+      post:
+        operationId: searchCases
+        summary: Search cases by criteria
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/search-test-result-id'
+          - $ref: '#/parameters/search-status-id'
+          - $ref: '#/parameters/search-region'
+          - $ref: '#/parameters/search-recent-travel-to'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
@@ -408,6 +433,28 @@ parameters:
     name: reportingDate
     type: string
     format: date
+  search-test-result-id:
+    in: body
+    name: testResultId
+    schema:
+      type: integer
+      format: int32
+  search-status-id:
+    in: body
+    name: statusId
+    schema:
+      type: integer
+      format: int32
+  search-region:
+    in: body
+    name: region
+    schema:
+      type: string
+  search-recent-travel-to:
+    in: body
+    name: recentTravelTo
+    schema:
+      type: string
 definitions:
     response-base:
       type: object
