@@ -377,7 +377,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/api/rumor':
+  '/v1/rumor':
     put:
       operationId: registerNewRumor
       summary: 'Register a Rumor'
@@ -399,6 +399,7 @@ paths:
           $ref: '#/responses/response-unauthorized'
         '500':
           $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor':
     get:
       operationId: getAllRumors
       summary: Get Rumors info
@@ -712,7 +713,7 @@ definitions:
     model-rumor:
       type: object
       properties:
-        rumorId:
+        id:
           type: integer
         suspectName:
           type: string
@@ -722,6 +723,7 @@ definitions:
           type: string
         reportDate:
           type: string
+          format: date-time
         fever:
           type: string
         cough:
@@ -793,7 +795,7 @@ definitions:
     model-rumor-list:
       type: object
       properties:
-        facilities:
+        list:
           type: array
           items:
             $ref: '#/definitions/model-rumor'
