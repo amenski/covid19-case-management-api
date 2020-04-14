@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.auth.AuthenticationServiceImpl;
 import et.covid19.rest.swagger.api.AuthenticateApi;
 import et.covid19.rest.swagger.model.JwtRequest;

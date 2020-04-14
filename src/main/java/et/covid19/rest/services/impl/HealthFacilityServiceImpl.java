@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -34,11 +35,20 @@ public class HealthFacilityServiceImpl extends AbstractService implements IHealt
     @Transactional(rollbackFor = Exception.class)
     public boolean registerNewFacility(RequestSaveFacility newFacility) throws EthException {
         try{
-        	HealthFacility entity = HealthFacilityMapper.INSTANCE.modelToEntity(newFacility);
-        	entity.setModifiedBy(getCurrentLoggedInUserId());
-        	entity.setModifiedDate(OffsetDateTime.now());
-        	
-            healthFacilityRepository.save(entity);
+        	if(!newFacility.getFacilities().isEmpty()) {
+	        	List<HealthFacility> facilityList = new ArrayList<>();
+	        	OffsetDateTime now = OffsetDateTime.now();
+	        	String user = getCurrentLoggedInUserId();
+	        	newFacility.getFacilities().stream().forEach(val -> {
+		        	HealthFacility entity = HealthFacilityMapper.INSTANCE.modelToEntity(val);
+		        	entity.setModifiedBy(user);
+		        	entity.setModifiedDate(now);
+		        	
+		        	facilityList.add(entity);
+	        	});
+	        	
+	            healthFacilityRepository.saveAll(facilityList);
+        	}
             return true;
         } catch(ConstraintViolationException | DataIntegrityViolationException e) {
             throw EthExceptionEnums.VALIDATION_EXCEPTION.get();

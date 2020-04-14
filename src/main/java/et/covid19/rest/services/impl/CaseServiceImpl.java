@@ -1,8 +1,10 @@
 package et.covid19.rest.services.impl;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -36,11 +38,13 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	public boolean registerNewCase(RequestSaveCase newCase) throws EthException {
 		try{
 			//validate parent case
-			if(!caseExists(newCase.getParentCaseCode()))
+			PuiInfo parentCase = getParentCase(newCase.getParentCaseCode()); 
+			if(!StringUtils.isBlank(newCase.getParentCaseCode()) && Objects.isNull(parentCase))
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
 			
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
-			saveAndGetPuiInfo(entity);
+			entity = saveAndGetPuiInfo(entity);
+			addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
 			return true;
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();

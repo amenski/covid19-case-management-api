@@ -335,6 +335,87 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/contact-trace/{code}':
+      get:
+        operationId: contactTraceByCaseCode
+        summary: Trace contacts from parent code
+        tags:
+        - Contact Tracing
+        produces:
+        - application/json
+        parameters:
+        - $ref: '#/parameters/case-code-in-path'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-contact-tracing'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/user/register':
+      put:
+        operationId: registerUser
+        summary: User registration
+        tags:
+        - User
+        produces:
+        - application/json
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/model-user'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/rumor':
+    put:
+      operationId: registerNewRumor
+      summary: 'Register a Rumor'
+      tags:
+        - Rumor
+      consumes:
+        - application/json
+      parameters:
+        - name: rumorData
+          in: body
+          schema:
+            $ref: '#/definitions/request-save-rumor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor':
+    get:
+      operationId: getAllRumors
+      summary: Get Rumors info
+      tags:
+        - Rumor
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-rumor-list'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -420,8 +501,10 @@ definitions:
           type: string
         xCord:
           type: number
+          format: double
         yCord:
           type: number
+          format: double
     model-case:
       type: object
       properties:
@@ -611,6 +694,60 @@ definitions:
         reportDate:
           type: string
           format: date
+    model-user:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+    model-rumor:
+      type: object
+      properties:
+        id:
+          type: integer
+        suspectName:
+          type: string
+        gender:
+          type: string
+        address:
+          type: string
+        reportDate:
+          type: string
+          format: date-time
+        fever:
+          type: string
+        cough:
+          type: string
+        headache:
+          type: string
+        symptomsDuration:
+          type: integer
+          format: int32
+        reportingPersonName:
+          type: string
+        relationWithSuspect:
+          type: string
+        phoneNumber1:
+          type: string
+        phoneNumber2:
+          type: string
+      required:
+        - suspectName
+        - fever
+        - cough
+        - headache
+        - reportingPersonName
+        - phoneNumber1
     model-health-facility-list:
       type: object
       properties:
@@ -655,6 +792,23 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-daily-case-status'
+    model-rumor-list:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/definitions/model-rumor'
+    response-rumor-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor-list'
+    request-save-rumor:
+      allOf:
+        - $ref: '#/definitions/model-rumor'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
@@ -666,8 +820,14 @@ definitions:
         - $ref: '#/definitions/request-save-case'
         - $ref: '#/definitions/model-pui-follow-up-list'
     request-save-facility:
-      allOf:
-      - $ref: '#/definitions/model-health-facility'
+      type: object
+      properties:
+        facilities:
+          type: array
+          items: 
+            $ref: '#/definitions/model-health-facility'
+      required:
+        - facilities
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
@@ -752,6 +912,20 @@ definitions:
           properties:
             returnValue:
               $ref: '#/definitions/model-daily-case-status-list'
+    response-contact-tracing:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              type: string
+    response-user-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-user'
 responses:
     response-internal-server-error-500:
       description: Internal Server error

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import et.covid19.rest.annotations.EthLoggable;
-import et.covid19.rest.config.AbstractController;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.api.CaseApi;
 import et.covid19.rest.swagger.model.ModelCase;
@@ -33,7 +32,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@Autowired
 	private ICaseService caseService;
 	
-	// /v1/case
+	// /v1/api/case
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseBase> registerNewCase(

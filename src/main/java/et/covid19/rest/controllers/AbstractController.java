@@ -1,4 +1,4 @@
-package et.covid19.rest.config;
+package et.covid19.rest.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
