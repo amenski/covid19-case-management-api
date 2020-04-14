@@ -25,18 +25,18 @@ public class GeneralQueryBuilder {
 	private EntityManager em;
 	
 	@EthLoggable
-	public List<PuiInfo> buildCaseSearchCriteria(Integer confirmedResult, Integer status, String region, String recentTravelTo) {
+	public List<PuiInfo> buildCaseSearchCriteria(Integer resultId, Integer statusId, String region, String recentTravelTo) {
 		List<PuiInfo> puiList = new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<PuiInfo> query = cb.createQuery(PuiInfo.class);
 		Root<PuiInfo> rootPui = query.from(PuiInfo.class);
 		
 		List<Predicate> predicateList = new ArrayList<>();
-		if(confirmedResult != null) {
-			predicateList.add(predicateWithConstants(rootPui, cb, "confirmedResult", confirmedResult));
+		if(resultId != null) {
+			predicateList.add(predicateWithConstants(rootPui, cb, "confirmedResult", resultId));
 		}
-		if(status != null) {
-			predicateList.add(predicateWithConstants(rootPui, cb, "status", status));
+		if(statusId != null) {
+			predicateList.add(predicateWithConstants(rootPui, cb, "status", statusId));
 		}
 		if(!StringUtils.isBlank(region)) {
 			Predicate p = cb.equal(rootPui.get("region"), region);

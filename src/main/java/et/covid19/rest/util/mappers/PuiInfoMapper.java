@@ -66,7 +66,7 @@ public interface PuiInfoMapper {
 	// get-all cases
 	@Mappings({
 		@Mapping(target = "id", ignore = true),
-		@Mapping(target = "contactParentCaseCode", ignore = true),
+		@Mapping(target = "parentCaseCode", ignore = true),
 		@Mapping(target = "firstName", ignore = true),
 		@Mapping(target = "lastName", ignore = true),
 		@Mapping(target = "houseNo", ignore = true),
@@ -74,14 +74,12 @@ public interface PuiInfoMapper {
 		@Mapping(target = "incidentContactPhone2", ignore = true),
 		@Mapping(target = "modifiedBy", ignore = true),
 		@Mapping(target = "phoneNo", ignore = true),
-		@Mapping(target = "puiFollowUps", ignore = true),
 		
-		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.value"),
-		@Mapping(target = "confirmedResult.value", source = "confirmedResult.value"),
-		@Mapping(target = "identifiedBy.value", source = "identifiedBy.value"),
-		@Mapping(target = "status.value", source = "status.value"),
-		@Mapping(target = "admittedToFacility", source = "admittedToFacility.value"),
-		
+		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.enumLabel"),
+		@Mapping(target = "confirmedResult.value", source = "confirmedResult.enumLabel"),
+		@Mapping(target = "identifiedBy.value", source = "identifiedBy.enumLabel"),
+		@Mapping(target = "status.value", source = "status.enumLabel"),
+		@Mapping(target = "admittedToFacility.id", source = "admittedToFacility"), //TODO incorrect mapping
 	})
-	ModelCase modelCaseToReturn(PuiInfo body);
+	ModelCase entityToModelCaseForSearch(PuiInfo body);
 }

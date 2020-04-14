@@ -1,11 +1,14 @@
 package et.covid19.rest.services.impl;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,8 +21,10 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.dal.model.PuiInfo;
+import et.covid19.rest.dal.util.GeneralQueryBuilder;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.model.ModelCase;
+import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
@@ -32,6 +37,9 @@ import et.covid19.rest.util.mappers.PuiInfoMapper;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CaseServiceImpl extends AbstractService implements ICaseService {
 
+    @Autowired
+    private GeneralQueryBuilder queryBuilder;
+    
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
@@ -101,5 +109,28 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			throw ex;
 		}
 	}
+
+    @Override
+    @EthLoggable
+    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo) 
+            throws EthException {
+        try {
+            ModelCaseList modelCaseList = new ModelCaseList();
+            if ((confirmedResult == null || Integer.signum(confirmedResult) == -1)
+                    && (status == null || Integer.signum(status) == -1)
+                    && StringUtils.isAllBlank(region, recentTravelTo))
+                return modelCaseList;
+
+            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
+            List<ModelCase> cases = new ArrayList<>();
+            for (PuiInfo info : puiList) {
+                ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
+                cases.add(model);
+            }
+            return modelCaseList.cases(cases);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
 }

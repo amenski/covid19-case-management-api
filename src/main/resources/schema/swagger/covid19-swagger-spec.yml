@@ -143,10 +143,10 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/search-test-result-id'
-          - $ref: '#/parameters/search-status-id'
-          - $ref: '#/parameters/search-region'
-          - $ref: '#/parameters/search-recent-travel-to'
+          - name: criteria
+            in: body
+            schema:
+              $ref: '#/definitions/request-search-case'
         responses:
           '200':
             description: ''
@@ -433,28 +433,6 @@ parameters:
     name: reportingDate
     type: string
     format: date
-  search-test-result-id:
-    in: body
-    name: testResultId
-    schema:
-      type: integer
-      format: int32
-  search-status-id:
-    in: body
-    name: statusId
-    schema:
-      type: integer
-      format: int32
-  search-region:
-    in: body
-    name: region
-    schema:
-      type: string
-  search-recent-travel-to:
-    in: body
-    name: recentTravelTo
-    schema:
-      type: string
 definitions:
     response-base:
       type: object
@@ -781,6 +759,19 @@ definitions:
             $ref: '#/definitions/model-health-facility'
       required:
         - facilities
+    request-search-case:
+      type: object
+      properties:
+        testResultId:
+          type: integer
+          format: int32
+        statusId:
+          type: integer
+          format: int32
+        region:
+          type: string
+        recentTravelTo:
+          type: string
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
