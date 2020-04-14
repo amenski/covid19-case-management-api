@@ -32,7 +32,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@Autowired
 	private ICaseService caseService;
 	
-	// /v1/case
+	// /v1/api/case
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseBase> registerNewCase(

@@ -377,6 +377,45 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/rumor':
+    put:
+      operationId: registerNewRumor
+      summary: 'Register a Rumor'
+      tags:
+        - Rumor
+      consumes:
+        - application/json
+      parameters:
+        - name: rumorData
+          in: body
+          schema:
+            $ref: '#/definitions/request-save-rumor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor':
+    get:
+      operationId: getAllRumors
+      summary: Get Rumors info
+      tags:
+        - Rumor
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-rumor-list'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -671,6 +710,44 @@ definitions:
         - lastName
         - email
         - password
+    model-rumor:
+      type: object
+      properties:
+        id:
+          type: integer
+        suspectName:
+          type: string
+        gender:
+          type: string
+        address:
+          type: string
+        reportDate:
+          type: string
+          format: date-time
+        fever:
+          type: string
+        cough:
+          type: string
+        headache:
+          type: string
+        symptomsDuration:
+          type: integer
+          format: int32
+        reportingPersonName:
+          type: string
+        relationWithSuspect:
+          type: string
+        phoneNumber1:
+          type: string
+        phoneNumber2:
+          type: string
+      required:
+        - suspectName
+        - fever
+        - cough
+        - headache
+        - reportingPersonName
+        - phoneNumber1
     model-health-facility-list:
       type: object
       properties:
@@ -715,6 +792,23 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-daily-case-status'
+    model-rumor-list:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/definitions/model-rumor'
+    response-rumor-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor-list'
+    request-save-rumor:
+      allOf:
+        - $ref: '#/definitions/model-rumor'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
