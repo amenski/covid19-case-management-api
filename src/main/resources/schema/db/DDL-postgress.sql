@@ -257,7 +257,10 @@ CREATE TABLE  rumor_reports (
 	reporting_person_name VARCHAR(250) NOT NULL,
 	relation_with_suspect VARCHAR(250) NULL,
 	phone_number1 VARCHAR(250) NOT NULL,
-	phone_number2 VARCHAR(250) NULL,	
-	report_date TIMESTAMp DEFAULT CURRENT_TIMESTAMP
+	phone_number2 VARCHAR(250) NULL,
+	status  INTEGER NOT NULL DEFAULT 1080,
+	modified_by VARCHAR(250), 
+	modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+	report_date TIMESTAMP
 );
 ALTER TABLE rumor_reports ADD CONSTRAINT rumor_reports_pk PRIMARY KEY (id);

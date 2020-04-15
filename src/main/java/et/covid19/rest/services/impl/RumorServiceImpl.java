@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.ImmutableSet;
+
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.RumorReport;
 import et.covid19.rest.dal.repositories.RumorReportRepository;
@@ -16,6 +18,7 @@ import et.covid19.rest.services.IRumorService;
 import et.covid19.rest.swagger.model.ModelRumor;
 import et.covid19.rest.swagger.model.ModelRumorList;
 import et.covid19.rest.swagger.model.RequestSaveRumor;
+import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.RumorReportMapper;
@@ -30,11 +33,14 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
     @EthLoggable
     public boolean registerRumor(RequestSaveRumor rumor) throws EthException {
         try{
+            OffsetDateTime timeNow = OffsetDateTime.now();
             RumorReport report = RumorReportMapper.INSTANCE.modelToEntity(rumor);
             if(StringUtils.isBlank(report.getAddress())) 
                 throw EthExceptionEnums.ADDRESS_EMPTY_EXCEPTION.get();
             
-            report.setReportDate(OffsetDateTime.now());
+            report.setStatus(EthConstants.CONST_RUMOR_PENDING);
+            report.setReportDate(timeNow);
+            report.setModifiedDate(timeNow);
             rumorRepository.save(report);
             return true;
         } catch(ConstraintViolationException | DataIntegrityViolationException e) {
@@ -45,6 +51,7 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
     }
 
     @Override
+    @EthLoggable
     public ModelRumorList getAllRumorReports() throws EthException {
         try{
             ModelRumorList modelList = new ModelRumorList();
@@ -54,6 +61,41 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
                 modelList.addListItem(model);
             }    
             return modelList;
+        } catch(ConstraintViolationException | DataIntegrityViolationException e) {
+            throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @Override
+    @EthLoggable
+    public ModelRumor getRumorReport(Integer id) throws EthException {
+        try{
+            RumorReport report = rumorRepository.findById(id).orElseThrow(EthExceptionEnums.RUMOR_DATA_NOT_FOUND);
+            ModelRumor model = RumorReportMapper.INSTANCE.entityToModel(report);
+            return model;
+        } catch(ConstraintViolationException | DataIntegrityViolationException e) {
+            throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @Override
+    @EthLoggable
+    public boolean updateRumorReportStatus(Integer id, Integer statusId) throws EthException {
+        try{
+            if(id != null && Integer.signum(id) == 1) {
+                RumorReport report  = rumorRepository.findById(id).orElseThrow(EthExceptionEnums.RUMOR_DATA_NOT_FOUND);
+                validateInputEnumById(EthConstants.RUMOR_REPORT_STATUS, ImmutableSet.of(statusId));
+                report.setStatus(statusId);
+                report.setModifiedby(getCurrentLoggedInUserId());
+                report.setModifiedDate(OffsetDateTime.now());
+                
+                rumorRepository.save(report);
+            }
+            return true;
         } catch(ConstraintViolationException | DataIntegrityViolationException e) {
             throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
         } catch (Exception ex) {
