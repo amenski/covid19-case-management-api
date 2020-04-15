@@ -59,6 +59,14 @@ public class RumorReport implements Serializable {
 
 	@Column(name="symptoms_duration")
 	private Integer symptomsDuration;
+	
+	private Integer status;
+
+    @Column(name="modified_by")
+    private String modifiedby;
+    
+    @Column(name="modified_date")
+    private OffsetDateTime modifiedDate;
 
 	public RumorReport() {
 	    //
@@ -167,5 +175,29 @@ public class RumorReport implements Serializable {
 	public void setSymptomsDuration(Integer symptomsDuration) {
 		this.symptomsDuration = symptomsDuration;
 	}
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getModifiedby() {
+        return modifiedby;
+    }
+
+    public void setModifiedby(String modifiedby) {
+        this.modifiedby = modifiedby;
+    }
+
+    public OffsetDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(OffsetDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
 }

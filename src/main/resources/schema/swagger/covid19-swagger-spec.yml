@@ -86,7 +86,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -211,7 +211,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -427,7 +427,9 @@ paths:
   '/v1/api/rumor':
     get:
       operationId: getAllRumors
-      summary: Get Rumors info
+      summary: Get all Rumors reports
+      security:
+        - Bearer: []
       tags:
         - Rumor
       produces:
@@ -437,6 +439,54 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/response-rumor-list'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}':
+      get:
+        operationId: getRumorById
+        summary: Get single Rumor reports
+        security:
+          - Bearer: []
+        tags:
+          - Rumor
+        produces:
+          - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-model-rumor-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}/update-status':
+    post:
+      operationId: updateStatus
+      summary: 'Update status'
+      security:
+        - Bearer: []
+      tags:
+      - Rumor
+      consumes:
+      - application/json
+      parameters:
+        - $ref: '#/parameters/id-in-path-required'
+        - name: status
+          in: body
+          schema:
+            type: integer
+            format: int32
+          required: true
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
         '401':
           $ref: '#/responses/response-unauthorized'
         '500':
@@ -461,7 +511,7 @@ parameters:
       type: integer
       format: int32
     required: true
-  question-id-in-path:
+  id-in-path-required:
     in: path
     name: id
     type: integer
@@ -770,6 +820,8 @@ definitions:
           type: string
         phoneNumber2:
           type: string
+        modifiedBy:
+          type: string
       required:
         - suspectName
         - fever
@@ -822,6 +874,13 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-daily-case-status'
+    response-model-rumor-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor'
     model-rumor-list:
       type: object
       properties:
