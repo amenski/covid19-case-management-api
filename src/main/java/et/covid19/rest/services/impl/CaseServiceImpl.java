@@ -3,8 +3,11 @@ package et.covid19.rest.services.impl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -126,8 +129,13 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
             List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
             List<ModelCase> cases = new ArrayList<>();
+            //instead of foreign key join to healthFacility, convert id to id,value here
+            Map<Integer, HealthFacility> facilitiesMap = healthFacilityRepository.findAll().stream().collect(Collectors.toMap(HealthFacility::getId, Function.identity()));
             for (PuiInfo info : puiList) {
                 ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
+                model.setAdmittedToFacility(new ModelEnumIdValue()
+                        .id(info.getAdmittedToFacility())
+                        .value(facilitiesMap.getOrDefault(info.getAdmittedToFacility(), new HealthFacility()).getName()));
                 cases.add(model);
             }
             return modelCaseList.cases(cases);
