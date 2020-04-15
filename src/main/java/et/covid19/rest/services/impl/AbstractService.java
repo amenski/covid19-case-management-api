@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -38,6 +40,8 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AbstractService {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	protected ConstantsEnumRepository constantsEnumRepository;

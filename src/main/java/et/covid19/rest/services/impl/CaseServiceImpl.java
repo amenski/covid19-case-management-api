@@ -1,11 +1,17 @@
 package et.covid19.rest.services.impl;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,8 +24,10 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.dal.model.PuiInfo;
+import et.covid19.rest.dal.util.GeneralQueryBuilder;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.model.ModelCase;
+import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
@@ -32,10 +40,13 @@ import et.covid19.rest.util.mappers.PuiInfoMapper;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CaseServiceImpl extends AbstractService implements ICaseService {
 
+    @Autowired
+    private GeneralQueryBuilder queryBuilder;
+    
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean registerNewCase(RequestSaveCase newCase) throws EthException {
+	public String registerNewCase(RequestSaveCase newCase) throws EthException {
 		try{
 			//validate parent case
 			PuiInfo parentCase = getParentCase(newCase.getParentCaseCode()); 
@@ -43,9 +54,15 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
 			
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
+			if(parentCase != null) {
+				entity.setContactParentCaseCode(parentCase.getCaseCode());
+			}
+			if(StringUtils.isBlank(entity.getRegion()))
+			    throw EthExceptionEnums.REGION_EMPTY_EXCEPTION.get();
+			
 			entity = saveAndGetPuiInfo(entity);
 			addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
-			return true;
+			return entity.getCaseCode();
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 		} catch (Exception ex) {
@@ -98,5 +115,33 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			throw ex;
 		}
 	}
+
+    @Override
+    @EthLoggable
+    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo) 
+            throws EthException {
+        try {
+            ModelCaseList modelCaseList = new ModelCaseList();
+            if ((confirmedResult == null || Integer.signum(confirmedResult) == -1)
+                    && (status == null || Integer.signum(status) == -1)
+                    && StringUtils.isAllBlank(region, recentTravelTo))
+                return modelCaseList;
+
+            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
+            List<ModelCase> cases = new ArrayList<>();
+            //instead of foreign key join to healthFacility, convert id to id,value here
+            Map<Integer, HealthFacility> facilitiesMap = healthFacilityRepository.findAll().stream().collect(Collectors.toMap(HealthFacility::getId, Function.identity()));
+            for (PuiInfo info : puiList) {
+                ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
+                model.setAdmittedToFacility(new ModelEnumIdValue()
+                        .id(info.getAdmittedToFacility())
+                        .value(facilitiesMap.getOrDefault(info.getAdmittedToFacility(), new HealthFacility()).getName()));
+                cases.add(model);
+            }
+            return modelCaseList.cases(cases);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
 }

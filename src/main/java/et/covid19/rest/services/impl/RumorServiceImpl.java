@@ -3,6 +3,7 @@ package et.covid19.rest.services.impl;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +31,9 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
     public boolean registerRumor(RequestSaveRumor rumor) throws EthException {
         try{
             RumorReport report = RumorReportMapper.INSTANCE.modelToEntity(rumor);
+            if(StringUtils.isBlank(report.getAddress())) 
+                throw EthExceptionEnums.ADDRESS_EMPTY_EXCEPTION.get();
+            
             report.setReportDate(OffsetDateTime.now());
             rumorRepository.save(report);
             return true;

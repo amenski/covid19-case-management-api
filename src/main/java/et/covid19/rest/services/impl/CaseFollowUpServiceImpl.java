@@ -47,7 +47,11 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 			PuiInfo parentCase = getParentCase(body.getParentCaseCode()); 
 			if(!StringUtils.isBlank(body.getParentCaseCode()) && Objects.isNull(parentCase))
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
-				
+			
+			if(parentCase != null) {
+				pui.setContactParentCaseCode(parentCase.getCaseCode());
+			}
+			
 			//collect questionnaires and validate
 			PuiInfo newPui = saveAndGetPuiInfo(pui);
 			addContactTracingInfo(parentCase.getCaseCode(), newPui.getCaseCode());

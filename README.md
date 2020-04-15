@@ -11,7 +11,7 @@ To run the application you need:
 		<role rolename="manager-gui"/>
 		  <user username="admin" password="admin" roles="manager-gui"/>
 	</tomcat-users>` inside `tomcat-users.xml`
-- Mysql(MariaDb) server
+- Postgresql server
 - Run DDL and then DMl found inside `resources/schema/db`
 - Deploy and Test(if you use post man, there is postman collection inside resources/schema/)
 

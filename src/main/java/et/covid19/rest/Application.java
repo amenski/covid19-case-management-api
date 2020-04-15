@@ -2,9 +2,11 @@ package et.covid19.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -20,6 +22,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class Application extends SpringBootServletInitializer {
 
     private static final String API_VERSION = "API_VERSION";
+    
+    @PostConstruct
+    public void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC")); //set UTC timezone
+    }
     
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

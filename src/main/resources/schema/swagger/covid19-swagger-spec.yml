@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.0.1
+  version: 1.0.0
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -130,7 +130,32 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-case-single'
+              $ref: '#/definitions/response-case-single' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+      post:
+        operationId: searchCases
+        summary: Search cases by criteria
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - name: criteria
+            in: body
+            schema:
+              $ref: '#/definitions/request-search-case'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
@@ -505,6 +530,9 @@ definitions:
         yCord:
           type: number
           format: double
+      required:
+        - name
+        - addrfull
     model-case:
       type: object
       properties:
@@ -585,6 +613,7 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+        - region
     model-questionnaire:
       type: object
       properties:
@@ -748,6 +777,7 @@ definitions:
         - headache
         - reportingPersonName
         - phoneNumber1
+        - address
     model-health-facility-list:
       type: object
       properties:
@@ -828,6 +858,19 @@ definitions:
             $ref: '#/definitions/model-health-facility'
       required:
         - facilities
+    request-search-case:
+      type: object
+      properties:
+        testResultId:
+          type: integer
+          format: int32
+        statusId:
+          type: integer
+          format: int32
+        region:
+          type: string
+        recentTravelTo:
+          type: string
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
