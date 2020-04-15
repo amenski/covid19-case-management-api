@@ -530,6 +530,9 @@ definitions:
         yCord:
           type: number
           format: double
+      required:
+        - name
+        - addrfull
     model-case:
       type: object
       properties:
