@@ -8,5 +8,6 @@
 		<class>et.covid19.rest.dal.model.HealthFacility</class>
 		<class>et.covid19.rest.dal.model.EthUser</class>
 		<class>et.covid19.rest.dal.model.security.Role</class>
+		<class>et.covid19.rest.dal.model.RumorReport</class>
 	</persistence-unit>
 </persistence>

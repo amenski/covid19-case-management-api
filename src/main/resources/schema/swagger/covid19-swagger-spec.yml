@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.0.1
+  version: 1.0.0
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -86,7 +86,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -130,7 +130,32 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-case-single'
+              $ref: '#/definitions/response-case-single' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+      post:
+        operationId: searchCases
+        summary: Search cases by criteria
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - name: criteria
+            in: body
+            schema:
+              $ref: '#/definitions/request-search-case'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
@@ -186,7 +211,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -377,6 +402,95 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/rumor':
+    put:
+      operationId: registerNewRumor
+      summary: 'Register a Rumor'
+      tags:
+        - Rumor
+      consumes:
+        - application/json
+      parameters:
+        - name: rumorData
+          in: body
+          schema:
+            $ref: '#/definitions/request-save-rumor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor':
+    get:
+      operationId: getAllRumors
+      summary: Get all Rumors reports
+      security:
+        - Bearer: []
+      tags:
+        - Rumor
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-rumor-list'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}':
+      get:
+        operationId: getRumorById
+        summary: Get single Rumor reports
+        security:
+          - Bearer: []
+        tags:
+          - Rumor
+        produces:
+          - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-model-rumor-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}/update-status':
+    post:
+      operationId: updateStatus
+      summary: 'Update status'
+      security:
+        - Bearer: []
+      tags:
+      - Rumor
+      consumes:
+      - application/json
+      parameters:
+        - $ref: '#/parameters/id-in-path-required'
+        - name: status
+          in: body
+          schema:
+            type: integer
+            format: int32
+          required: true
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
@@ -397,7 +511,7 @@ parameters:
       type: integer
       format: int32
     required: true
-  question-id-in-path:
+  id-in-path-required:
     in: path
     name: id
     type: integer
@@ -466,6 +580,9 @@ definitions:
         yCord:
           type: number
           format: double
+      required:
+        - name
+        - addrfull
     model-case:
       type: object
       properties:
@@ -546,6 +663,7 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+        - region
     model-questionnaire:
       type: object
       properties:
@@ -671,6 +789,47 @@ definitions:
         - lastName
         - email
         - password
+    model-rumor:
+      type: object
+      properties:
+        id:
+          type: integer
+        suspectName:
+          type: string
+        gender:
+          type: string
+        address:
+          type: string
+        reportDate:
+          type: string
+          format: date-time
+        fever:
+          type: string
+        cough:
+          type: string
+        headache:
+          type: string
+        symptomsDuration:
+          type: integer
+          format: int32
+        reportingPersonName:
+          type: string
+        relationWithSuspect:
+          type: string
+        phoneNumber1:
+          type: string
+        phoneNumber2:
+          type: string
+        modifiedBy:
+          type: string
+      required:
+        - suspectName
+        - fever
+        - cough
+        - headache
+        - reportingPersonName
+        - phoneNumber1
+        - address
     model-health-facility-list:
       type: object
       properties:
@@ -715,6 +874,30 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-daily-case-status'
+    response-model-rumor-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor'
+    model-rumor-list:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/definitions/model-rumor'
+    response-rumor-list:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor-list'
+    request-save-rumor:
+      allOf:
+        - $ref: '#/definitions/model-rumor'
     request-save-case:
       allOf:
         - $ref: '#/definitions/model-case'
@@ -734,6 +917,19 @@ definitions:
             $ref: '#/definitions/model-health-facility'
       required:
         - facilities
+    request-search-case:
+      type: object
+      properties:
+        testResultId:
+          type: integer
+          format: int32
+        statusId:
+          type: integer
+          format: int32
+        region:
+          type: string
+        recentTravelTo:
+          type: string
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'

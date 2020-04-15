@@ -62,4 +62,25 @@ public interface PuiInfoMapper {
 		
 	})
 	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
+	
+	// search cases
+	@Mappings({
+		@Mapping(target = "id", ignore = true),
+		@Mapping(target = "parentCaseCode", ignore = true),
+		@Mapping(target = "firstName", ignore = true),
+		@Mapping(target = "lastName", ignore = true),
+		@Mapping(target = "passportNumber", ignore = true),
+		@Mapping(target = "houseNo", ignore = true),
+		@Mapping(target = "incidentContactPhone1", ignore = true),
+		@Mapping(target = "incidentContactPhone2", ignore = true),
+		@Mapping(target = "modifiedBy", ignore = true),
+		@Mapping(target = "phoneNo", ignore = true),
+		
+		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.enumLabel"),
+		@Mapping(target = "confirmedResult.value", source = "confirmedResult.enumLabel"),
+		@Mapping(target = "identifiedBy.value", source = "identifiedBy.enumLabel"),
+		@Mapping(target = "status.value", source = "status.enumLabel"),
+		@Mapping(target = "admittedToFacility.id", source = "admittedToFacility"), //TODO incorrect mapping
+	})
+	ModelCase entityToModelCaseForSearch(PuiInfo body);
 }

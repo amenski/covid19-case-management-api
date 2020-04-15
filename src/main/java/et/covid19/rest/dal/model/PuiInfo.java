@@ -94,8 +94,6 @@ public class PuiInfo implements Serializable {
 	@Column(name="passport_number")
 	private String passportNumber;
 
-	private String phone;
-
 	@Column(name="phone_no")
 	private String phoneNo;
 
@@ -310,14 +308,6 @@ public class PuiInfo implements Serializable {
 
 	public void setPassportNumber(String passportNumber) {
 		this.passportNumber = passportNumber;
-	}
-
-	public String getPhone() {
-		return this.phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getPhoneNo() {

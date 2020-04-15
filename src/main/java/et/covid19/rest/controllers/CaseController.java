@@ -19,8 +19,11 @@ import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.api.CaseApi;
 import et.covid19.rest.swagger.model.ModelCase;
+import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.RequestSaveCase;
+import et.covid19.rest.swagger.model.RequestSearchCase;
 import et.covid19.rest.swagger.model.ResponseBase;
+import et.covid19.rest.swagger.model.ResponseCaseList;
 import et.covid19.rest.swagger.model.ResponseCaseSingle;
 import et.covid19.rest.util.exception.EthException;
 import io.swagger.annotations.ApiParam;
@@ -32,7 +35,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@Autowired
 	private ICaseService caseService;
 	
-	// /v1/case
+	// /v1/api/case
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseBase> registerNewCase(
@@ -42,8 +45,8 @@ public class CaseController extends AbstractController implements CaseApi {
 		ResponseBase response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			caseService.registerNewCase(caseData);
-			response = fillSuccessResponse(new ResponseBase());
+			String caseCode = caseService.registerNewCase(caseData);
+			response = fillSuccessResponse(new ResponseBase().message(caseCode));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);
@@ -78,7 +81,7 @@ public class CaseController extends AbstractController implements CaseApi {
 		return new ResponseEntity<>(response, status);
 	}
 
-	// /v1/case/{code} - confirmedResult as a body
+	// /v1/api/case/{code} - confirmedResult as a body
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseBase> updateResult(
@@ -101,7 +104,28 @@ public class CaseController extends AbstractController implements CaseApi {
 		
 		return new ResponseEntity<>(response, status);
 	}
-	
-	
 
+    @Override
+    public ResponseEntity<ResponseCaseList> searchCases(@ApiParam(value = ""  )  @Valid @RequestBody RequestSearchCase criteria) 
+    {
+        Class<ResponseCaseList> responseClass = ResponseCaseList.class;
+        ResponseCaseList response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            ModelCaseList modelCaseList = caseService.searchCase(
+                                                criteria.getTestResultId(), 
+                                                criteria.getStatusId(), 
+                                                criteria.getRegion(), 
+                                                criteria.getRecentTravelTo());
+            response = fillSuccessResponse(new ResponseCaseList().returnValue(modelCaseList));
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
 }
