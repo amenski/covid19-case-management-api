@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.0.1
+  version: 1.0.0
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -610,6 +610,7 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+        - region
     model-questionnaire:
       type: object
       properties:
@@ -773,6 +774,7 @@ definitions:
         - headache
         - reportingPersonName
         - phoneNumber1
+        - address
     model-health-facility-list:
       type: object
       properties:

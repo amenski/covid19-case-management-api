@@ -63,12 +63,13 @@ public interface PuiInfoMapper {
 	})
 	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
 	
-	// get-all cases
+	// search cases
 	@Mappings({
 		@Mapping(target = "id", ignore = true),
 		@Mapping(target = "parentCaseCode", ignore = true),
 		@Mapping(target = "firstName", ignore = true),
 		@Mapping(target = "lastName", ignore = true),
+		@Mapping(target = "passportNumber", ignore = true),
 		@Mapping(target = "houseNo", ignore = true),
 		@Mapping(target = "incidentContactPhone1", ignore = true),
 		@Mapping(target = "incidentContactPhone2", ignore = true),

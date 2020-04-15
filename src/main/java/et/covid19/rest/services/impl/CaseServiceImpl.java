@@ -54,6 +54,9 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(parentCase != null) {
 				entity.setContactParentCaseCode(parentCase.getCaseCode());
 			}
+			if(StringUtils.isBlank(entity.getRegion()))
+			    throw EthExceptionEnums.REGION_EMPTY_EXCEPTION.get();
+			
 			entity = saveAndGetPuiInfo(entity);
 			addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
 			return entity.getCaseCode();

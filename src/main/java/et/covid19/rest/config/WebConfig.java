@@ -1,5 +1,8 @@
 package et.covid19.rest.config;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
 		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		mapper.registerModule(new JavaTimeModule());
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		mapper.setDateFormat(format);
+		
 		return mapper;
 	}
 
