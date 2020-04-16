@@ -11,9 +11,11 @@ public interface ICaseService {
 
 	public String registerNewCase(RequestSaveCase newCase) throws EthException;
 	
-	public ModelCase getModelCase(UUID case_code) throws EthException;
+	public ModelCase getModelCase(UUID caseCode) throws EthException;
 	
 	public boolean updateResult(String code, Integer status) throws EthException;
 	
 	public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo) throws EthException;
+	
+	public ModelCaseList getAllCases(Integer page) throws EthException;
 }

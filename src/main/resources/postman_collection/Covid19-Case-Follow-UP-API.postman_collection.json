@@ -20,7 +20,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"parentCaseCode\": \"8cf5c78c-7a1e-4f25-a9b5-218d7db6e7aa\",\r\n    \"recentTravelTo\": \"<string>\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"parentCaseCode\": \"8cf5c78c-7a1e-4f25-a9b5-218d7db6e7aa\",\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/case",
@@ -146,7 +146,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/v1/case?code=f1545371-cedc-4324-be63-c3257199a1ff",
+							"raw": "{{baseUrl}}/v1/case?code=00bae94c-a50f-4688-a168-c1cb120b3146",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -157,7 +157,7 @@
 							"query": [
 								{
 									"key": "code",
-									"value": "f1545371-cedc-4324-be63-c3257199a1ff"
+									"value": "00bae94c-a50f-4688-a168-c1cb120b3146"
 								}
 							]
 						}
@@ -208,7 +208,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"testResultId\": \"1\",\n\t\"statusId\": \"2\",\n\t\"region\": \"region\",\n\t\"recentTravelTo\": \"recentTravelTo\"\n}"
+							"raw": "{\n\t\"testResultId\": \"1001\",\n\t\"statusId\": \"1064\",\n\t\"recentTravelTo\": \"Italy\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/case",
@@ -303,6 +303,151 @@
 									"path": [
 										"v1",
 										"case"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "GET - Get All case",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/case/all?page=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"case",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/case/all?page=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"case",
+										"all"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\",\n \"returnValue\": {\n  \"cases\": [\n   {\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"passportNumber\": \"<string>\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"identifiedBy\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"modifiedBy\": \"<string>\",\n    \"region\": \"<string>\",\n    \"id\": \"<integer>\",\n    \"caseCode\": \"<string>\",\n    \"dob\": \"<date>\",\n    \"gender\": \"<string>\",\n    \"occupation\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"longitude\": \"<string>\",\n    \"presumptiveResult\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"confirmedResult\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"parentCaseCode\": \"<string>\",\n    \"recentTravelTo\": \"<string>\",\n    \"admittedToFacility\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"status\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"reportingDate\": \"<dateTime>\",\n    \"modifiedDate\": \"<dateTime>\"\n   },\n   {\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"passportNumber\": \"<string>\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"identifiedBy\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"modifiedBy\": \"<string>\",\n    \"region\": \"<string>\",\n    \"id\": \"<integer>\",\n    \"caseCode\": \"<string>\",\n    \"dob\": \"<date>\",\n    \"gender\": \"<string>\",\n    \"occupation\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n    \"longitude\": \"<string>\",\n    \"presumptiveResult\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"confirmedResult\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"parentCaseCode\": \"<string>\",\n    \"recentTravelTo\": \"<string>\",\n    \"admittedToFacility\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"status\": {\n     \"id\": \"<integer>\",\n     \"value\": \"<string>\"\n    },\n    \"reportingDate\": \"<dateTime>\",\n    \"modifiedDate\": \"<dateTime>\"\n   }\n  ]\n }\n}"
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/case/all?page=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"case",
+										"all"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/case/all?page=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"case",
+										"all"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>"
+										}
 									]
 								}
 							},
@@ -1090,7 +1235,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"newCases\": \"4\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"6\",\n    \"criticalCases\": \"0\",\n    \"newTests\": \"345\"\n}"
+							"raw": "{\n    \"newCases\": \"7\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\",\n    \"newTests\": \"401\"\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/daily-status",
@@ -1428,6 +1576,300 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "POST - Update status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1081"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/rumor/:id/update-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"rumor",
+								":id",
+								"update-status"
+							],
+							"variable": [
+								{
+									"description": "(Required) ",
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id/update-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id",
+										"update-status"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id/update-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id",
+										"update-status"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id/update-status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id",
+										"update-status"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "GET - Get single Rumor report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/rumor/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"rumor",
+								":id"
+							],
+							"variable": [
+								{
+									"description": "(Required) ",
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/rumor/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"rumor",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"success\": \"<boolean>\",\n \"resultCode\": \"<integer>\",\n \"message\": \"<string>\",\n \"errors\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"transactionId\": \"<string>\",\n \"type\": \"<string>\",\n \"returnValue\": {\n  \"suspectName\": \"<string>\",\n  \"fever\": \"<string>\",\n  \"cough\": \"<string>\",\n  \"headache\": \"<string>\",\n  \"reportingPersonName\": \"<string>\",\n  \"phoneNumber1\": \"<string>\",\n  \"address\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"gender\": \"<string>\",\n  \"reportDate\": \"<dateTime>\",\n  \"symptomsDuration\": \"<integer>\",\n  \"relationWithSuspect\": \"<string>\",\n  \"phoneNumber2\": \"<string>\",\n  \"modified_by\": \"<string>\"\n }\n}"
+						}
+					]
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1438,7 +1880,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg2OTM0NjU2LCJpYXQiOjE1ODY4OTg2NTZ9.IkLLO98cLTyIVpB3HntDVdEE4HvKLzdQNWYoPSpYebE",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg3MDc0NTc4LCJpYXQiOjE1ODcwMzg1Nzh9.4mwSsae3X-6VqIPVXmHTB1cd77ouLTqGJNVe4DUd-Ww",
 				"type": "string"
 			}
 		]
@@ -1467,13 +1909,13 @@
 	],
 	"variable": [
 		{
-			"id": "c9aa828c-5977-4d2a-b32a-a97553372a66",
+			"id": "b74c3c6e-57e3-4868-a480-aa6eddb761e2",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "8f341830-b8c7-46c6-991e-914f0392ad64",
+			"id": "840c8a3f-fed0-46e6-88c2-7c83ef21b911",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

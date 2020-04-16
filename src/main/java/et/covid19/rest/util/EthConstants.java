@@ -24,6 +24,8 @@ public class EthConstants {
 	
 	public static final Integer ROLE_USER_ID = 1;
 	
+	public static final Integer FETCH_SIZE = 800;
+	
 	private EthConstants() throws EthException {
 		throw new EthException("Utility class.");
 	}

@@ -106,6 +106,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	}
 
     @Override
+    @EthLoggable
     public ResponseEntity<ResponseCaseList> searchCases(@ApiParam(value = ""  )  @Valid @RequestBody RequestSearchCase criteria) 
     {
         Class<ResponseCaseList> responseClass = ResponseCaseList.class;
@@ -128,4 +129,27 @@ public class CaseController extends AbstractController implements CaseApi {
         
         return new ResponseEntity<>(response, status);
     }
+
+    @Override
+    @EthLoggable
+    public ResponseEntity<ResponseCaseList> getAllCase(
+            @ApiParam(value = "") @Valid @RequestParam(value = "page", required = false) Integer page) 
+    {
+        Class<ResponseCaseList> responseClass = ResponseCaseList.class;
+        ResponseCaseList response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            ModelCaseList modelCase = caseService.getAllCases(page);
+            response = fillSuccessResponse(new ResponseCaseList().returnValue(modelCase));
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
+    
 }
