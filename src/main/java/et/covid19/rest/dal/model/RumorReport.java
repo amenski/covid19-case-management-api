@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -60,7 +62,9 @@ public class RumorReport implements Serializable {
 	@Column(name="symptoms_duration")
 	private Integer symptomsDuration;
 	
-	private Integer status;
+	@ManyToOne
+	@JoinColumn(name = "status", referencedColumnName = "enum_code")
+	private ConstantEnum status;
 
     @Column(name="modified_by")
     private String modifiedby;
@@ -176,11 +180,11 @@ public class RumorReport implements Serializable {
 		this.symptomsDuration = symptomsDuration;
 	}
 
-    public Integer getStatus() {
+    public ConstantEnum getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(ConstantEnum status) {
         this.status = status;
     }
 

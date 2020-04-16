@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
+import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.RumorReport;
 import et.covid19.rest.dal.repositories.RumorReportRepository;
 import et.covid19.rest.services.IRumorService;
@@ -38,7 +39,7 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
             if(StringUtils.isBlank(report.getAddress())) 
                 throw EthExceptionEnums.ADDRESS_EMPTY_EXCEPTION.get();
             
-            report.setStatus(EthConstants.CONST_RUMOR_PENDING);
+            report.setStatus(new ConstantEnum(EthConstants.CONST_RUMOR_PENDING));
             report.setReportDate(timeNow);
             report.setModifiedDate(timeNow);
             rumorRepository.save(report);
@@ -89,7 +90,7 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
             if(id != null && Integer.signum(id) == 1) {
                 RumorReport report  = rumorRepository.findById(id).orElseThrow(EthExceptionEnums.RUMOR_DATA_NOT_FOUND);
                 validateInputEnumById(EthConstants.RUMOR_REPORT_STATUS, ImmutableSet.of(statusId));
-                report.setStatus(statusId);
+                report.setStatus(new ConstantEnum(statusId));
                 report.setModifiedby(getCurrentLoggedInUserId());
                 report.setModifiedDate(OffsetDateTime.now());
                 

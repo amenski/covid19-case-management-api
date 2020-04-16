@@ -156,6 +156,30 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/case/all':
+      get:
+        operationId: getAllCase
+        summary: Get All case
+        security:
+          - Bearer: []
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters: 
+          - name: page
+            in: query
+            type: integer
+            format: int32
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/case/{code}/update-result':
       post:
         operationId: updateResult
@@ -822,6 +846,8 @@ definitions:
           type: string
         modifiedBy:
           type: string
+        status:
+          $ref: '#/definitions/model-enum-id-value'
       required:
         - suspectName
         - fever

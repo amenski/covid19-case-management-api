@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,9 +75,9 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
 	@Override
 	@EthLoggable
-	public ModelCase getModelCase(UUID case_code) throws EthException {
+	public ModelCase getModelCase(UUID caseCode) throws EthException {
 		try {
-			PuiInfo info = puiInfoRepository.findByCaseCode(case_code.toString());
+			PuiInfo info = puiInfoRepository.findByCaseCode(caseCode.toString());
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
@@ -128,20 +131,43 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
                 return modelCaseList;
 
             List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
-            List<ModelCase> cases = new ArrayList<>();
-            //instead of foreign key join to healthFacility, convert id to id,value here
-            Map<Integer, HealthFacility> facilitiesMap = healthFacilityRepository.findAll().stream().collect(Collectors.toMap(HealthFacility::getId, Function.identity()));
-            for (PuiInfo info : puiList) {
-                ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
-                model.setAdmittedToFacility(new ModelEnumIdValue()
-                        .id(info.getAdmittedToFacility())
-                        .value(facilitiesMap.getOrDefault(info.getAdmittedToFacility(), new HealthFacility()).getName()));
-                cases.add(model);
+            return getCaseList(puiList);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    @EthLoggable
+    public ModelCaseList getAllCases(Integer page) throws EthException {
+        try {
+            if(page == null || Integer.signum(page) != 1) {
+                page = 0;
             }
-            return modelCaseList.cases(cases);
+            ModelCaseList caseList = new ModelCaseList();
+            Pageable countItems = PageRequest.of( (EthConstants.FETCH_SIZE * page), EthConstants.FETCH_SIZE);
+            Page<PuiInfo> infoList = puiInfoRepository.findAll(countItems);
+            if(Integer.signum(infoList.getSize()) != 1)
+                return caseList;
+                
+            return getCaseList(infoList.getContent());
         } catch (Exception ex) {
             throw ex;
         }
     }
 
+    private ModelCaseList getCaseList(List<PuiInfo> puiList) {
+        ModelCaseList modelCaseList = new ModelCaseList();
+        List<ModelCase> cases = new ArrayList<>();
+        //instead of foreign key join to healthFacility, convert id to id,value here
+        Map<Integer, HealthFacility> facilitiesMap = healthFacilityRepository.findAll().stream().collect(Collectors.toMap(HealthFacility::getId, Function.identity()));
+        for (PuiInfo info : puiList) {
+            ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
+            model.setAdmittedToFacility(new ModelEnumIdValue()
+                    .id(info.getAdmittedToFacility())
+                    .value(facilitiesMap.getOrDefault(info.getAdmittedToFacility(), new HealthFacility()).getName()));
+            cases.add(model);
+        }
+        return modelCaseList.cases(cases);
+    }
 }
