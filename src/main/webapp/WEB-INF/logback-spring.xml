@@ -26,16 +26,33 @@
       </encoder>
     </appender>
 
+    <property resource="application.yml" />
+	<springProperty name="url-addr" source="spring.datasource.url"/>
+	<springProperty name="driverClassName" source="spring.datasource.driver-class-name"/>
+	<springProperty name="username" source="spring.datasource.username"/>
+	<springProperty name="password" source="spring.datasource.password"/>
+	
+    <appender name = "DbAppender" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>${driverClassName}</driverClass>
+            <url>${url-addr}</url>
+            <user>${username}</user>
+            <password>${password}</password>
+        </connectionSource>
+	  
+    </appender>
+    
     <springProfile name="dev">
         <root level="debug">
-           <!--  <appender-ref ref="et.covid19.rest.default.file.appender" /> -->
+           <appender-ref ref="et.covid19.rest.default.file.appender" />
            <appender-ref ref="et.covid19.rest.default.console.appender" />
         </root>
     </springProfile>
 
     <springProfile name="prod">
         <root level="info">
-            <appender-ref ref="et.covid19.rest.default.file.appender" />
+           <appender-ref ref="et.covid19.rest.default.console.appender" />
+             <appender-ref ref="DbAppender"/>
         </root>
     </springProfile>
 
