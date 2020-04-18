@@ -2,20 +2,25 @@ package et.covid19.rest.config;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import et.covid19.rest.dal.model.security.UserPrincipal;
+import et.covid19.rest.util.EthConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtTokenUtil {
-    private String SECRET_KEY = "secret";
+    private static final String SECRET_KEY = "secret";
+    private static final String ROLE_STRING = "role";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -38,14 +43,19 @@ public class JwtTokenUtil {
     }
 
     public String generateToken(UserPrincipal userDetails) {
+        List<String> authorities = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         Map<String, Object> claims = new HashMap<>();
+        claims.put(ROLE_STRING, authorities);
         return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EthConstants.ACCESS_TOKEN_VALIDITY_SECONDS))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 	
 	@Override
 	@EthLoggable
+    @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> compileFollowUpQuestionnaire(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveFollowUp body) 
 	{
@@ -54,6 +56,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 
 	@Override
 	@EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionnaires(
 			@ApiParam(value = "",required=true) @PathVariable("code") UUID code) 
 	{

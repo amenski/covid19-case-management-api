@@ -20,7 +20,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"parentCaseCode\": \"8cf5c78c-7a1e-4f25-a9b5-218d7db6e7aa\",\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/case",
@@ -491,12 +491,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/questionnaire",
+							"raw": "{{baseUrl}}/v1/api/questionnaire",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
+								"api",
 								"questionnaire"
 							]
 						}
@@ -1235,7 +1236,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"newCases\": \"7\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\",\n    \"newTests\": \"401\"\n}",
+							"raw": "{\n    \"newCases\": \"9\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"1\",\n    \"criticalCases\": \"0\",\n    \"newTests\": \"659\"\n}",
 							"options": {
 								"raw": {}
 							}
@@ -1441,7 +1442,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"suspectName\": \"<string>\",\n    \"fever\": false,\n    \"cough\": 0,\n    \"headache\": 0,\n    \"reportingPersonName\": \"<string>\",\n    \"phoneNumber1\": \"<string>\",\n    \"gender\": \"M\",\n    \"address\": \"<string>\",\n    \"symptomsDuration\": \"1\",\n    \"relationWithSuspect\": \"<string>\",\n    \"phoneNumber2\": \"<string>\"\n}"
+							"raw": "{\n    \"suspectName\": \"<string>\",\n    \"fever\": true,\n    \"cough\": 0,\n    \"headache\": 0,\n    \"reportingPersonName\": \"<string>\",\n    \"phoneNumber1\": \"<string>\",\n    \"gender\": \"M\",\n    \"address\": \"<string>\",\n    \"symptomsDuration\": \"1\",\n    \"relationWithSuspect\": \"<string>\",\n    \"phoneNumber2\": \"<string>\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/rumor",
@@ -1880,7 +1881,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg3MDc0NTc4LCJpYXQiOjE1ODcwMzg1Nzh9.4mwSsae3X-6VqIPVXmHTB1cd77ouLTqGJNVe4DUd-Ww",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg3MjQxMDU2LCJpYXQiOjE1ODcyMDUwNTZ9.5IGH5M2iYPbn2y21Jv52NQbPdommZbnqHKP9JYpj21M",
 				"type": "string"
 			}
 		]
@@ -1909,13 +1910,13 @@
 	],
 	"variable": [
 		{
-			"id": "b74c3c6e-57e3-4868-a480-aa6eddb761e2",
+			"id": "241adfe3-729f-40f0-8729-ebb8d111e1ee",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "840c8a3f-fed0-46e6-88c2-7c83ef21b911",
+			"id": "393215e1-2371-4976-8b8e-61f37975e2d7",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

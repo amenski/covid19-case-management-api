@@ -59,7 +59,7 @@ public class EthUser implements Serializable {
 	private String username;
 
 	//bi-directional many-to-many association to Role
-	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER) // TODO created instantiationException when lazy
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER) //EAGER, b/c created instantiationException when lazy
 	@JoinTable(
 		name="user_roles"
 		, joinColumns={

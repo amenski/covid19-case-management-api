@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ public class HealthFacilityController extends AbstractController implements Heal
 
     @Override
     @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
     public ResponseEntity<ResponseBase> registerNewFacility(
     		@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveFacility facilityData) 
     {
