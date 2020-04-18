@@ -707,8 +707,7 @@ definitions:
         description:
           type: string
         modifiedBy:
-          type: integer
-          format: int32
+          type: string
         insertDate:
           type: string
           format: date-time
