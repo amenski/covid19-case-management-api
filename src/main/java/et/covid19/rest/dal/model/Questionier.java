@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
@@ -26,7 +28,9 @@ public class Questionier implements Serializable {
 	@SequenceGenerator(name="questionier_id_gen", sequenceName = "questionier_id_seq", allocationSize=1)
 	private Integer id;
 
-	private Integer category;
+	@ManyToOne
+	@JoinColumn(name = "category", referencedColumnName = "enum_code")
+	private ConstantEnum category;
 
 	@Column(name="created_date")
 	private OffsetDateTime createdDate;
@@ -58,15 +62,15 @@ public class Questionier implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCategory() {
-		return category;
-	}
+	public ConstantEnum getCategory() {
+        return category;
+    }
 
-	public void setCategory(Integer category) {
-		this.category = category;
-	}
+    public void setCategory(ConstantEnum category) {
+        this.category = category;
+    }
 
-	public OffsetDateTime getCreatedDate() {
+    public OffsetDateTime getCreatedDate() {
 		return this.createdDate;
 	}
 

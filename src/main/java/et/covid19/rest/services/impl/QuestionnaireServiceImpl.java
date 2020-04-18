@@ -1,6 +1,7 @@
 package et.covid19.rest.services.impl;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,8 +49,12 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 			
 			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
 			
+			OffsetDateTime now = OffsetDateTime.now();
 			Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
 			entity.setModifiedBy(getCurrentLoggedInUserId());
+			entity.setCreatedDate(now);
+			entity.setModifiedDate(now);
+			
 			questionnierRepository.save(entity);
 			return true;
 		} catch(IOException | ConstraintViolationException | DataIntegrityViolationException e) { //JsonMappingException => IOException
@@ -74,6 +79,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 	}
 
 	@Override
+	@EthLoggable
 	public ModelQuestionnaireList getAllQuestionnaire() throws EthException {
 		try {
 			ModelQuestionnaireList list = new ModelQuestionnaireList();
