@@ -279,7 +279,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/api/register-follow-up':
+  '/v1/api/follow-up/{code}':
       put:
         operationId: compileFollowUpQuestionnaire
         summary: 'Register case follow-up forms'
@@ -290,6 +290,7 @@ paths:
         consumes:
         - application/json
         parameters:
+          - $ref: '#/parameters/case-code-in-path'
           - name: body
             in: body
             required: true
@@ -929,7 +930,6 @@ definitions:
         - $ref: '#/definitions/model-questionnaire'
     request-save-follow-up:
       allOf:
-        - $ref: '#/definitions/request-save-case'
         - $ref: '#/definitions/model-pui-follow-up-list'
     request-save-facility:
       type: object

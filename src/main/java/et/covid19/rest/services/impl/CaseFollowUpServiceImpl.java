@@ -2,7 +2,6 @@ package et.covid19.rest.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -26,7 +25,6 @@ import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.PuiCaseFolowUpMapper;
-import et.covid19.rest.util.mappers.PuiInfoMapper;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -38,39 +36,38 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean addCaseFollowUpQuestionnier(@Valid RequestSaveFollowUp body) throws EthException {
+	public boolean addCaseFollowUpQuestionnier(String code, @Valid RequestSaveFollowUp body) throws EthException {
 		try{
-			PuiInfo pui = PuiInfoMapper.INSTANCE.modelFollowupToPuiInfoMapper(body);
+		    if(StringUtils.isBlank(code) || body.getList().isEmpty())
+		        return false;
+		        
+			PuiInfo pui = puiInfoRepository.findByCaseCode(code);
 			if(pui == null)
-				throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("PUI information may have errors, please try again.");
-			
-			PuiInfo parentCase = getParentCase(body.getParentCaseCode()); 
-			if(!StringUtils.isBlank(body.getParentCaseCode()) && Objects.isNull(parentCase))
-				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
-			
-			if(parentCase != null) {
-				pui.setContactParentCaseCode(parentCase.getCaseCode());
-			}
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			//collect questionnaires and validate
-			PuiInfo newPui = saveAndGetPuiInfo(pui);
-			addContactTracingInfo(parentCase.getCaseCode(), newPui.getCaseCode());
-			List<PuiFollowUp> questionnierList = new ArrayList<>();
+			List<PuiFollowUp> followupQuestionnaireList = new ArrayList<>();
+			List<Integer> allIds = new ArrayList<>();
 			final String userId = getCurrentLoggedInUserId();
-			body.getList().stream().forEach(questionnier -> {
-				PuiFollowUp followup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(questionnier); //quest mapped here
-				Questionier questionier = followup.getQuestionier();
-				if(!StringUtils.isAnyBlank(followup.getOptionSelected()) && (Objects.nonNull(questionier) && Objects.nonNull(questionier.getId()))) {
-					followup.setPuiInfo(newPui);
-					followup.setModifiedBy(userId);
-					questionnierList.add(followup);
-				}
-			});
 			
-			if(body.getList().size() != questionnierList.size())
+			for(ModelPuiFollowUp modelFollowUp : body.getList()) {
+				PuiFollowUp puiFollowup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(modelFollowUp); //question is mapped here, only Qid is set 
+				Questionier questionnaire = puiFollowup.getQuestionier();
+				if(questionnaire == null || questionnaire.getId() == null) 
+				    throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
+				
+				if(!StringUtils.isBlank(puiFollowup.getOptionSelected()) && !allIds.contains(questionnaire.getId())) { //skip duplicates checking allIds
+					puiFollowup.setPuiInfo(pui);
+					puiFollowup.setModifiedBy(userId);
+					followupQuestionnaireList.add(puiFollowup);
+					allIds.add(questionnaire.getId());
+				}
+			}
+			
+			if(body.getList().size() != followupQuestionnaireList.size())
 				throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
 			
-			caseFollowUpRepository.saveAll(questionnierList);
+			caseFollowUpRepository.saveAll(followupQuestionnaireList);
 			return true;
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
@@ -83,7 +80,7 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 	@EthLoggable
 	public ModelPuiFollowUp getFollowUpData(String caseCode) throws EthException {
 		try {
-			PuiFollowUp followup = caseFollowUpRepository.findWithPuiCaseCode(caseCode.toString());
+			PuiFollowUp followup = caseFollowUpRepository.findWithPuiCaseCode(caseCode);
 			if(followup == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
