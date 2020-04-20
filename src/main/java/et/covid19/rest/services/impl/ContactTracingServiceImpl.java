@@ -29,9 +29,6 @@ public class ContactTracingServiceImpl extends AbstractService implements IConta
 			if(StringUtils.isBlank(code)) 
 				return StringUtils.EMPTY;
 			
-//			ContactTracing pcase = contactTracingRepository.findByParentCaseCode(code); 
-			
-//			if(Objects.isNull(pcase))
 			if(!contactTracingRepository.existsById(code))
 				return StringUtils.EMPTY;
 			

@@ -1,7 +1,5 @@
 package et.covid19.rest.controllers;
 
-import java.util.UUID;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +56,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionnaires(
-			@ApiParam(value = "",required=true) @PathVariable("code") UUID code) 
+			@ApiParam(value = "",required=true) @PathVariable("code") String code) 
 	{
 		Class<ResponsePuiFollowUpSingle> responseClass = ResponsePuiFollowUpSingle.class;
 		ResponsePuiFollowUpSingle response = null;

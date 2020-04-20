@@ -1,7 +1,5 @@
 package et.covid19.rest.controllers;
 
-import java.util.UUID;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -65,7 +63,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseCaseSingle> getCase(
-			@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "code", required = true) UUID code) 
+			@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "code", required = true) String code) 
 	{
 		Class<ResponseCaseSingle> responseClass = ResponseCaseSingle.class;
 		ResponseCaseSingle response = null;
@@ -89,7 +87,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> updateResult(
-			@ApiParam(value = "",required=true) @PathVariable("code") UUID code,
+			@ApiParam(value = "",required=true) @PathVariable("code") String code,
 			@ApiParam(value = "" ,required=true )  @Valid @RequestBody Integer confirmedResult)  
 	{
 		Class<ResponseBase> responseClass = ResponseBase.class;
