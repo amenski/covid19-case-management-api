@@ -26,6 +26,10 @@ public class EthConstants {
 	
 	public static final Integer FETCH_SIZE = 800;
     public static final int DEFAULT_CODE_LENGTH = 10; //case code default length
+    
+    
+    //converter
+    public static final String ATTRIBUTE_SEPARATOR = "#";
 	
 	private EthConstants() throws EthException {
 		throw new EthException("Utility class.");

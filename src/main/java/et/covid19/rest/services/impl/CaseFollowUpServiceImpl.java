@@ -47,25 +47,22 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 			
 			//collect questionnaires and validate
 			List<PuiFollowUp> followupQuestionnaireList = new ArrayList<>();
-			List<Integer> allIds = new ArrayList<>();
+			List<Integer> uniqueIds = new ArrayList<>();
 			final String userId = getCurrentLoggedInUserId();
 			
 			for(ModelPuiFollowUp modelFollowUp : body.getList()) {
-				PuiFollowUp puiFollowup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(modelFollowUp); //question is mapped here, only Qid is set 
+				PuiFollowUp puiFollowup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(modelFollowUp); // map only questionId 
 				Questionier questionnaire = puiFollowup.getQuestionier();
 				if(questionnaire == null || questionnaire.getId() == null) 
 				    throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
 				
-				if(!StringUtils.isBlank(puiFollowup.getOptionSelected()) && !allIds.contains(questionnaire.getId())) { //skip duplicates checking allIds
+				if(!StringUtils.isBlank(puiFollowup.getOptionSelected()) && !uniqueIds.contains(questionnaire.getId())) { //skip duplicates checking allIds
 					puiFollowup.setPuiInfo(pui);
 					puiFollowup.setModifiedBy(userId);
 					followupQuestionnaireList.add(puiFollowup);
-					allIds.add(questionnaire.getId());
+					uniqueIds.add(questionnaire.getId());
 				}
 			}
-			
-			if(body.getList().size() != followupQuestionnaireList.size())
-				throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
 			
 			caseFollowUpRepository.saveAll(followupQuestionnaireList);
 			return true;

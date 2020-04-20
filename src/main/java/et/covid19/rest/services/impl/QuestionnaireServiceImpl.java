@@ -1,25 +1,26 @@
 package et.covid19.rest.services.impl;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 
 import et.covid19.rest.annotations.EthLoggable;
+import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.services.IQuestionnierService;
+import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.ModelQuestionnaire;
 import et.covid19.rest.swagger.model.ModelQuestionnaireList;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
@@ -32,32 +33,33 @@ import et.covid19.rest.util.mappers.QuestionnaireMapper;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class QuestionnaireServiceImpl extends AbstractService implements IQuestionnierService {
 	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
 	public boolean registerQuestionnier(RequestSaveQuestionnaire question) throws EthException {
 		try{
-			if(StringUtils.isAnyBlank(question.getQuestion(), question.getOptions()) || Objects.isNull(question.getCategory()))
-				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+			if(StringUtils.isBlank(question.getQuestion()))
+				throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Question string missing.");
 			
-			//options() => All possible values of the question as json
-			// throws exception on invalid json
-			objectMapper.readValue(question.getOptions(), Object.class);
+			List<String> distinctOptions = getDistinctQuestionOptions(question.getOptions());
+			if(distinctOptions.isEmpty())
+			    throw EthExceptionEnums.QUESTION_OPTIONS_EMPTY_EXCEPTION.get();
 			
-			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(question.getCategory().getId()));
+			Integer catId = Optional.ofNullable(question.getCategory()).map(ModelEnumIdValue::getId).orElseThrow(EthExceptionEnums.VALIDATION_EXCEPTION);
+			validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(catId));
 			
-			OffsetDateTime now = OffsetDateTime.now();
 			Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
 			entity.setModifiedBy(getCurrentLoggedInUserId());
+			entity.setOptions(question.getOptions());
+			entity.setCategory(new ConstantEnum(catId));
+			
+			OffsetDateTime now = OffsetDateTime.now();
 			entity.setCreatedDate(now);
 			entity.setModifiedDate(now);
-			
+
 			questionnierRepository.save(entity);
 			return true;
-		} catch(IOException | ConstraintViolationException | DataIntegrityViolationException e) { //JsonMappingException => IOException
+		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 		} catch (Exception ex) {
 			throw ex;
@@ -93,4 +95,11 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 		}
 	}
 
+	
+	private List<String> getDistinctQuestionOptions(List<String> options) {
+	    if(options == null || options.isEmpty())
+	        return new ArrayList<>();
+	    
+	    return options.stream().map(String::toLowerCase).distinct().collect(Collectors.toList());
+	}
 }

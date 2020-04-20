@@ -696,8 +696,9 @@ definitions:
         question:
           type: string
         options:
-          description: Should be a valid json data
-          type: string
+          type: array
+          items:
+            type: string
         category:
           $ref: '#/definitions/model-enum-id-value'
         parentId:
