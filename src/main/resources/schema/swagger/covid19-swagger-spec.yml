@@ -520,13 +520,11 @@ parameters:
     in: query
     name: code
     type: string
-    format: uuid
     required: true
   case-code-in-path:
     in: path
     name: code
     type: string
-    format: uuid
     required: true
   confirmed-result:
     in: body

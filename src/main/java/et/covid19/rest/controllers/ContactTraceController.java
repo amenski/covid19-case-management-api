@@ -1,7 +1,5 @@
 package et.covid19.rest.controllers;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +22,12 @@ public class ContactTraceController extends AbstractController implements Contac
 	@Override
 	@EthLoggable
 	public ResponseEntity<ResponseContactTracing> contactTraceByCaseCode(
-			@ApiParam(value = "",required=true) @PathVariable("code") UUID code) {
+			@ApiParam(value = "",required=true) @PathVariable("code") String code) {
 		Class<ResponseContactTracing> responseClass = ResponseContactTracing.class;
 		ResponseContactTracing response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			String json = contactTraceService.traceContactByCode(code.toString());
+			String json = contactTraceService.traceContactByCode(code);
 			response = fillSuccessResponse(new ResponseContactTracing().returnValue(json));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
