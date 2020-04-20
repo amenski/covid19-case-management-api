@@ -11,7 +11,7 @@ import et.covid19.rest.dal.model.PuiInfo;
 @Repository
 public interface PuiInfoRepository extends JpaRepository<PuiInfo, Integer> {
 
-	PuiInfo findByCaseCode(String uuid);
+	PuiInfo findByCaseCode(String code);
 
 	@Query("select pui from PuiInfo pui where pui.caseCode in (:codeList)")
 	List<PuiInfo> findAllByCaseCode(List<String> codeList);

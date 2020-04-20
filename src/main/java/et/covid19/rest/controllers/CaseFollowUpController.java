@@ -33,13 +33,14 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> compileFollowUpQuestionnaire(
-			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveFollowUp body) 
+	        @ApiParam(value = "",required=true) @PathVariable("code") String code,
+	        @ApiParam(value = "" ,required=true )  @Valid @RequestBody RequestSaveFollowUp body) 
 	{
 		Class<ResponseBase> responseClass = ResponseBase.class;
 		ResponseBase response = null;
 		HttpStatus status = HttpStatus.OK;
-		try{
-			caseFollowUpService.addCaseFollowUpQuestionnier(body);
+		try {
+			caseFollowUpService.addCaseFollowUpQuestionnier(code, body);
 			response = fillSuccessResponse(new ResponseBase());
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
@@ -62,7 +63,7 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 		ResponsePuiFollowUpSingle response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			ModelPuiFollowUp quest = caseFollowUpService.getFollowUpData(code.toString());
+			ModelPuiFollowUp quest = caseFollowUpService.getFollowUpData(code);
 			response = fillSuccessResponse(new ResponsePuiFollowUpSingle().returnValue(quest));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();

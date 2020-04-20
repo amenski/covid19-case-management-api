@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
-import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 
 @Mapper
 public interface PuiInfoMapper {
@@ -53,16 +52,6 @@ public interface PuiInfoMapper {
 	})
 	PuiInfo modelCaseToPuiInfoMapper(RequestSaveCase newCase); //similar fields with ModelCase
 
-	@Mappings({
-		@Mapping(target = "presumptiveResult.enumCode", source = "presumptiveResult.id"),
-		@Mapping(target = "confirmedResult.enumCode", source = "confirmedResult.id"),
-		@Mapping(target = "identifiedBy.enumCode", source = "identifiedBy.id"),
-		@Mapping(target = "status.enumCode", source = "status.id"),
-		@Mapping(target = "admittedToFacility", source = "admittedToFacility.id"),
-		
-	})
-	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
-	
 	// search cases
 	@Mappings({
 		@Mapping(target = "id", ignore = true),
