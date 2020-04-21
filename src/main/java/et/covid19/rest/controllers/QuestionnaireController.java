@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,7 @@ public class QuestionnaireController extends AbstractController implements Quest
 	// --/v1/questionnaire
 	@Override
 	@EthLoggable
+	@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> registerNewQuestionnaire(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveQuestionnaire qData) {
 		Class<ResponseBase> responseClass = ResponseBase.class;

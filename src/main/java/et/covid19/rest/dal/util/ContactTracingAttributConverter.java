@@ -8,17 +8,16 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import et.covid19.rest.dal.model.ContactTracing;
+import et.covid19.rest.util.EthConstants;
 
 
 @Converter
 public class ContactTracingAttributConverter implements AttributeConverter<List<ContactTracing>, String> {
 
-	private static final String SEPARATOR = "#";
-	
 	@Override
 	public String convertToDatabaseColumn(List<ContactTracing> attribute) {
 		StringBuilder sb = new StringBuilder();
-		attribute.forEach(val -> sb.append(val.toString()).append(SEPARATOR));
+		attribute.forEach(val -> sb.append(val.toString()).append(EthConstants.ATTRIBUTE_SEPARATOR));
 		sb.setLength(sb.length() -1); //remove the last SEPARATOR char
 		return sb.toString();
 	}
@@ -26,12 +25,11 @@ public class ContactTracingAttributConverter implements AttributeConverter<List<
 	@Override
 	public List<ContactTracing> convertToEntityAttribute(String dbData) {
 		List<ContactTracing> list = new ArrayList<>();
-		for(String single : Arrays.asList(dbData.split(SEPARATOR))) {
+		for(String single : Arrays.asList(dbData.split(EthConstants.ATTRIBUTE_SEPARATOR))) {
 			ContactTracing ct = new ContactTracing();
 			ct.setParentCaseCode(single);
 			list.add(ct);
 		}
-//		return Arrays.asList(dbData.split(SEPARATOR));
 		return list;
 	}
 

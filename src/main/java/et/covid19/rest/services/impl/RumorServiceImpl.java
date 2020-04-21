@@ -42,6 +42,7 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
             report.setStatus(new ConstantEnum(EthConstants.CONST_RUMOR_PENDING));
             report.setReportDate(timeNow);
             report.setModifiedDate(timeNow);
+            
             rumorRepository.save(report);
             return true;
         } catch(ConstraintViolationException | DataIntegrityViolationException e) {
@@ -74,8 +75,7 @@ public class RumorServiceImpl extends AbstractService implements IRumorService {
     public ModelRumor getRumorReport(Integer id) throws EthException {
         try{
             RumorReport report = rumorRepository.findById(id).orElseThrow(EthExceptionEnums.RUMOR_DATA_NOT_FOUND);
-            ModelRumor model = RumorReportMapper.INSTANCE.entityToModel(report);
-            return model;
+            return RumorReportMapper.INSTANCE.entityToModel(report);
         } catch(ConstraintViolationException | DataIntegrityViolationException e) {
             throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
         } catch (Exception ex) {

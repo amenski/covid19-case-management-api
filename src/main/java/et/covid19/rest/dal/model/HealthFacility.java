@@ -5,9 +5,6 @@ import java.time.OffsetDateTime;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-
-
 /**
  * The persistent class for the health_facility database table.
  * 

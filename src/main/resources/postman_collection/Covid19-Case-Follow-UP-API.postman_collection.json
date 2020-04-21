@@ -20,7 +20,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"parentCaseCode\": \"8cf5c78c-7a1e-4f25-a9b5-218d7db6e7aa\",\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/case",
@@ -146,7 +146,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/v1/case?code=00bae94c-a50f-4688-a168-c1cb120b3146",
+							"raw": "{{baseUrl}}/v1/case?code=ET-WKB19PVD12",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -157,7 +157,7 @@
 							"query": [
 								{
 									"key": "code",
-									"value": "00bae94c-a50f-4688-a168-c1cb120b3146"
+									"value": "ET-WKB19PVD12"
 								}
 							]
 						}
@@ -483,7 +483,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"question\": \"Question string comes here?\",\n    \"options\": \"{\\\"yes\\\":\\\"YES\\\", \\\"no\\\":\\\"No\\\"}\",\n    \"category\": {\"id\":\"1040\"},\n    \"description\": \"<string>\"\n}",
+							"raw": "{\n    \"question\": \"Question string comes here?\",\n    \"options\": [\"YES\", \"no\"],\n    \"category\": {\"id\":\"1040\"},\n    \"description\": \"<string>\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -491,12 +491,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/questionnaire",
+							"raw": "{{baseUrl}}/v1/api/questionnaire",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
+								"api",
 								"questionnaire"
 							]
 						}
@@ -631,9 +632,6 @@
 				{
 					"name": "REGISTER CASE FOLLOW-UP FORMS",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -643,16 +641,24 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"first name\",\n    \"lastName\": \"last name\",\n    \"dob\": \"2019-10-03\",\n    \"gender\": \"M\",\n    \"occupation\": \"dev\",\n    \"passportNumber\": \"005\",\n    \"incidentContactPhone1\": \"<string>\",\n    \"incidentContactPhone2\": \"<string>\",\n    \"countryOfResidence\": \"<string>\",\n    \"countryOfOrigin\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subcityOrZone\": \"<string>\",\n    \"woreda\": \"<string>\",\n    \"kebele\": \"<string>\",\n    \"houseNo\": \"<string>\",\n    \"phoneNo\": \"<string>\",\n    \"latitude\": \"<string>\",\n     \"presumptiveResult\": {\"id\":\"1001\"},\n    \"confirmedResult\": {\"id\":\"1001\"},\n    \"identifiedBy\": {\"id\":\"1020\"},\n    \"recentTravelTo\": \"<string>\",\n    \"modifiedBy\": \"2\",\n    \"list\": [\n        {\n            \"puiCaseCode\": \"aa\",\n            \"qId\": \"2\",\n            \"selectedOption\": \"<string>\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"2\"\n        }\n    ]\n}"
+							"raw": "{\n    \"list\": [\n        {\n            \"puiCaseCode\": \"aa\",\n            \"qId\": \"7\",\n            \"selectedOption\": \"NO\",\n            \"description\": \"<string>\",\n            \"modifiedBy\": \"2\"\n        }\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/register-follow-up",
+							"raw": "{{baseUrl}}/v1/api/follow-up/:code",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
-								"register-follow-up"
+								"api",
+								"follow-up",
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "ET-WKB19PVD12"
+								}
 							]
 						}
 					},
@@ -760,7 +766,7 @@
 					]
 				},
 				{
-					"name": "Get follow up questionniers",
+					"name": "GET - GET FOLLOW-UP BY CASE CODE",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -777,7 +783,7 @@
 							"variable": [
 								{
 									"key": "code",
-									"value": "f1545371-cedc-4324-be63-c3257199a1ff",
+									"value": "ET-WKB19PVD12",
 									"description": {
 										"content": "",
 										"type": "text/plain"
@@ -1235,7 +1241,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"newCases\": \"7\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"1\",\n    \"newTests\": \"401\"\n}",
+							"raw": "{\n    \"newCases\": \"3\",\n    \"newDeaths\": \"0\",\n    \"recovered\": \"0\",\n    \"criticalCases\": \"0\",\n    \"newTests\": \"667\"\n}",
 							"options": {
 								"raw": {}
 							}
@@ -1441,7 +1447,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"suspectName\": \"<string>\",\n    \"fever\": false,\n    \"cough\": 0,\n    \"headache\": 0,\n    \"reportingPersonName\": \"<string>\",\n    \"phoneNumber1\": \"<string>\",\n    \"gender\": \"M\",\n    \"address\": \"<string>\",\n    \"symptomsDuration\": \"1\",\n    \"relationWithSuspect\": \"<string>\",\n    \"phoneNumber2\": \"<string>\"\n}"
+							"raw": "{\n    \"suspectName\": \"<string>\",\n    \"fever\": true,\n    \"cough\": 0,\n    \"headache\": 0,\n    \"reportingPersonName\": \"<string>\",\n    \"phoneNumber1\": \"<string>\",\n    \"gender\": \"M\",\n    \"address\": \"<string>\",\n    \"symptomsDuration\": \"1\",\n    \"relationWithSuspect\": \"<string>\",\n    \"phoneNumber2\": \"<string>\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/rumor",
@@ -1880,7 +1886,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTg3MDc0NTc4LCJpYXQiOjE1ODcwMzg1Nzh9.4mwSsae3X-6VqIPVXmHTB1cd77ouLTqGJNVe4DUd-Ww",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6WyJST0xFX0FETUlOIiwiUk9MRV9IRUFMVEhfT0ZGSUNFUiJdLCJleHAiOjE1ODc0OTUzNjgsImlhdCI6MTU4NzQ1MjE2OH0.0eYysQzXc8ILUeAFqNK6A9pKI8mFupj3tzscN2qgHPo",
 				"type": "string"
 			}
 		]
@@ -1909,13 +1915,13 @@
 	],
 	"variable": [
 		{
-			"id": "b74c3c6e-57e3-4868-a480-aa6eddb761e2",
+			"id": "d8f3fe0d-911c-4c2d-9a46-d9cc51b2dfb7",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "840c8a3f-fed0-46e6-88c2-7c83ef21b911",
+			"id": "b80d7020-ad62-4933-bd26-80d34823a2ce",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

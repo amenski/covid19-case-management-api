@@ -1,7 +1,5 @@
 package et.covid19.rest.controllers;
 
-import java.util.UUID;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -10,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +37,7 @@ public class CaseController extends AbstractController implements CaseApi {
 	// /v1/api/case
 	@Override
 	@EthLoggable
+    @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> registerNewCase(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveCase caseData) {
 		
@@ -61,8 +61,9 @@ public class CaseController extends AbstractController implements CaseApi {
 	// /v1/case?code=6220362a-e2ec-4d58-94a8-5764201725d5
 	@Override
 	@EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseCaseSingle> getCase(
-			@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "code", required = true) UUID code) 
+			@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "code", required = true) String code) 
 	{
 		Class<ResponseCaseSingle> responseClass = ResponseCaseSingle.class;
 		ResponseCaseSingle response = null;
@@ -84,8 +85,9 @@ public class CaseController extends AbstractController implements CaseApi {
 	// /v1/api/case/{code} - confirmedResult as a body
 	@Override
 	@EthLoggable
+    @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> updateResult(
-			@ApiParam(value = "",required=true) @PathVariable("code") UUID code,
+			@ApiParam(value = "",required=true) @PathVariable("code") String code,
 			@ApiParam(value = "" ,required=true )  @Valid @RequestBody Integer confirmedResult)  
 	{
 		Class<ResponseBase> responseClass = ResponseBase.class;
@@ -107,6 +109,7 @@ public class CaseController extends AbstractController implements CaseApi {
 
     @Override
     @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
     public ResponseEntity<ResponseCaseList> searchCases(@ApiParam(value = ""  )  @Valid @RequestBody RequestSearchCase criteria) 
     {
         Class<ResponseCaseList> responseClass = ResponseCaseList.class;
@@ -132,6 +135,7 @@ public class CaseController extends AbstractController implements CaseApi {
 
     @Override
     @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
     public ResponseEntity<ResponseCaseList> getAllCase(
             @ApiParam(value = "") @Valid @RequestParam(value = "page", required = false) Integer page) 
     {

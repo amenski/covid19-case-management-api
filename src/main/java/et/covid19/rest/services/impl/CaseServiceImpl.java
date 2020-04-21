@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -64,7 +63,9 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			    throw EthExceptionEnums.REGION_EMPTY_EXCEPTION.get();
 			
 			entity = saveAndGetPuiInfo(entity);
-			addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
+			if(Objects.nonNull(parentCase)) {
+			    addContactTracingInfo(parentCase.getCaseCode(), entity.getCaseCode());
+			}
 			return entity.getCaseCode();
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
@@ -75,9 +76,12 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
 	@Override
 	@EthLoggable
-	public ModelCase getModelCase(UUID caseCode) throws EthException {
+	public ModelCase getModelCase(String caseCode) throws EthException {
 		try {
-			PuiInfo info = puiInfoRepository.findByCaseCode(caseCode.toString());
+		    if(StringUtils.isBlank(caseCode))
+		        return null;
+		    
+			PuiInfo info = puiInfoRepository.findByCaseCode(caseCode);
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			

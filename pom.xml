@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>et.covid19</groupId>
 	<artifactId>rest-api</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>${packaging.type}</packaging>
 	<name>covid19-rest</name>
 	<description>Data collection and surveilance</description>

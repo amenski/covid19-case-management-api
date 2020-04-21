@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -33,7 +32,6 @@ import et.covid19.rest.dal.repositories.PuiInfoRepository;
 import et.covid19.rest.dal.repositories.QuestionnierRepository;
 import et.covid19.rest.util.EthConstants;
 import et.covid19.rest.util.GeneralUtils;
-import et.covid19.rest.util.LogConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 
@@ -94,7 +92,7 @@ public class AbstractService {
 	
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	protected PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
+	public PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
 		OffsetDateTime timeNow = OffsetDateTime.now();
 		validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(
 				GeneralUtils.defaultIfNull(entity::setPresumptiveResult, entity::getPresumptiveResult, EthConstants.CONST_TEST_PENDING).getEnumCode(),
@@ -110,7 +108,7 @@ public class AbstractService {
 		if(entity.getReportingDate() == null) {
 			entity.setReportingDate(timeNow);
 		}
-		entity.setCaseCode(MDC.get(LogConstants.UUID_KEY));
+		entity.setCaseCode(GeneralUtils.generateRandomCode(entity.getRegion()));
 		entity.setModifiedDate(timeNow);
 		entity.setModifiedBy(getCurrentLoggedInUserId());
 		
@@ -119,7 +117,7 @@ public class AbstractService {
 
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	protected void addContactTracingInfo(String parentCode, String childCode) throws EthException {
+	public void addContactTracingInfo(String parentCode, String childCode) throws EthException {
 		if(StringUtils.isAnyEmpty(parentCode, childCode)) 
 			return;
 		

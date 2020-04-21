@@ -1,7 +1,5 @@
 package et.covid19.rest.services;
 
-import java.util.UUID;
-
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.RequestSaveCase;
@@ -11,7 +9,7 @@ public interface ICaseService {
 
 	public String registerNewCase(RequestSaveCase newCase) throws EthException;
 	
-	public ModelCase getModelCase(UUID caseCode) throws EthException;
+	public ModelCase getModelCase(String caseCode) throws EthException;
 	
 	public boolean updateResult(String code, Integer status) throws EthException;
 	
