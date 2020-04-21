@@ -3,6 +3,7 @@ package et.covid19.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ public class ContactTraceController extends AbstractController implements Contac
 	
 	@Override
 	@EthLoggable
+	@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseContactTracing> contactTraceByCaseCode(
 			@ApiParam(value = "",required=true) @PathVariable("code") String code) {
 		Class<ResponseContactTracing> responseClass = ResponseContactTracing.class;

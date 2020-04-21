@@ -51,7 +51,7 @@ public class HealthFacilityController extends AbstractController implements Heal
             response = fillFailResponseGeneric(responseClass);
         }
 
-        return new ResponseEntity<ResponseBase>(response, status);
+        return new ResponseEntity<>(response, status);
     }
 
 	@Override
@@ -73,7 +73,7 @@ public class HealthFacilityController extends AbstractController implements Heal
             response = fillFailResponseGeneric(responseClass);
         }
 
-        return new ResponseEntity<ResponseHealthFacilitySingle>(response, status);
+        return new ResponseEntity<>(response, status);
 	}
 
 	@Override
@@ -93,6 +93,6 @@ public class HealthFacilityController extends AbstractController implements Heal
             response = fillFailResponseGeneric(responseClass);
         }
 
-        return new ResponseEntity<ResponseHealthFacilityList>(response, status);
+        return new ResponseEntity<>(response, status);
 	}
 }
