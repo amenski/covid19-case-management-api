@@ -16,7 +16,7 @@ public class StringColumnToListConverter implements AttributeConverter<List<Stri
         StringBuilder sb = new StringBuilder();
         attribute.stream().forEach(val -> sb.append(val).append(EthConstants.ATTRIBUTE_SEPARATOR));
         sb.setLength(sb.length() - 1);
-        return null;
+        return sb.toString();
     }
 
     @Override

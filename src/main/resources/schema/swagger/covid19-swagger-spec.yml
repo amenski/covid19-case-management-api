@@ -319,7 +319,7 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-pui-follow-up-single'
+              $ref: '#/definitions/response-pui-follow-up-list'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
@@ -746,8 +746,7 @@ definitions:
         description:
           type: string
         modifiedBy:
-          type: integer
-          format: int32 
+          type: string 
         insertDate:
           type: string
           format: date-time

@@ -92,7 +92,7 @@ public class AbstractService {
 	
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	protected PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
+	public PuiInfo saveAndGetPuiInfo(PuiInfo entity) throws EthException {
 		OffsetDateTime timeNow = OffsetDateTime.now();
 		validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(
 				GeneralUtils.defaultIfNull(entity::setPresumptiveResult, entity::getPresumptiveResult, EthConstants.CONST_TEST_PENDING).getEnumCode(),
@@ -117,7 +117,7 @@ public class AbstractService {
 
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	protected void addContactTracingInfo(String parentCode, String childCode) throws EthException {
+	public void addContactTracingInfo(String parentCode, String childCode) throws EthException {
 		if(StringUtils.isAnyEmpty(parentCode, childCode)) 
 			return;
 		

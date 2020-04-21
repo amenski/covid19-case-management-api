@@ -50,7 +50,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 			
 			Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
 			entity.setModifiedBy(getCurrentLoggedInUserId());
-			entity.setOptions(question.getOptions());
+			entity.setOptions(distinctOptions);
 			entity.setCategory(new ConstantEnum(catId));
 			
 			OffsetDateTime now = OffsetDateTime.now();
