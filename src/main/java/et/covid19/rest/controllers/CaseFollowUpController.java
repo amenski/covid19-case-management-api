@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.services.ICaseFollowUpService;
 import et.covid19.rest.swagger.api.CaseFollowUpApi;
-import et.covid19.rest.swagger.model.ModelPuiFollowUp;
+import et.covid19.rest.swagger.model.ModelPuiFollowUpList;
 import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 import et.covid19.rest.swagger.model.ResponseBase;
-import et.covid19.rest.swagger.model.ResponsePuiFollowUpSingle;
+import et.covid19.rest.swagger.model.ResponsePuiFollowUpList;
 import et.covid19.rest.util.exception.EthException;
 import io.swagger.annotations.ApiParam;
 
@@ -56,15 +56,15 @@ public class CaseFollowUpController extends AbstractController implements CaseFo
 	@Override
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
-	public ResponseEntity<ResponsePuiFollowUpSingle> getCaseFollowUpQuestionnaires(
+	public ResponseEntity<ResponsePuiFollowUpList> getCaseFollowUpQuestionnaires(
 			@ApiParam(value = "",required=true) @PathVariable("code") String code) 
 	{
-		Class<ResponsePuiFollowUpSingle> responseClass = ResponsePuiFollowUpSingle.class;
-		ResponsePuiFollowUpSingle response = null;
+		Class<ResponsePuiFollowUpList> responseClass = ResponsePuiFollowUpList.class;
+		ResponsePuiFollowUpList response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			ModelPuiFollowUp quest = caseFollowUpService.getFollowUpData(code);
-			response = fillSuccessResponse(new ResponsePuiFollowUpSingle().returnValue(quest));
+			ModelPuiFollowUpList list = caseFollowUpService.getFollowUpData(code);
+			response = fillSuccessResponse(new ResponsePuiFollowUpList().returnValue(list));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
 			response = fillFailResponseEthException(responseClass, ex);

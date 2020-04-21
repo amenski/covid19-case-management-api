@@ -24,7 +24,8 @@ public interface PuiCaseFolowUpMapper {
 
 	@Mappings({ 
 		@Mapping(target ="selectedOption" , source = "optionSelected"),
-		@Mapping(target = "insertDate", source = "createdDate")
+		@Mapping(target = "insertDate", source = "createdDate"),
+		@Mapping(target = "question", source = "questionier.question")
 		})
 	ModelPuiFollowUp entityToModelFollowupMapper(PuiFollowUp in);
 }
