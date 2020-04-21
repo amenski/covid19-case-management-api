@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 1.0.0
+  version: 1.0.1
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
