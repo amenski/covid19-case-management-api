@@ -57,7 +57,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
 			if(parentCase != null) {
-				entity.setContactParentCaseCode(parentCase.getCaseCode());
+				entity.setParentCaseCode(parentCase.getCaseCode());
 			}
 			if(StringUtils.isBlank(entity.getRegion()))
 			    throw EthExceptionEnums.REGION_EMPTY_EXCEPTION.get();
@@ -89,7 +89,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
 				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
 				modelCase.admittedToFacility(new ModelEnumIdValue()
-													.id(facility.getId().intValue())
+													.id(facility.getId())
 													.value(facility.getName()));
 			}
 			return modelCase;

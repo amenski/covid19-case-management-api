@@ -59,7 +59,6 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	public boolean addDailyStatus(ModelDailyCaseStatus model) throws EthException {
 		try {
 			if(!GeneralUtils.validateNumericValues(Arrays.asList(
-					model::getCriticalCases,
 					model::getNewCases,
 					model::getNewDeaths,
 					model::getRecovered,

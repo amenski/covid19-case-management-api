@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 logger.error("An error occured during getting username from token", e);
             } catch (JwtException e) {
-                logger.warn("The token is expired and not valid anymore", e);
+                logger.error("The token is expired and not valid anymore", e);
             }
         } else {
             logger.warn("Couldn't find bearer string, will ignore the header");

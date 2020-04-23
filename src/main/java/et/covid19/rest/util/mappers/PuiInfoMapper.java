@@ -55,7 +55,6 @@ public interface PuiInfoMapper {
 	// search cases
 	@Mappings({
 		@Mapping(target = "id", ignore = true),
-		@Mapping(target = "parentCaseCode", ignore = true),
 		@Mapping(target = "firstName", ignore = true),
 		@Mapping(target = "lastName", ignore = true),
 		@Mapping(target = "passportNumber", ignore = true),

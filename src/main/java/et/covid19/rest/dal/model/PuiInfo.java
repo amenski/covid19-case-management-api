@@ -41,7 +41,7 @@ public class PuiInfo implements Serializable {
 	private ConstantEnum confirmedResult;
 
 	@Column(name="contact_parent_case_code")
-	private String contactParentCaseCode;
+	private String parentCaseCode;
 
 	@Column(name="country_of_origin")
 	private String countryOfOrigin;
@@ -150,15 +150,15 @@ public class PuiInfo implements Serializable {
 		this.confirmedResult = confirmedResult;
 	}
 
-	public String getContactParentCaseCode() {
-		return this.contactParentCaseCode;
-	}
+	public String getParentCaseCode() {
+        return parentCaseCode;
+    }
 
-	public void setContactParentCaseCode(String contactParentCaseCode) {
-		this.contactParentCaseCode = contactParentCaseCode;
-	}
+    public void setParentCaseCode(String parentCaseCode) {
+        this.parentCaseCode = parentCaseCode;
+    }
 
-	public String getCountryOfOrigin() {
+    public String getCountryOfOrigin() {
 		return this.countryOfOrigin;
 	}
 
