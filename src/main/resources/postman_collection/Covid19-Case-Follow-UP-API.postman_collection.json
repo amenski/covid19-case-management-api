@@ -196,9 +196,6 @@
 				{
 					"name": "POST - Search cases by criteria",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -208,7 +205,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"testResultId\": \"1001\",\n\t\"statusId\": \"1064\",\n\t\"recentTravelTo\": \"Italy\"\n}"
+							"raw": "{\n\t\"patientName\": \"TR\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/case",
@@ -910,11 +907,14 @@
 				{
 					"name": "POST - GENERATE TOKEN",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"user\",\n\t\"password\": \"pass\"\n}",
+							"raw": "{\n\t\"email\": \"admin\",\n\t\"password\": \"pass\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1886,7 +1886,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6WyJST0xFX0FETUlOIiwiUk9MRV9IRUFMVEhfT0ZGSUNFUiJdLCJleHAiOjE1ODc0OTUzNjgsImlhdCI6MTU4NzQ1MjE2OH0.0eYysQzXc8ILUeAFqNK6A9pKI8mFupj3tzscN2qgHPo",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOlsiUk9MRV9BRE1JTiJdLCJleHAiOjE1ODc3NTk1NTYsImlhdCI6MTU4NzcxNjM1Nn0.tN3Fy294itgaMdJj87aAyL5QxlqW4PEA1HuNrQ6GOg8",
 				"type": "string"
 			}
 		]
@@ -1915,13 +1915,13 @@
 	],
 	"variable": [
 		{
-			"id": "d8f3fe0d-911c-4c2d-9a46-d9cc51b2dfb7",
+			"id": "418f7947-031c-4adf-8dea-d177e6f694b5",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "b80d7020-ad62-4933-bd26-80d34823a2ce",
+			"id": "3158a57c-c0c4-4d35-871d-42555e7cc690",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

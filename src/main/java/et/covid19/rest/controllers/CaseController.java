@@ -120,7 +120,8 @@ public class CaseController extends AbstractController implements CaseApi {
                                                 criteria.getTestResultId(), 
                                                 criteria.getStatusId(), 
                                                 criteria.getRegion(), 
-                                                criteria.getRecentTravelTo());
+                                                criteria.getRecentTravelTo(),
+                                                criteria.getPatientName());
             response = fillSuccessResponse(new ResponseCaseList().returnValue(modelCaseList));
         } catch(EthException ex) {
             status = ex.getHttpCode();

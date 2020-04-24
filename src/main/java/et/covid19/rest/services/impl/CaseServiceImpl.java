@@ -125,16 +125,17 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
     @Override
     @EthLoggable
-    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo) 
+    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo, String patientName) 
             throws EthException {
         try {
             ModelCaseList modelCaseList = new ModelCaseList();
             if ((confirmedResult == null || Integer.signum(confirmedResult) == -1)
                     && (status == null || Integer.signum(status) == -1)
-                    && StringUtils.isAllBlank(region, recentTravelTo))
+                    && StringUtils.isAllBlank(region, recentTravelTo) 
+                    && StringUtils.isBlank(patientName))
                 return modelCaseList;
 
-            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
+            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo, patientName);
             return getCaseList(puiList);
         } catch (Exception ex) {
             throw ex;
