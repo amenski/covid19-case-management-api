@@ -57,7 +57,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
 			if(parentCase != null) {
-				entity.setContactParentCaseCode(parentCase.getCaseCode());
+				entity.setParentCaseCode(parentCase.getCaseCode());
 			}
 			if(StringUtils.isBlank(entity.getRegion()))
 			    throw EthExceptionEnums.REGION_EMPTY_EXCEPTION.get();
@@ -89,7 +89,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
 				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
 				modelCase.admittedToFacility(new ModelEnumIdValue()
-													.id(facility.getId().intValue())
+													.id(facility.getId())
 													.value(facility.getName()));
 			}
 			return modelCase;
@@ -125,16 +125,17 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
     @Override
     @EthLoggable
-    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo) 
+    public ModelCaseList searchCase(Integer confirmedResult, Integer status, String region, String recentTravelTo, String patientName) 
             throws EthException {
         try {
             ModelCaseList modelCaseList = new ModelCaseList();
             if ((confirmedResult == null || Integer.signum(confirmedResult) == -1)
                     && (status == null || Integer.signum(status) == -1)
-                    && StringUtils.isAllBlank(region, recentTravelTo))
+                    && StringUtils.isAllBlank(region, recentTravelTo) 
+                    && StringUtils.isBlank(patientName))
                 return modelCaseList;
 
-            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo);
+            List<PuiInfo> puiList = queryBuilder.buildCaseSearchCriteria(confirmedResult, status, region, recentTravelTo, patientName);
             return getCaseList(puiList);
         } catch (Exception ex) {
             throw ex;

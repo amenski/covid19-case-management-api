@@ -27,4 +27,4 @@ INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC
 
 -- USER ROLES
 INSERT INTO "public"."role"("id", "enabled", "name") VALUES('1', 'TRUE', 'ADMIN');
-INSERT INTO "public"."role"("id", "enabled", "name") VALUES('1', 'TRUE', 'HEALTH_OFFICER');
+INSERT INTO "public"."role"("id", "enabled", "name") VALUES('2', 'TRUE', 'HEALTH_OFFICER');

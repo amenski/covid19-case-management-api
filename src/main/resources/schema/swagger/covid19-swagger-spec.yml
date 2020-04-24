@@ -953,6 +953,8 @@ definitions:
           type: string
         recentTravelTo:
           type: string
+        patientName:
+          type: string
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'

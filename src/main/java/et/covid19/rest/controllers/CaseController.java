@@ -94,7 +94,7 @@ public class CaseController extends AbstractController implements CaseApi {
 		ResponseBase response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			caseService.updateResult(code.toString(), confirmedResult);
+			caseService.updateResult(code, confirmedResult);
 			response = fillSuccessResponse(new ResponseBase());
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
@@ -120,7 +120,8 @@ public class CaseController extends AbstractController implements CaseApi {
                                                 criteria.getTestResultId(), 
                                                 criteria.getStatusId(), 
                                                 criteria.getRegion(), 
-                                                criteria.getRecentTravelTo());
+                                                criteria.getRecentTravelTo(),
+                                                criteria.getPatientName());
             response = fillSuccessResponse(new ResponseCaseList().returnValue(modelCaseList));
         } catch(EthException ex) {
             status = ex.getHttpCode();
