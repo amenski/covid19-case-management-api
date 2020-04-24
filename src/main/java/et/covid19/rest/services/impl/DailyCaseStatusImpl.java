@@ -69,11 +69,16 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			
 			CaseStat newStat = DailyStatusMapper.INSTANCE.dtoToEntity(model.reportDate(LocalDate.now()));
 			if(lastStatusData != null) {
-				newStat.setSeriousCriticalCases(Integer.sum(model.getCriticalCases(), lastStatusData.getSeriousCriticalCases()));
 				newStat.setTotalCases(Integer.sum(model.getNewCases(), lastStatusData.getTotalCases()));
 				newStat.setTotalDeaths(Integer.sum(model.getNewDeaths(), lastStatusData.getTotalDeaths()));
 				newStat.setTotalRecovered(Integer.sum(model.getRecovered(), lastStatusData.getTotalRecovered()));
 				newStat.setTotalTests(Integer.sum(model.getNewTests(), lastStatusData.getTotalTests()));
+				
+				int criticalCases = Integer.sum(model.getCriticalCases(), lastStatusData.getSeriousCriticalCases());
+				if(Integer.signum(criticalCases) == -1) 
+                    throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Wrong value for critical cases.");
+				
+				newStat.setSeriousCriticalCases(criticalCases);
 				
 				Integer active = lastStatusData.getActiveCases() + model.getNewCases();
 				active = active - model.getNewDeaths() - model.getRecovered();

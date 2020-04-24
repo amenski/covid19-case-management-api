@@ -25,7 +25,7 @@ public class GeneralQueryBuilder {
 	private EntityManager em;
 	
 	@EthLoggable
-	public List<PuiInfo> buildCaseSearchCriteria(Integer resultId, Integer statusId, String region, String recentTravelTo) {
+	public List<PuiInfo> buildCaseSearchCriteria(Integer resultId, Integer statusId, String region, String recentTravelTo, String patientName) {
 		List<PuiInfo> puiList = new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<PuiInfo> query = cb.createQuery(PuiInfo.class);
@@ -46,6 +46,10 @@ public class GeneralQueryBuilder {
 			Predicate p = cb.equal(rootPui.get("recentTravelTo"), recentTravelTo);
 			predicateList.add(p);
 		}
+		if(!StringUtils.isBlank(patientName)) {
+		    Predicate p = cb.like(rootPui.get("firstName"), patientName + "%");
+            predicateList.add(p);
+        }
 		
 		if(predicateList.isEmpty())
 			return puiList;
