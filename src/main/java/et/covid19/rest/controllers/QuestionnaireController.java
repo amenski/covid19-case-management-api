@@ -97,4 +97,28 @@ public class QuestionnaireController extends AbstractController implements Quest
 		return new ResponseEntity<>(response, status);
 	}
 
+    @Override
+    @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
+    public ResponseEntity<ResponseBase> editQuestionnaire(
+            @ApiParam(value = "",required=true) @PathVariable("id") Integer id,
+            @ApiParam(value = ""  )  @Valid @RequestBody RequestSaveQuestionnaire qData) 
+    {
+        Class<ResponseBase> responseClass = ResponseBase.class;
+        ResponseBase response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            questionnierService.editQuestionnaire(id, qData);
+            response = fillSuccessResponse(new ResponseBase());
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
+
 }
