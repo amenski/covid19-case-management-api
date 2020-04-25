@@ -203,7 +203,7 @@ paths:
           '500':
             $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/questionnaire':
-      put:
+      post:
         operationId: registerNewQuestionnaire
         summary: 'Register new questionnaire'
         tags:
@@ -213,6 +213,31 @@ paths:
         consumes:
         - application/json
         parameters:
+          - name: qData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-questionnaire'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/questionnaire/{id}/edit':
+      put:
+        operationId: editQuestionnaire
+        summary: 'Edit questionnaire'
+        tags:
+        - Questionnaire
+        security:
+          - Bearer: []
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
           - name: qData
             in: body
             schema:
