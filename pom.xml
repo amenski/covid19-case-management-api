@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>et.covid19</groupId>
 	<artifactId>rest-api</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>${packaging.type}</packaging>
 	<name>covid19-rest</name>
 	<description>Data collection and surveilance</description>
@@ -103,6 +103,12 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+		<!-- custom log to db helper -->
+		<dependency>
+			<groupId>net.exacode.logback</groupId>
+			<artifactId>logback-extensions</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
