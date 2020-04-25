@@ -46,7 +46,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			List<CaseStat> stat = dailyStatusRepository.findAll();
 			ModelDailyCaseStatusList dailies = new ModelDailyCaseStatusList();
 			
-			stat.stream().sorted((o1, o2) -> o2.getReportDate().compareTo(o1.getReportDate())).forEach(val -> {
+			stat.stream().sorted((o1, o2) -> o1.getReportDate().compareTo(o2.getReportDate())).forEach(val -> {
 				dailies.addListItem(DailyStatusMapper.INSTANCE.entityToDto(val));
 			});
 			return dailies;
