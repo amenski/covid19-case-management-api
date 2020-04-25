@@ -33,7 +33,7 @@
 	<springProperty name="username" source="spring.datasource.username"/>
 	<springProperty name="password" source="spring.datasource.password"/>
 	
-    <appender name = "et.covid19.rest.default.dbAppender" class="net.exacode.logback.classic.recording.CustomDBAppender">
+    <appender name = "et.covid19.rest.default.dbAppender" class="et.covid19.rest.util.logging.CustomDBAppender">
         <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
 			<dataSource class="com.zaxxer.hikari.HikariDataSource">
 				<driverClassName>${driverClassName}</driverClassName>
@@ -44,7 +44,7 @@
         </connectionSource>
     </appender>
 	
-	<appender name="et.covid19.rest.default.thresholdRecorder" class="net.exacode.logback.classic.recording.RecordingAppender">
+	<appender name="et.covid19.rest.default.thresholdRecorder" class="et.covid19.rest.util.logging.RecordingAppender">
 		<appender-ref ref= "et.covid19.rest.default.dbAppender" />
 
 		<maxEvents>20</maxEvents>
