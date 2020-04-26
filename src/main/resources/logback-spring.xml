@@ -40,6 +40,7 @@
 				<jdbcUrl>${url-addr}</jdbcUrl>
 				<username>${username}</username>
 				<password>${password}</password>
+				<maximumPoolSize>2</maximumPoolSize>
 			</dataSource>
         </connectionSource>
     </appender>
