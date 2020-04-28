@@ -32,17 +32,32 @@ public class ContactTracingServiceImpl extends AbstractService implements IConta
 			if(!contactTracingRepository.existsById(code))
 				return StringUtils.EMPTY;
 			
+			/**
+			 * ContactTracing table holds the format { parentCode:[childCode1#childCode2....] } 
+			 * 
+			 * Flow: 
+			 * 1. findAll the parent:child and get the row with `code` == `parentCode`
+			 * 2. Get the parent
+			 * 3. Create(populate) TreeNode from its children and return it.
+			 * 4. Create(populate) TreeNode from the parent
+			 * 5. build the overall tree
+			 *  
+			 */
 			ContactTracing pcase = null;
+			//1
 			List<ContactTracing> pcases = contactTracingRepository.findAll();
 			List<TreeNode<ContactTracing>> listOfCt = new ArrayList<>(100); 
 			for(ContactTracing single : pcases) {
+			    //2
 				if(code.equals(single.getParentCaseCode())){
 					pcase = single;
 				}
+				//3
 				listOfCt.add(populateChildren(single));
 			}
-			
+			//4
 			TreeNode<ContactTracing> parentNode = populateChildren(pcase);
+			//5
 			return buildTree(parentNode, listOfCt);
 		}catch (Exception ex) {
 			throw ex;
@@ -53,7 +68,7 @@ public class ContactTracingServiceImpl extends AbstractService implements IConta
 		if(Objects.isNull(ct))
 			return null;
 		
-		TreeNode<ContactTracing> node = new TreeNode<ContactTracing>(ct);
+		TreeNode<ContactTracing> node = new TreeNode<>(ct);
 		ct.getChildren().stream().forEach(child -> {
 			node.getChildren().add(new TreeNode<ContactTracing>(child));
 		});
@@ -73,4 +88,11 @@ public class ContactTracingServiceImpl extends AbstractService implements IConta
 		return json;
 	}
 
+	// build tree for PuiInfo from ContactTracing tree
+	// used this approach not to query the PuiInfo table for every parentCases and their corresponding children
+	// the ContactTracing table holds only parent:child structure which will then be used here to build
+	// the puiInfo tree which is the final output.
+	private void constructPuiInfoFromTree(GenericTree<ContactTracing> tree) {
+	    
+	}
 }
