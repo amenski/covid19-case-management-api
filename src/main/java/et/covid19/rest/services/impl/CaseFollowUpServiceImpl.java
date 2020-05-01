@@ -1,5 +1,6 @@
 package et.covid19.rest.services.impl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 	@Transactional(rollbackFor = Exception.class)
 	public boolean addCaseFollowUpQuestionnier(String code, @Valid RequestSaveFollowUp body) throws EthException {
 		try{
+		    OffsetDateTime now = OffsetDateTime.now();
 		    if(StringUtils.isBlank(code) || body.getList().isEmpty())
 		        return false;
 		        
@@ -69,6 +71,8 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 				if(!StringUtils.isBlank(puiFollowup.getOptionSelected()) && !uniqueIds.contains(questionnaireId)) { //skip duplicates checking allIds
 					puiFollowup.setPuiInfo(pui);
 					puiFollowup.setModifiedBy(userId);
+					puiFollowup.setCreatedDate(now);
+					puiFollowup.setModifiedDate(now);
 					followupQuestionnaireList.add(puiFollowup);
 					uniqueIds.add(questionnaireId);
 					questAndOptSelectedMap.put(questionnaireId, puiFollowup.getOptionSelected());
