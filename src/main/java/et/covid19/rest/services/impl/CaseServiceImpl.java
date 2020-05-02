@@ -107,7 +107,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			info.setStatus(new ConstantEnum(status));
+			info.setConfirmedResult(new ConstantEnum(status));
 			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, 
 					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
 			
