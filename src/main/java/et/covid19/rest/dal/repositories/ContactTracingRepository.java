@@ -16,7 +16,7 @@ public interface ContactTracingRepository extends JpaRepository<ContactTracing, 
 //	ContactTracing findByParentCaseCode(String code)
     
     @Query("select new et.covid19.rest.dal.util.ContactTracingProjection( "
-            + " info.caseCode, info.firstName, info.confirmedResult.enumName)"
+            + " info.caseCode, concat(info.firstName, ' ' , info.lastName), info.confirmedResult.enumName)"
             + "from PuiInfo info where info.caseCode in :codes")
     List<ContactTracingProjection> getContactTracingProjectionByCode(Set<String> codes);
 }
