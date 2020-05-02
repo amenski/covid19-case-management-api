@@ -108,7 +108,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			info.setStatus(new ConstantEnum(status));
-			validateInputEnumById(EthConstants.CONST_TYPE_STATUS, 
+			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, 
 					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
 			
 			//FIXME add work flow check
