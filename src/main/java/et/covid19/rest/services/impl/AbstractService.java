@@ -111,7 +111,7 @@ public class AbstractService {
     		entity.setModifiedDate(timeNow);
     		entity.setModifiedBy(getCurrentLoggedInUserId());
     		
-    		return puiInfoRepository.save(entity);
+    		return puiInfoRepository.saveAndFlush(entity);
         } catch(EthException ex) {
             logger.error(LogConstants.PARAMETER_2, methodName, ex.getMessage());
             throw ex;

@@ -33,7 +33,6 @@ import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
-import et.covid19.rest.util.GeneralUtils;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.PuiInfoMapper;
@@ -107,9 +106,8 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
+			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(resultId));
 			info.setConfirmedResult(new ConstantEnum(resultId));
-			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, 
-					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_TEST_PENDING).getEnumCode()));
 			
 			//FIXME add work flow check
 			
@@ -161,6 +159,29 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
         }
     }
 
+    @EthLoggable
+    @Override
+    public boolean updateStatus(String code, Integer statusId) throws EthException {
+        try {
+            PuiInfo info = puiInfoRepository.findByCaseCode(code);
+            if(info == null)
+                throw EthExceptionEnums.CASE_NOT_FOUND.get();
+            
+            validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(statusId));
+            info.setStatus(new ConstantEnum(statusId));
+            
+            //FIXME add work flow check
+            
+            info.setModifiedBy(getCurrentLoggedInUserId());
+            info.setModifiedDate(OffsetDateTime.now());
+            
+            puiInfoRepository.save(info);
+            return true;
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
     private ModelCaseList getCaseList(List<PuiInfo> puiList) {
         ModelCaseList modelCaseList = new ModelCaseList();
         List<ModelCase> cases = new ArrayList<>();

@@ -205,6 +205,31 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/case/{code}/update-status':
+      put:
+        operationId: updateStatus
+        summary: 'Update PUI status'
+        security:
+          - Bearer: []
+        tags:
+        - Case
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+          - name: caseStatus
+            in: body
+            schema:
+              $ref: '#/definitions/model-enum-id-value'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/questionnaire':
       post:
         operationId: registerNewQuestionnaire
