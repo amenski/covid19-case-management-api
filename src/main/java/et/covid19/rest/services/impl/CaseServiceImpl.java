@@ -33,7 +33,6 @@ import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.util.EthConstants;
-import et.covid19.rest.util.GeneralUtils;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.PuiInfoMapper;
@@ -86,7 +85,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			ModelCase modelCase = PuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
-			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
+			if(modelCase.getAdmittedToFacility() != null) {
 				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
 				modelCase.admittedToFacility(new ModelEnumIdValue()
 													.id(facility.getId())
@@ -101,15 +100,14 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateResult(String code, Integer status) throws EthException {
+	public boolean updateResult(String code, Integer resultId) throws EthException {
 		try {
 			PuiInfo info = puiInfoRepository.findByCaseCode(code);
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			info.setConfirmedResult(new ConstantEnum(status));
-			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, 
-					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
+			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(resultId));
+			info.setConfirmedResult(new ConstantEnum(resultId));
 			
 			//FIXME add work flow check
 			
@@ -161,6 +159,29 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
         }
     }
 
+    @EthLoggable
+    @Override
+    public boolean updateStatus(String code, Integer statusId) throws EthException {
+        try {
+            PuiInfo info = puiInfoRepository.findByCaseCode(code);
+            if(info == null)
+                throw EthExceptionEnums.CASE_NOT_FOUND.get();
+            
+            validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(statusId));
+            info.setStatus(new ConstantEnum(statusId));
+            
+            //FIXME add work flow check
+            
+            info.setModifiedBy(getCurrentLoggedInUserId());
+            info.setModifiedDate(OffsetDateTime.now());
+            
+            puiInfoRepository.save(info);
+            return true;
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
     private ModelCaseList getCaseList(List<PuiInfo> puiList) {
         ModelCaseList modelCaseList = new ModelCaseList();
         List<ModelCase> cases = new ArrayList<>();

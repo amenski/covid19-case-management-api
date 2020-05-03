@@ -18,7 +18,7 @@ public abstract class AbstractController {
 		 }
 		response.success(true);
 		response.resultCode(LogConstants.SUCCESS);
-		response.message("");
+		response.message(response.getMessage() != null ? response.getMessage() : "");
 		response.errors(null);
 
 		return response;

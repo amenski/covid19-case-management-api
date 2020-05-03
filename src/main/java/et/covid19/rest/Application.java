@@ -18,7 +18,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-//@Import(value={EthAuthUtilLibraryConfigurator.class})
 public class Application extends SpringBootServletInitializer {
 
     private static final String API_VERSION = "API_VERSION";
