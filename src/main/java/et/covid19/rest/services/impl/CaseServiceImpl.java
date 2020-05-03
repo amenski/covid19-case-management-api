@@ -86,7 +86,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			ModelCase modelCase = PuiInfoMapper.INSTANCE.puiInfoToModelCaseMapper(info);
-			if(modelCase.getAdmittedToFacility() != null && modelCase.getAdmittedToFacility().getId() != null) {
+			if(modelCase.getAdmittedToFacility() != null) {
 				HealthFacility facility = healthFacilityRepository.findById(info.getAdmittedToFacility()).orElseThrow(EthExceptionEnums.HEALTH_FACILITY_NOT_FOUND);
 				modelCase.admittedToFacility(new ModelEnumIdValue()
 													.id(facility.getId())
@@ -101,15 +101,15 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateResult(String code, Integer status) throws EthException {
+	public boolean updateResult(String code, Integer resultId) throws EthException {
 		try {
 			PuiInfo info = puiInfoRepository.findByCaseCode(code);
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			info.setConfirmedResult(new ConstantEnum(status));
+			info.setConfirmedResult(new ConstantEnum(resultId));
 			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, 
-					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_STATUS_NA).getEnumCode()));
+					ImmutableSet.of(GeneralUtils.defaultIfNull(info::setStatus, info::getStatus, EthConstants.CONST_TEST_PENDING).getEnumCode()));
 			
 			//FIXME add work flow check
 			

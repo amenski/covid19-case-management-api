@@ -15,10 +15,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-//@Import(value={EthAuthUtilLibraryConfigurator.class})
+@EnableTransactionManagement
 public class Application extends SpringBootServletInitializer {
 
     private static final String API_VERSION = "API_VERSION";
