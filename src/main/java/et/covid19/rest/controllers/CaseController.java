@@ -19,6 +19,7 @@ import et.covid19.rest.services.ICaseService;
 import et.covid19.rest.swagger.api.CaseApi;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.ModelCaseList;
+import et.covid19.rest.swagger.model.ModelEnumIdValue;
 import et.covid19.rest.swagger.model.RequestSaveCase;
 import et.covid19.rest.swagger.model.RequestSearchCase;
 import et.covid19.rest.swagger.model.ResponseBase;
@@ -87,14 +88,14 @@ public class CaseController extends AbstractController implements CaseApi {
 	@EthLoggable
     @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> updateResult(
-			@ApiParam(value = "",required=true) @PathVariable("code") String code,
-			@ApiParam(value = "" ,required=true )  @Valid @RequestBody Integer confirmedResult)  
+	        @ApiParam(value = "",required=true) @PathVariable("code") String code,
+	        @ApiParam(value = ""  )  @Valid @RequestBody ModelEnumIdValue result)
 	{
 		Class<ResponseBase> responseClass = ResponseBase.class;
 		ResponseBase response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			caseService.updateResult(code, confirmedResult);
+			caseService.updateResult(code, result.getId());
 			response = fillSuccessResponse(new ResponseBase());
 		} catch(EthException ex) {
 			status = ex.getHttpCode();
@@ -146,6 +147,30 @@ public class CaseController extends AbstractController implements CaseApi {
         try{
             ModelCaseList modelCase = caseService.getAllCases(page);
             response = fillSuccessResponse(new ResponseCaseList().returnValue(modelCase));
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
+
+    @EthLoggable
+    @Override
+    @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
+    public ResponseEntity<ResponseBase> updateStatus(
+            @ApiParam(value = "",required=true) @PathVariable("code") String code,
+            @ApiParam(value = ""  )  @Valid @RequestBody ModelEnumIdValue caseStatus) 
+    {
+        Class<ResponseBase> responseClass = ResponseBase.class;
+        ResponseBase response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            caseService.updateStatus(code, caseStatus.getId());
+            response = fillSuccessResponse(new ResponseBase());
         } catch(EthException ex) {
             status = ex.getHttpCode();
             response = fillFailResponseEthException(responseClass, ex);
