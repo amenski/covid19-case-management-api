@@ -1,7 +1,7 @@
 -- CONSTANTS
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('TEST_PENDING','1001', 'TEST_RESULT', 'Pending', 'Pending test', false);
-INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('TEST_NEGATIVE', '1002','TEST_RESULT', 'Negative', 'Pending test', false);
-INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('TEST_POSITIVE', '1003','TEST_RESULT', 'Positive', 'Pending test', false);
+INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('TEST_NEGATIVE', '1002','TEST_RESULT', 'Negative', 'Negative', false);
+INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('TEST_POSITIVE', '1003','TEST_RESULT', 'Positive', 'Positive', false);
 
 
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('CLINICAL_EVALUATION','1020','IDENTIFIED_BY', 'Clinical evaluation', 'Identified by clinical evaluation', false);
@@ -19,7 +19,7 @@ INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('DECEASED','1062','STATUS', 'PUI Status deceased.', '', false);
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('RECOVERED','1063','STATUS', 'PUI Status recovered.', '', false);
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('NA','1064','STATUS', 'Not available', '', false);
-INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('IN_ISOLATION','1065','STATUS', 'PUI in Isolation.', '', false);
+--INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('IN_ISOLATION','1065','STATUS', 'PUI in Isolation.', '', false);
 
 
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('PENDING','1080','RUMOR_STATUS', 'Rumor Status pending approval.', '', false);
@@ -30,3 +30,21 @@ INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC
 -- USER ROLES
 INSERT INTO "public"."role"("id", "enabled", "name") VALUES('1', 'TRUE', 'ADMIN');
 INSERT INTO "public"."role"("id", "enabled", "name") VALUES('2', 'TRUE', 'HEALTH_OFFICER');
+
+
+-- result, patient status and rumor possible workflow transitions
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1002, 0, 'Test result Pending to Negative.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1003, 0, 'Test result Pending to Positive.');
+
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1061, 0, 'PUI status Stable to Critical.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1062, 0, 'PUI status Stable to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1063, 0, 'PUI status Stable to Recovered.');
+
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1060, 0, 'PUI status Critical to Stable.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1062, 0, 'PUI status Critical to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1063, 0, 'PUI status Critical to Recovered.');
+
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1060, 0, 'PUI status NA to Stable.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1061, 0, 'PUI status NA to Critical.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1062, 0, 'PUI status NA to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1063, 0, 'PUI status NA to Recovered.');
