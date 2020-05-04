@@ -265,6 +265,14 @@ CREATE TABLE  rumor_reports (
 );
 ALTER TABLE rumor_reports ADD CONSTRAINT rumor_reports_pk PRIMARY KEY (id);
 
+DROP TABLE IF EXISTS "public"."workflow" CASCADE;
+CREATE TABLE "public"."workflow" (
+	"start_state" INTEGER NOT NULL, 
+	"end_state" INTEGER NOT NULL,
+	"disabled" INTEGER NOT NULL DEFAULT 0,
+	"description" VARCHAR(500)
+);
+ALTER TABLE workflow ADD CONSTRAINT pk_start_end PRIMARY KEY (start_state, end_state);
 
 -- LOGGING HELPERS
 
