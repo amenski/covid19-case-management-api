@@ -28,6 +28,7 @@ import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.util.GeneralQueryBuilder;
 import et.covid19.rest.services.ICaseService;
+import et.covid19.rest.services.IWorkFlowService;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
@@ -43,6 +44,9 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 
     @Autowired
     private GeneralQueryBuilder queryBuilder;
+    
+    @Autowired
+    private IWorkFlowService workflowService;
     
 	@Override
 	@EthLoggable
@@ -107,10 +111,11 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
 			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(resultId));
+			
+			//check if transition is possible
+			validateStateChange(info.getConfirmedResult().getEnumCode(), resultId, EthExceptionEnums.CASE_RESULT_CHANGE_EXCEPTION.get());
+			
 			info.setConfirmedResult(new ConstantEnum(resultId));
-			
-			//FIXME add work flow check
-			
 			info.setModifiedBy(getCurrentLoggedInUserId());
 			info.setModifiedDate(OffsetDateTime.now());
 			
@@ -167,11 +172,16 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
             if(info == null)
                 throw EthExceptionEnums.CASE_NOT_FOUND.get();
             
+            // update on non +ve cases should not be allowed
+            if(!EthConstants.CONST_TEST_POSITIVE.equals(info.getConfirmedResult().getEnumCode()))
+                throw EthExceptionEnums.NON_POSITIVE_UPDATE_EXCEPTION.get();
+            
             validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(statusId));
+                
+            //validate status change
+            validateStateChange(info.getStatus().getEnumCode(), statusId, EthExceptionEnums.CASE_STATUS_CHANGE_EXCEPTION.get());
+            
             info.setStatus(new ConstantEnum(statusId));
-            
-            //FIXME add work flow check
-            
             info.setModifiedBy(getCurrentLoggedInUserId());
             info.setModifiedDate(OffsetDateTime.now());
             
@@ -185,7 +195,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
     private ModelCaseList getCaseList(List<PuiInfo> puiList) {
         ModelCaseList modelCaseList = new ModelCaseList();
         List<ModelCase> cases = new ArrayList<>();
-        //instead of foreign key join to healthFacility, convert id to id,value here
+        //instead of foreign key join to healthFacility, convert id to [id,value] here
         Map<Integer, HealthFacility> facilitiesMap = healthFacilityRepository.findAll().stream().collect(Collectors.toMap(HealthFacility::getId, Function.identity()));
         for (PuiInfo info : puiList) {
             ModelCase model = PuiInfoMapper.INSTANCE.entityToModelCaseForSearch(info);
@@ -195,5 +205,14 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
             cases.add(model);
         }
         return modelCaseList.cases(cases);
+    }
+    
+    private void validateStateChange(Integer source, Integer destination, EthException exception) throws EthException {
+        if(source != null && destination != null && source.equals(destination)) //ok
+            return;
+        
+        boolean transitionAllowed = workflowService.transitionAllowed(source, destination);
+        if(!transitionAllowed)
+            throw exception;
     }
 }

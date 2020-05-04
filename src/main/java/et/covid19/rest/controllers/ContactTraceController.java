@@ -29,7 +29,7 @@ public class ContactTraceController extends AbstractController implements Contac
 		ResponseContactTracing response = null;
 		HttpStatus status = HttpStatus.OK;
 		try{
-			String json = contactTraceService.traceContactByCode(code);
+			String json = contactTraceService.traceContactByCode(code.trim());
 			response = fillSuccessResponse(new ResponseContactTracing().returnValue(json));
 		} catch(EthException ex) {
 			status = ex.getHttpCode();

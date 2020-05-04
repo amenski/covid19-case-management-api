@@ -12,6 +12,7 @@ public class EthConstants {
 	
 
 	public static final Integer CONST_TEST_PENDING = 1001;
+	public static final Integer CONST_TEST_POSITIVE = 1003;
 	public static final Integer CONST_IDENTIFIED_BY_CLINICAL_EVAL = 1020;
 	public static final Integer CONST_STATUS_NA = 1064;
 	public static final Integer CONST_RUMOR_PENDING = 1080;

@@ -9,5 +9,7 @@
 		<class>et.covid19.rest.dal.model.EthUser</class>
 		<class>et.covid19.rest.dal.model.security.Role</class>
 		<class>et.covid19.rest.dal.model.RumorReport</class>
+		<class>et.covid19.rest.dal.model.Workflow</class>
+		<class>et.covid19.rest.dal.model.WorkflowPK</class>
 	</persistence-unit>
 </persistence>
