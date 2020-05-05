@@ -25,6 +25,7 @@ import et.covid19.rest.swagger.model.ModelQuestionnaire;
 import et.covid19.rest.swagger.model.ModelQuestionnaireList;
 import et.covid19.rest.swagger.model.RequestSaveQuestionnaire;
 import et.covid19.rest.util.EthConstants;
+import et.covid19.rest.util.LogConstants;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.QuestionnaireMapper;
@@ -57,9 +58,9 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 	@EthLoggable
 	public ModelQuestionnaire getQuestionnaire(Integer id) throws EthException {
 		try {
-			Questionier info = questionnierRepository.findById(id).orElseThrow(EthExceptionEnums.QUESTIONNIER_NOT_FOUND);
-			if(info == null)
-				throw EthExceptionEnums.QUESTIONNIER_NOT_FOUND.get();
+			Questionier info = questionnierRepository.findById(id).orElseThrow(EthExceptionEnums.QUESTIONNAIRE_NOT_FOUND);
+			if(info == null || info.isInActive())
+				throw EthExceptionEnums.QUESTIONNAIRE_NOT_FOUND.get();
 			
 			return QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(info);
 		} catch (Exception ex) {
@@ -72,7 +73,7 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 	public ModelQuestionnaireList getAllQuestionnaire() throws EthException {
 		try {
 			ModelQuestionnaireList list = new ModelQuestionnaireList();
-			List<Questionier> questionList = questionnierRepository.findAll();
+			List<Questionier> questionList = questionnierRepository.findallActiveQuestions();
 			questionList.stream().forEach(q -> {
 				list.addQuestionsItem(QuestionnaireMapper.INSTANCE.entityToModelQuestionnaireMapper(q));
 			});
@@ -84,13 +85,13 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 
     @Override
     @EthLoggable
+    @Transactional(rollbackFor = Exception.class)
     public boolean editQuestionnaire(Integer id, RequestSaveQuestionnaire question) throws EthException {
         try{
             if(id == null || Integer.signum(id) != 1)
                 throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Invalid Questionnaire id value.");
             
-            if(!questionnierRepository.existsById(id))
-                throw EthExceptionEnums.QUESTIONNIER_NOT_FOUND.get();
+            questionnierRepository.findById(id).filter(val -> !val.isInActive()).orElseThrow(EthExceptionEnums.QUESTIONNAIRE_NOT_FOUND);
             
             Questionier entity = buildQuestionnaire(id, question);
             entity.setModifiedDate(OffsetDateTime.now());
@@ -103,7 +104,27 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
             throw ex;
         }
     }
-	
+
+    @Override
+    @EthLoggable
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteQuestionnaire(Integer id) throws EthException {
+        try{
+            if(id == null || Integer.signum(id) != 1)
+                throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Invalid Questionnaire id value.");
+            
+            Questionier entity = questionnierRepository.findById(id).filter(val -> !val.isInActive()).orElseThrow(EthExceptionEnums.QUESTIONNAIRE_NOT_FOUND);
+            entity.setInActive(true);
+            
+            questionnierRepository.save(entity);
+            return true;
+        } catch(ConstraintViolationException | DataIntegrityViolationException e) {
+            throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
 	private List<String> getDistinctQuestionOptions(List<String> options) {
 	    if(options == null || options.isEmpty())
 	        return new ArrayList<>();
@@ -111,28 +132,37 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
 	    return options.stream().map(String::toLowerCase).distinct().collect(Collectors.toList());
 	}
 
-    @EthLoggable
 	private Questionier buildQuestionnaire(Integer id, RequestSaveQuestionnaire question) throws EthException {
+	    String methodName = "buildQuestionnaire()";
+	    logger.info(LogConstants.INPUT_PARAMETER, methodName, LogConstants.METHOD_START);
 	    
-	    if(StringUtils.isBlank(question.getQuestion()))
-            throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Question string missing.");
-        
-        List<String> distinctOptions = getDistinctQuestionOptions(question.getOptions());
-        if(distinctOptions.isEmpty())
-            throw EthExceptionEnums.QUESTION_OPTIONS_EMPTY_EXCEPTION.get();
-        
-        Integer catId = Optional.ofNullable(question.getCategory()).map(ModelEnumIdValue::getId).orElseThrow(EthExceptionEnums.VALIDATION_EXCEPTION);
-        validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(catId));
-        
-	    Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
-	    //update
-	    if(id != null) {
-	        entity.setId(id);
-	    }
-        entity.setOptions(distinctOptions);
-        entity.setCategory(new ConstantEnum(catId));
-        entity.setModifiedBy(getCurrentLoggedInUserId());
-        
-        return entity;
+	    try {
+    	    if(StringUtils.isBlank(question.getQuestion()))
+                throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Question string missing.");
+            
+            List<String> distinctOptions = getDistinctQuestionOptions(question.getOptions());
+            if(distinctOptions.isEmpty())
+                throw EthExceptionEnums.QUESTION_OPTIONS_EMPTY_EXCEPTION.get();
+            
+            Integer catId = Optional.ofNullable(question.getCategory()).map(ModelEnumIdValue::getId).orElseThrow(EthExceptionEnums.VALIDATION_EXCEPTION);
+            validateInputEnumById(EthConstants.CONST_TYPE_QUESTIONNIER_CAT, ImmutableSet.of(catId));
+            
+    	    Questionier entity = QuestionnaireMapper.INSTANCE.modelQuestionnaireToEntityMapper(question);
+    	    //update
+    	    if(id != null) {
+    	        entity.setId(id);
+    	    }
+            entity.setOptions(distinctOptions);
+            entity.setCategory(new ConstantEnum(catId));
+            entity.setModifiedBy(getCurrentLoggedInUserId());
+            
+            return entity;
+	    } catch (Exception ex) {
+	        logger.error(LogConstants.PARAMETER_2, methodName, ex);
+	        throw ex;
+        } finally {
+            logger.info(LogConstants.PARAMETER_2, methodName, LogConstants.METHOD_END);
+        }
 	}
+
 }

@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 1.0.1
+  version: 1.0.2
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -315,6 +315,25 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/questionnaire/{id}/delete':
+      delete:
+        operationId: deleteQuestionnaire
+        summary: Delete questionnaire
+        tags:
+        - Questionnaire
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/attributes':
       get:
         operationId: getAttributes
@@ -544,8 +563,8 @@ paths:
             $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/rumor/{id}/update-status':
     post:
-      operationId: updateStatus
-      summary: 'Update status'
+      operationId: updateRumorStatus
+      summary: 'Update rumor status'
       security:
         - Bearer: []
       tags:

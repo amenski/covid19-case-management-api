@@ -97,7 +97,7 @@ public class RumorController extends AbstractController implements RumorApi {
     @Override
     @EthLoggable
     @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
-    public ResponseEntity<ResponseBase> updateStatus(
+    public ResponseEntity<ResponseBase> updateRumorStatus(
             @ApiParam(value = "",required=true) @PathVariable("id") Integer id,
             @ApiParam(value = "" ,required=true )  @Valid @RequestBody Integer status) 
     {

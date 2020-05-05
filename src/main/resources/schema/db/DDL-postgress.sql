@@ -155,7 +155,8 @@ CREATE TABLE "public"."questionier" (
 "modified_date" TIMESTAMP, 
 "options" VARCHAR(255) , 
 "parent_id" INTEGER, 
-"question" VARCHAR(255)
+"question" VARCHAR(255),
+"inactive" boolean DEFAULT false
 );
 ALTER TABLE "public"."questionier" ADD CONSTRAINT "PR_questionier_ID" PRIMARY KEY ("id");
 
@@ -265,11 +266,11 @@ CREATE TABLE  rumor_reports (
 );
 ALTER TABLE rumor_reports ADD CONSTRAINT rumor_reports_pk PRIMARY KEY (id);
 
-DROP TABLE IF EXISTS "public"."workflow" CASCADE;
+DROP TABLE IF EXISTS "public"."workflow";
 CREATE TABLE "public"."workflow" (
 	"start_state" INTEGER NOT NULL, 
 	"end_state" INTEGER NOT NULL,
-	"disabled" INTEGER NOT NULL DEFAULT 0,
+	"disabled" boolean NOT NULL DEFAULT false,
 	"description" VARCHAR(500)
 );
 ALTER TABLE workflow ADD CONSTRAINT pk_start_end PRIMARY KEY (start_state, end_state);
