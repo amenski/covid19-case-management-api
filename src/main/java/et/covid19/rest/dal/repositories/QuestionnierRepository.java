@@ -12,8 +12,9 @@ import et.covid19.rest.dal.model.Questionier;
 @Repository
 public interface QuestionnierRepository extends JpaRepository<Questionier, Integer> {
 
-	List<Questionier> findByCategory(String type);
-	
-	@Query("select q from Questionier q where q.id in :ids")
+    @Query("select q from Questionier q where q.inActive = false")
+    List<Questionier>  findallActiveQuestions();
+    
+	@Query("select q from Questionier q where (q.id in :ids and q.inActive = false)")
 	List<Questionier> findByIds(Set<Integer> ids);
 }

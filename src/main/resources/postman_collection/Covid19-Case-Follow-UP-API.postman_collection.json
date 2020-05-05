@@ -20,7 +20,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"parentCaseCode\": \"<S-AK07J1R9ZX\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/case",
@@ -165,13 +165,13 @@
 					"response": []
 				},
 				{
-					"name": "POST - UPDATE TEST RESULT",
+					"name": "PUT - UPDATE TEST RESULT",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "1001",
+							"raw": "{\n    \"id\": 1001\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,15 +179,22 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/case/c215fec9-5c70-42d8-a4be-b588562a3190/update-result",
+							"raw": "{{baseUrl}}/v1/api/case/:code/update-result",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"v1",
+								"api",
 								"case",
-								"c215fec9-5c70-42d8-a4be-b588562a3190",
+								":code",
 								"update-result"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "b8e828ac-8980-45f9-9882-114f26ddc7ff"
+								}
 							]
 						}
 					},
@@ -466,6 +473,42 @@
 							"body": ""
 						}
 					]
+				},
+				{
+					"name": "PUT - UPDATE STATUS",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1061\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/case/:code/update-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"case",
+								":code",
+								"update-status"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "b8e828ac-8980-45f9-9882-114f26ddc7ff"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -474,9 +517,9 @@
 			"name": "QUESTIONNAIRE",
 			"item": [
 				{
-					"name": "PUT - ADD NEW QUESTIONNAIRE",
+					"name": "POST - ADD NEW QUESTIONNAIRE",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -569,6 +612,188 @@
 								"v1",
 								"questionnaire",
 								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT - EDIT QUESTIONNAIRE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"<string>\",\n    \"options\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"category\": {\n        \"id\": \"<integer>\",\n        \"value\": \"<string>\"\n    },\n    \"parentId\": \"<integer>\",\n    \"description\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/questionnaire/:id/edit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"questionnaire",
+								":id",
+								"edit"
+							],
+							"variable": [
+								{
+									"description": "(Required) ",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/questionnaire/:id/edit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"questionnaire",
+										":id",
+										"edit"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/questionnaire/:id/edit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"questionnaire",
+										":id",
+										"edit"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Authentication information is missing or invalid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/api/questionnaire/:id/edit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"questionnaire",
+										":id",
+										"edit"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "WWW_Authenticate",
+									"value": "<string>",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "DELETE - Delete Questionnaire",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/api/questionnaire/:id/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"questionnaire",
+								":id",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "100"
+								}
 							]
 						}
 					},
@@ -914,7 +1139,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"admin\",\n\t\"password\": \"pass\"\n}",
+							"raw": "{\n\t\"email\": \"user1\",\n\t\"password\": \"pass\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1886,7 +2111,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOlsiUk9MRV9BRE1JTiJdLCJleHAiOjE1ODc3NTk1NTYsImlhdCI6MTU4NzcxNjM1Nn0.tN3Fy294itgaMdJj87aAyL5QxlqW4PEA1HuNrQ6GOg8",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInJvbGUiOlsiUk9MRV9BRE1JTiIsIlJPTEVfSEVBTFRIX09GRklDRVIiXSwiZXhwIjoxNTg4NzExODkyLCJpYXQiOjE1ODg2Njg2OTJ9.iRq-MHH3bdt5HwuV_DZrIOg6UVcPptTI5I_T4FIrJuc",
 				"type": "string"
 			}
 		]
@@ -1915,13 +2140,13 @@
 	],
 	"variable": [
 		{
-			"id": "418f7947-031c-4adf-8dea-d177e6f694b5",
+			"id": "e8769c44-8254-4397-ac5b-77c09b3e6907",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "3158a57c-c0c4-4d35-871d-42555e7cc690",
+			"id": "f98622b2-ccae-4dcf-97a6-16a238323162",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

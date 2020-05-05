@@ -55,6 +55,9 @@ public class Questionier implements Serializable {
 
 	private String question;
 
+	@Column(name="inactive")
+	private boolean inActive;
+	
 	public Questionier() {
 		//
 	}
@@ -130,5 +133,13 @@ public class Questionier implements Serializable {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+
+    public boolean isInActive() {
+        return inActive;
+    }
+
+    public void setInActive(boolean inActive) {
+        this.inActive = inActive;
+    }
 
 }

@@ -18,7 +18,7 @@ public class Workflow implements Serializable {
 
 	private String description;
 
-	private Integer disabled;
+	private boolean disabled;
 
 	public Workflow() {
 	    //
@@ -40,12 +40,12 @@ public class Workflow implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getDisabled() {
-		return this.disabled;
-	}
+    public boolean isDisabled() {
+        return disabled;
+    }
 
-	public void setDisabled(Integer disabled) {
-		this.disabled = disabled;
-	}
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
 }

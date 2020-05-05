@@ -22,7 +22,7 @@ public enum EthExceptionEnums implements Supplier<EthException> {
 	USER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404001, "User not found.")),
 	CASE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404002, "Case not found.")),
 	CONSTANT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404003, "Attribute or Constant not found.")),
-	QUESTIONNIER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnier not found.")),
+	QUESTIONNAIRE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404004, "Questionnaire not found.")),
 	HEALTH_FACILITY_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404005, "Health facility not found.")),
 	DAILY_STAT_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404006, "Daily status empty.")),
 	USER_ROLE_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404007, "A user was associated with invalid role.")),
