@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import et.covid19.rest.dal.util.StringColumnToListConverter;
 
 
 /**
@@ -41,7 +44,7 @@ public class PuiInfo implements Serializable {
 	private ConstantEnum confirmedResult;
 
 	@Column(name="contact_parent_case_code")
-	private String contactParentCaseCode;
+	private String parentCaseCode;
 
 	@Column(name="country_of_origin")
 	private String countryOfOrigin;
@@ -94,8 +97,6 @@ public class PuiInfo implements Serializable {
 	@Column(name="passport_number")
 	private String passportNumber;
 
-	private String phone;
-
 	@Column(name="phone_no")
 	private String phoneNo;
 
@@ -112,7 +113,8 @@ public class PuiInfo implements Serializable {
 	private String subcityOrZone;
 
 	@Column(name="recent_travel_to")
-	private String recentTravelTo;
+	@Convert( converter = StringColumnToListConverter.class)
+	private List<String> recentTravelTo;
 	
 	@ManyToOne
 	@JoinColumn(name = "status", referencedColumnName = "enum_code")
@@ -152,15 +154,15 @@ public class PuiInfo implements Serializable {
 		this.confirmedResult = confirmedResult;
 	}
 
-	public String getContactParentCaseCode() {
-		return this.contactParentCaseCode;
-	}
+	public String getParentCaseCode() {
+        return parentCaseCode;
+    }
 
-	public void setContactParentCaseCode(String contactParentCaseCode) {
-		this.contactParentCaseCode = contactParentCaseCode;
-	}
+    public void setParentCaseCode(String parentCaseCode) {
+        this.parentCaseCode = parentCaseCode;
+    }
 
-	public String getCountryOfOrigin() {
+    public String getCountryOfOrigin() {
 		return this.countryOfOrigin;
 	}
 
@@ -312,14 +314,6 @@ public class PuiInfo implements Serializable {
 		this.passportNumber = passportNumber;
 	}
 
-	public String getPhone() {
-		return this.phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getPhoneNo() {
 		return this.phoneNo;
 	}
@@ -360,15 +354,15 @@ public class PuiInfo implements Serializable {
 		this.subcityOrZone = subcityOrZone;
 	}
 
-	public String getRecentTravelTo() {
-		return recentTravelTo;
-	}
+	public List<String> getRecentTravelTo() {
+        return recentTravelTo;
+    }
 
-	public void setRecentTravelTo(String recentTravelTo) {
-		this.recentTravelTo = recentTravelTo;
-	}
+    public void setRecentTravelTo(List<String> recentTravelTo) {
+        this.recentTravelTo = recentTravelTo;
+    }
 
-	public String getWoreda() {
+    public String getWoreda() {
 		return this.woreda;
 	}
 

@@ -17,13 +17,13 @@ public interface QuestionnaireMapper {
 	
 	@Mappings({
 		@Mapping(target = "createdDate", source="insertDate"),
-		@Mapping(target = "category", source="category.id")
+		@Mapping(target = "category.enumCode", source="category.id")
 	})
 	Questionier modelQuestionnaireToEntityMapper(ModelQuestionnaire q);
 	
 	@Mappings({
-		@Mapping(target = "category.id", source="id"),
-		@Mapping(target = "category.value", source="question")
+		@Mapping(target = "category.id", source="category.enumCode"),
+		@Mapping(target = "category.value", source="category.enumLabel"),
 	})
 	ModelQuestionnaire entityToModelQuestionnaireMapper(Questionier q);
 	
@@ -31,7 +31,7 @@ public interface QuestionnaireMapper {
 	@Mappings({
 		@Mapping(target = "id", ignore=true),
 		@Mapping(target = "createdDate", source="insertDate"),
-		@Mapping(target = "category", source="category.id")
+		@Mapping(target = "category.enumCode", source="category.id")
 	})
 	Questionier modelQuestionnaireToEntityMapper(RequestSaveQuestionnaire q); //similar fields with ModelQuestionnier
 }

@@ -65,7 +65,7 @@ public class GenericTree<T> {
 	 */
 	public GenericTree<T> buildTree(TreeNode<T> parent, List<TreeNode<T>> theRest) {
 		setRoot(parent);
-		Map<String, TreeNode<T>> map = theRest.stream().collect(Collectors.toMap(val -> val.toString(), Function.identity()));
+		Map<String, TreeNode<T>> map = theRest.stream().collect(Collectors.toMap(TreeNode::toString, Function.identity()));
 		
 		while(childNodesToVisit.iterator().hasNext()) {
 			findInternalFromMap(childNodesToVisit.poll(), map);

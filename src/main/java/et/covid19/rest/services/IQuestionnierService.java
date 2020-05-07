@@ -12,4 +12,8 @@ public interface IQuestionnierService {
 	public ModelQuestionnaire getQuestionnaire(Integer id) throws EthException;
 	
 	public ModelQuestionnaireList getAllQuestionnaire() throws EthException;
+	
+	public boolean editQuestionnaire(Integer id, RequestSaveQuestionnaire model) throws EthException;
+	
+	public boolean deleteQuestionnaire(Integer id) throws EthException; 
 }

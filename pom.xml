@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>et.covid19</groupId>
 	<artifactId>rest-api</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.2</version>
 	<packaging>${packaging.type}</packaging>
 	<name>covid19-rest</name>
 	<description>Data collection and surveilance</description>
@@ -105,6 +105,13 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.jgrapht</groupId>
+		    <artifactId>jgrapht-core</artifactId>
+		    <version>1.4.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<profiles>

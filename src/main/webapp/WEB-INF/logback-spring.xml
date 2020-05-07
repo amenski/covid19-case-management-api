@@ -26,16 +26,46 @@
       </encoder>
     </appender>
 
+	<!-- CUSTOM APPENDERS -->
+	<property resource="application.yml" />
+	<springProperty name="url-addr" source="spring.datasource.url"/>
+	<springProperty name="driverClassName" source="spring.datasource.driver-class-name"/>
+	<springProperty name="username" source="spring.datasource.username"/>
+	<springProperty name="password" source="spring.datasource.password"/>
+	
+    <appender name = "et.covid19.rest.default.dbAppender" class="et.covid19.rest.util.logging.CustomDBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+			<dataSource class="com.zaxxer.hikari.HikariDataSource">
+				<driverClassName>${driverClassName}</driverClassName>
+				<jdbcUrl>${url-addr}</jdbcUrl>
+				<username>${username}</username>
+				<password>${password}</password>
+				<maximumPoolSize>2</maximumPoolSize>
+			</dataSource>
+        </connectionSource>
+    </appender>
+	
+	<appender name="et.covid19.rest.default.thresholdRecorder" class="et.covid19.rest.util.logging.RecordingAppender">
+		<appender-ref ref= "et.covid19.rest.default.dbAppender" />
+
+		<maxEvents>20</maxEvents>
+		<dumpThreshold>WARN</dumpThreshold>
+		<expiryTimeMs>100</expiryTimeMs>
+		<callerData>false</callerData> <!-- we already have caller data from our logger aspect -->
+	</appender>
+	<!-- END CUSTOM APPENDERS -->
+	
     <springProfile name="dev">
         <root level="debug">
-           <!--  <appender-ref ref="et.covid19.rest.default.file.appender" /> -->
-           <appender-ref ref="et.covid19.rest.default.console.appender" />
+           <appender-ref ref="et.covid19.rest.default.file.appender" />
+           <!--   <appender-ref ref="et.covid19.rest.default.console.appender" /> -->
         </root>
     </springProfile>
 
     <springProfile name="prod">
         <root level="info">
-            <appender-ref ref="et.covid19.rest.default.file.appender" />
+           <appender-ref ref="et.covid19.rest.default.console.appender" />
+           <appender-ref ref="et.covid19.rest.default.thresholdRecorder" /> <!-- the very serious once should be also on db, since log files are hard to track on heroku -->
         </root>
     </springProfile>
 

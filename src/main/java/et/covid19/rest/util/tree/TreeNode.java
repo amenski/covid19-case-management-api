@@ -10,6 +10,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class TreeNode<T> {
 	
 	private T data;
+	//only for FE, primeng orgTree implementation
+	private String type = "person";
+    private boolean expanded = true;
+    
 	private List<TreeNode<T>> children;
 	
 	public TreeNode(T nodeData) {
@@ -42,7 +46,15 @@ public class TreeNode<T> {
 	}
 	
 	
-	@Override
+	public String getType() {
+        return type;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,7 @@ public class QuestionnaireController extends AbstractController implements Quest
 	// --/v1/questionnaire
 	@Override
 	@EthLoggable
+	@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
 	public ResponseEntity<ResponseBase> registerNewQuestionnaire(
 			@ApiParam(value = ""  )  @Valid @RequestBody RequestSaveQuestionnaire qData) {
 		Class<ResponseBase> responseClass = ResponseBase.class;
@@ -94,5 +96,52 @@ public class QuestionnaireController extends AbstractController implements Quest
 		
 		return new ResponseEntity<>(response, status);
 	}
+
+    @Override
+    @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")
+    public ResponseEntity<ResponseBase> editQuestionnaire(
+            @ApiParam(value = "",required=true) @PathVariable("id") Integer id,
+            @ApiParam(value = ""  )  @Valid @RequestBody RequestSaveQuestionnaire qData) 
+    {
+        Class<ResponseBase> responseClass = ResponseBase.class;
+        ResponseBase response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            questionnierService.editQuestionnaire(id, qData);
+            response = fillSuccessResponse(new ResponseBase());
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
+
+    @Override
+    @EthLoggable
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseBase> deleteQuestionnaire(
+            @ApiParam(value = "",required=true) @PathVariable("id") Integer id) 
+    {
+        Class<ResponseBase> responseClass = ResponseBase.class;
+        ResponseBase response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            questionnierService.deleteQuestionnaire(id);
+            response = fillSuccessResponse(new ResponseBase());
+        } catch(EthException ex) {
+            status = ex.getHttpCode();
+            response = fillFailResponseEthException(responseClass, ex);
+        } catch (Exception ex) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response = fillFailResponseGeneric(responseClass);
+        }
+        
+        return new ResponseEntity<>(response, status);
+    }
 
 }

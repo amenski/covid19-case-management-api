@@ -1,8 +1,13 @@
 package et.covid19.rest.services.impl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -15,6 +20,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Sets;
+
 import et.covid19.rest.annotations.EthLoggable;
 import et.covid19.rest.dal.model.PuiFollowUp;
 import et.covid19.rest.dal.model.PuiInfo;
@@ -22,11 +29,11 @@ import et.covid19.rest.dal.model.Questionier;
 import et.covid19.rest.dal.repositories.CaseFollowUpRepository;
 import et.covid19.rest.services.ICaseFollowUpService;
 import et.covid19.rest.swagger.model.ModelPuiFollowUp;
+import et.covid19.rest.swagger.model.ModelPuiFollowUpList;
 import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 import et.covid19.rest.util.exception.EthException;
 import et.covid19.rest.util.exception.EthExceptionEnums;
 import et.covid19.rest.util.mappers.PuiCaseFolowUpMapper;
-import et.covid19.rest.util.mappers.PuiInfoMapper;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -38,35 +45,44 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean addCaseFollowUpQuestionnier(@Valid RequestSaveFollowUp body) throws EthException {
+	public boolean addCaseFollowUpQuestionnier(String code, @Valid RequestSaveFollowUp body) throws EthException {
 		try{
-			PuiInfo pui = PuiInfoMapper.INSTANCE.modelFollowupToPuiInfoMapper(body);
+		    OffsetDateTime now = OffsetDateTime.now();
+		    if(StringUtils.isBlank(code) || body.getList().isEmpty())
+		        return false;
+		        
+			PuiInfo pui = puiInfoRepository.findByCaseCode(code);
 			if(pui == null)
-				throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("PUI information may have errors, please try again.");
+				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			PuiInfo parentCase = getParentCase(body.getParentCaseCode()); 
-			if(!StringUtils.isBlank(body.getParentCaseCode()) && Objects.isNull(parentCase))
-				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
-				
-			//collect questionnaires and validate
-			PuiInfo newPui = saveAndGetPuiInfo(pui);
-			addContactTracingInfo(parentCase.getCaseCode(), newPui.getCaseCode());
-			List<PuiFollowUp> questionnierList = new ArrayList<>();
+			//collect questionnaires
+			List<PuiFollowUp> followupQuestionnaireList = new ArrayList<>();
+			Map<Integer, String> questAndOptSelectedMap = new HashMap<>();
+			List<Integer> uniqueIds = new ArrayList<>();
 			final String userId = getCurrentLoggedInUserId();
-			body.getList().stream().forEach(questionnier -> {
-				PuiFollowUp followup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(questionnier); //quest mapped here
-				Questionier questionier = followup.getQuestionier();
-				if(!StringUtils.isAnyBlank(followup.getOptionSelected()) && (Objects.nonNull(questionier) && Objects.nonNull(questionier.getId()))) {
-					followup.setPuiInfo(newPui);
-					followup.setModifiedBy(userId);
-					questionnierList.add(followup);
+			
+			for(ModelPuiFollowUp modelFollowUp : body.getList()) {
+				PuiFollowUp puiFollowup = PuiCaseFolowUpMapper.INSTANCE.modelFollowupToEntityMapper(modelFollowUp); // map only questionId 
+				Integer questionnaireId = Optional.ofNullable(puiFollowup.getQuestionier()).map(Questionier::getId).orElse(null);
+				
+				if(questionnaireId == null) 
+				    throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
+				
+				if(!StringUtils.isBlank(puiFollowup.getOptionSelected()) && !uniqueIds.contains(questionnaireId)) { //skip duplicates checking allIds
+					puiFollowup.setPuiInfo(pui);
+					puiFollowup.setModifiedBy(userId);
+					puiFollowup.setCreatedDate(now);
+					puiFollowup.setModifiedDate(now);
+					followupQuestionnaireList.add(puiFollowup);
+					uniqueIds.add(questionnaireId);
+					questAndOptSelectedMap.put(questionnaireId, puiFollowup.getOptionSelected());
 				}
-			});
+			}
+			// validate
+			if(!validateQuestionsAndSelectedOptions(questAndOptSelectedMap))
+			    throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
 			
-			if(body.getList().size() != questionnierList.size())
-				throw EthExceptionEnums.INVALID_OPTION_OR_QUESTION_ID.get();
-			
-			caseFollowUpRepository.saveAll(questionnierList);
+			caseFollowUpRepository.saveAll(followupQuestionnaireList);
 			return true;
 		} catch(ConstraintViolationException | DataIntegrityViolationException e) {
 			throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
@@ -77,20 +93,45 @@ public class CaseFollowUpServiceImpl extends AbstractService implements ICaseFol
 
 	@Override
 	@EthLoggable
-	public ModelPuiFollowUp getFollowUpData(String caseCode) throws EthException {
+	public ModelPuiFollowUpList getFollowUpData(String caseCode) throws EthException {
 		try {
-			PuiFollowUp followup = caseFollowUpRepository.findWithPuiCaseCode(caseCode.toString());
-			if(followup == null)
+			List<PuiFollowUp> followupQuestionList = caseFollowUpRepository.findWithPuiCaseCode(caseCode);
+			if(followupQuestionList == null || followupQuestionList.isEmpty())
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			
-			ModelPuiFollowUp fup = PuiCaseFolowUpMapper.INSTANCE.entityToModelFollowupMapper(followup);
-			fup.setQuestion(followup.getQuestionier().getQuestion());
-			
-			return fup;
+			ModelPuiFollowUpList flList = new ModelPuiFollowUpList();
+			for(PuiFollowUp fl : followupQuestionList) {
+    			ModelPuiFollowUp fup = PuiCaseFolowUpMapper.INSTANCE.entityToModelFollowupMapper(fl);
+    			flList.addListItem(fup);
+			}
+			return flList;
 		} catch (Exception ex) {
 			throw ex;
 		}
 	}
 	
+	private boolean validateQuestionsAndSelectedOptions(Map<Integer, String> questAndOptSelectedMap) {
+	    String methodName = "validateSelectedOptions()";
+	    if(questAndOptSelectedMap == null || questAndOptSelectedMap.isEmpty())
+	        return false;
+	    
+	    Set<Integer> ids = questAndOptSelectedMap.keySet().stream().collect(Collectors.toSet());
+        List<Questionier> questionList = questionnierRepository.findByIds(ids);
+	    //non existing questions?
+	    if(ids.size() != questionList.size()) {
+	        Set<Integer> nonExistingKeys = Sets.difference(ids, questionList.stream().map(Questionier::getId).collect(Collectors.toSet()));
+	        logger.error("{} [non existing question ids: {}]", methodName, nonExistingKeys);
+	        return false;
+	    }
+	    //invalid option?
+	    for(Questionier question : questionList) {
+	        String selected = questAndOptSelectedMap.get(question.getId());
+	        boolean anyMatch = question.getOptions().stream().anyMatch(selected::equalsIgnoreCase);
+            if(!anyMatch) {
+	            logger.info("{} option: [{}] does not exist for question [id: {}].", methodName, selected, question.getId());
+                return false;
+            }
+	    }
+	    return true;
+	}
 }

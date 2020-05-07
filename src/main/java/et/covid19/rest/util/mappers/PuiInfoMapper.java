@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.RequestSaveCase;
-import et.covid19.rest.swagger.model.RequestSaveFollowUp;
 
 @Mapper
 public interface PuiInfoMapper {
@@ -53,13 +52,23 @@ public interface PuiInfoMapper {
 	})
 	PuiInfo modelCaseToPuiInfoMapper(RequestSaveCase newCase); //similar fields with ModelCase
 
+	// search cases
 	@Mappings({
-		@Mapping(target = "presumptiveResult.enumCode", source = "presumptiveResult.id"),
-		@Mapping(target = "confirmedResult.enumCode", source = "confirmedResult.id"),
-		@Mapping(target = "identifiedBy.enumCode", source = "identifiedBy.id"),
-		@Mapping(target = "status.enumCode", source = "status.id"),
-		@Mapping(target = "admittedToFacility", source = "admittedToFacility.id"),
+//		@Mapping(target = "id", ignore = true),
+//		@Mapping(target = "firstName", ignore = true),
+//		@Mapping(target = "lastName", ignore = true),
+//		@Mapping(target = "passportNumber", ignore = true),
+//		@Mapping(target = "houseNo", ignore = true),
+//		@Mapping(target = "incidentContactPhone1", ignore = true),
+//		@Mapping(target = "incidentContactPhone2", ignore = true),
+//		@Mapping(target = "modifiedBy", ignore = true),
+//		@Mapping(target = "phoneNo", ignore = true),
 		
+		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.enumLabel"),
+		@Mapping(target = "confirmedResult.value", source = "confirmedResult.enumLabel"),
+		@Mapping(target = "identifiedBy.value", source = "identifiedBy.enumLabel"),
+		@Mapping(target = "status.value", source = "status.enumLabel"),
+		@Mapping(target = "admittedToFacility.id", source = "admittedToFacility")
 	})
-	PuiInfo modelFollowupToPuiInfoMapper(RequestSaveFollowUp body);
+	ModelCase entityToModelCaseForSearch(PuiInfo body);
 }

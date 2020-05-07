@@ -37,8 +37,7 @@ public class AuthenticationServiceImpl {
 			Authentication authentication = authenticationManager.authenticate(upToken);
 			
 			String token = tokenUtil.generateToken((UserPrincipal) authentication.getPrincipal());
-			String bearerToken = EthConstants.TOKEN_PREFIX + token; 
-			return bearerToken;
+			return EthConstants.TOKEN_PREFIX.concat(token); 
 		} catch (Exception ex) {
 			throw ex;
 		}

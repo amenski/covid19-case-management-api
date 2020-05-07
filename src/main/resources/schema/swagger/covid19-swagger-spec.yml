@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.0.1
+  version: 1.0.2
   title:  Covid19-case-follow-up
   description: ''
 host: 'localhost:8080'
@@ -86,7 +86,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -130,9 +130,58 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-case-single'
-  '/v1/api/case/{code}/update-result':
+              $ref: '#/definitions/response-case-single' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
       post:
+        operationId: searchCases
+        summary: Search cases by criteria
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters:
+          - name: criteria
+            in: body
+            schema:
+              $ref: '#/definitions/request-search-case'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/case/all':
+      get:
+        operationId: getAllCase
+        summary: Get All case
+        security:
+          - Bearer: []
+        tags:
+        - Case
+        produces:
+        - application/json
+        parameters: 
+          - name: page
+            in: query
+            type: integer
+            format: int32
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-case-list' 
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/case/{code}/update-result':
+      put:
         operationId: updateResult
         summary: 'Update case result'
         security:
@@ -143,7 +192,35 @@ paths:
         - application/json
         parameters:
           - $ref: '#/parameters/case-code-in-path'
-          - $ref: '#/parameters/confirmed-result'
+          - name: result
+            in: body
+            schema:
+              $ref: '#/definitions/model-enum-id-value'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/case/{code}/update-status':
+      put:
+        operationId: updateStatus
+        summary: 'Update PUI status'
+        security:
+          - Bearer: []
+        tags:
+        - Case
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/case-code-in-path'
+          - name: caseStatus
+            in: body
+            schema:
+              $ref: '#/definitions/model-enum-id-value'
         responses:
           '200':
             description: ''
@@ -154,7 +231,7 @@ paths:
           '500':
             $ref: '#/responses/response-internal-server-error-500'
   '/v1/api/questionnaire':
-      put:
+      post:
         operationId: registerNewQuestionnaire
         summary: 'Register new questionnaire'
         tags:
@@ -177,6 +254,31 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/questionnaire/{id}/edit':
+      put:
+        operationId: editQuestionnaire
+        summary: 'Edit questionnaire'
+        tags:
+        - Questionnaire
+        security:
+          - Bearer: []
+        consumes:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+          - name: qData
+            in: body
+            schema:
+              $ref: '#/definitions/request-save-questionnaire'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/questionnaire/{id}':
       get:
         operationId: getQuestionnaire
@@ -186,7 +288,7 @@ paths:
         produces:
         - application/json
         parameters:
-          - $ref: '#/parameters/question-id-in-path'
+          - $ref: '#/parameters/id-in-path-required'
         responses:
           '200':
             description: ''
@@ -213,6 +315,25 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/questionnaire/{id}/delete':
+      delete:
+        operationId: deleteQuestionnaire
+        summary: Delete questionnaire
+        tags:
+        - Questionnaire
+        produces:
+        - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-base'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
   '/v1/attributes':
       get:
         operationId: getAttributes
@@ -230,7 +351,7 @@ paths:
             $ref: '#/responses/response-unauthorized'
           '500':
             $ref: '#/responses/response-internal-server-error-500'
-  '/v1/api/register-follow-up':
+  '/v1/api/follow-up/{code}':
       put:
         operationId: compileFollowUpQuestionnaire
         summary: 'Register case follow-up forms'
@@ -241,6 +362,7 @@ paths:
         consumes:
         - application/json
         parameters:
+          - $ref: '#/parameters/case-code-in-path'
           - name: body
             in: body
             required: true
@@ -269,7 +391,7 @@ paths:
           '200':
             description: ''
             schema:
-              $ref: '#/definitions/response-pui-follow-up-single'
+              $ref: '#/definitions/response-pui-follow-up-list'
           '401':
             $ref: '#/responses/response-unauthorized'
           '500':
@@ -402,7 +524,9 @@ paths:
   '/v1/api/rumor':
     get:
       operationId: getAllRumors
-      summary: Get Rumors info
+      summary: Get all Rumors reports
+      security:
+        - Bearer: []
       tags:
         - Rumor
       produces:
@@ -416,18 +540,64 @@ paths:
           $ref: '#/responses/response-unauthorized'
         '500':
           $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}':
+      get:
+        operationId: getRumorById
+        summary: Get single Rumor reports
+        security:
+          - Bearer: []
+        tags:
+          - Rumor
+        produces:
+          - application/json
+        parameters:
+          - $ref: '#/parameters/id-in-path-required'
+        responses:
+          '200':
+            description: ''
+            schema:
+              $ref: '#/definitions/response-model-rumor-single'
+          '401':
+            $ref: '#/responses/response-unauthorized'
+          '500':
+            $ref: '#/responses/response-internal-server-error-500'
+  '/v1/api/rumor/{id}/update-status':
+    post:
+      operationId: updateRumorStatus
+      summary: 'Update rumor status'
+      security:
+        - Bearer: []
+      tags:
+      - Rumor
+      consumes:
+      - application/json
+      parameters:
+        - $ref: '#/parameters/id-in-path-required'
+        - name: status
+          in: body
+          schema:
+            type: integer
+            format: int32
+          required: true
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/response-base'
+        '401':
+          $ref: '#/responses/response-unauthorized'
+        '500':
+          $ref: '#/responses/response-internal-server-error-500'
 parameters:
   case-code-in-query:
     in: query
     name: code
     type: string
-    format: uuid
     required: true
   case-code-in-path:
     in: path
     name: code
     type: string
-    format: uuid
     required: true
   confirmed-result:
     in: body
@@ -436,7 +606,7 @@ parameters:
       type: integer
       format: int32
     required: true
-  question-id-in-path:
+  id-in-path-required:
     in: path
     name: id
     type: integer
@@ -505,6 +675,9 @@ definitions:
         yCord:
           type: number
           format: double
+      required:
+        - name
+        - addrfull
     model-case:
       type: object
       properties:
@@ -564,7 +737,9 @@ definitions:
         parentCaseCode:
           type: string
         recentTravelTo:
-          type: string
+          type: array
+          items:
+            type: string
         admittedToFacility:
           $ref: '#/definitions/model-enum-id-value'
         status:
@@ -585,6 +760,7 @@ definitions:
         - countryOfResidence
         - identifiedBy
         - modifiedBy
+        - region
     model-questionnaire:
       type: object
       properties:
@@ -594,8 +770,9 @@ definitions:
         question:
           type: string
         options:
-          description: Should be a valid json data
-          type: string
+          type: array
+          items:
+            type: string
         category:
           $ref: '#/definitions/model-enum-id-value'
         parentId:
@@ -604,8 +781,7 @@ definitions:
         description:
           type: string
         modifiedBy:
-          type: integer
-          format: int32
+          type: string
         insertDate:
           type: string
           format: date-time
@@ -644,8 +820,7 @@ definitions:
         description:
           type: string
         modifiedBy:
-          type: integer
-          format: int32 
+          type: string 
         insertDate:
           type: string
           format: date-time
@@ -661,6 +836,8 @@ definitions:
           format: int32
         value:
           type: string
+      required:
+         - id
     model-daily-case-status:
       type: object
       properties:
@@ -741,6 +918,10 @@ definitions:
           type: string
         phoneNumber2:
           type: string
+        modifiedBy:
+          type: string
+        status:
+          $ref: '#/definitions/model-enum-id-value'
       required:
         - suspectName
         - fever
@@ -748,6 +929,7 @@ definitions:
         - headache
         - reportingPersonName
         - phoneNumber1
+        - address
     model-health-facility-list:
       type: object
       properties:
@@ -792,6 +974,13 @@ definitions:
           type: array
           items: 
             $ref: '#/definitions/model-daily-case-status'
+    response-model-rumor-single:
+      allOf:
+        - $ref: '#/definitions/response-base'
+        - type: object
+          properties:
+            returnValue:
+              $ref: '#/definitions/model-rumor'
     model-rumor-list:
       type: object
       properties:
@@ -817,7 +1006,6 @@ definitions:
         - $ref: '#/definitions/model-questionnaire'
     request-save-follow-up:
       allOf:
-        - $ref: '#/definitions/request-save-case'
         - $ref: '#/definitions/model-pui-follow-up-list'
     request-save-facility:
       type: object
@@ -828,6 +1016,21 @@ definitions:
             $ref: '#/definitions/model-health-facility'
       required:
         - facilities
+    request-search-case:
+      type: object
+      properties:
+        testResultId:
+          type: integer
+          format: int32
+        statusId:
+          type: integer
+          format: int32
+        region:
+          type: string
+        recentTravelTo:
+          type: string
+        patientName:
+          type: string
     response-case-single:
       allOf:
         - $ref: '#/definitions/response-base'
