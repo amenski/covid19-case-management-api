@@ -20,7 +20,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"<string>\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"parentCaseCode\": \"<S-AK07J1R9ZX\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": \"Italy\",\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"firstName\": \"<string>\",\r\n    \"lastName\": \"<string>\",\r\n    \"passportNumber\": \"<string>\",\r\n    \"incidentContactPhone1\": \"<string>\",\r\n    \"countryOfResidence\": \"<string>\",\r\n    \"identifiedBy\": {\r\n        \"id\": 1020,\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"modifiedBy\": \"<string>\",\r\n    \"caseCode\": \"<string>\",\r\n\t\r\n    \"dob\": \"2017-01-01\",\r\n\t\r\n    \"gender\": \"M\",\r\n    \"occupation\": \"<string>\",\r\n    \"incidentContactPhone2\": \"<string>\",\r\n    \"countryOfOrigin\": \"<string>\",\r\n    \"nationality\": \"<string>\",\r\n    \"region\": \"Afar\",\r\n    \"subcityOrZone\": \"<string>\",\r\n    \"woreda\": \"<string>\",\r\n    \"kebele\": \"<string>\",\r\n    \"houseNo\": \"<string>\",\r\n    \"phoneNo\": \"<string>\",\r\n    \"latitude\": \"<string>\",\r\n    \"longitude\": \"<string>\",\r\n    \"parentCaseCode\": \"<S-AK07J1R9ZX\",\r\n    \"presumptiveResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"confirmedResult\": {\r\n        \"id\": \"1001\",\r\n        \"value\": \"<string>\"\r\n    },\r\n    \"recentTravelTo\": [\"Italy\", \"Germany\"],\r\n    \"admittedToFacility\": {\r\n        \"id\": \"4\"\r\n    },\r\n    \"status\": {\r\n        \"id\": \"1064\",\r\n        \"value\": \"<string>\"\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/v1/api/case",
@@ -2111,7 +2111,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInJvbGUiOlsiUk9MRV9BRE1JTiIsIlJPTEVfSEVBTFRIX09GRklDRVIiXSwiZXhwIjoxNTg4NzExODkyLCJpYXQiOjE1ODg2Njg2OTJ9.iRq-MHH3bdt5HwuV_DZrIOg6UVcPptTI5I_T4FIrJuc",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInJvbGUiOlsiUk9MRV9BRE1JTiIsIlJPTEVfSEVBTFRIX09GRklDRVIiXSwiZXhwIjoxNTg4ODk2Njk3LCJpYXQiOjE1ODg4NTM0OTd9.Ud7--g8cvNpVBFH6pef1abB177O2lDIPWZe-4am5EEw",
 				"type": "string"
 			}
 		]
@@ -2140,13 +2140,13 @@
 	],
 	"variable": [
 		{
-			"id": "e8769c44-8254-4397-ac5b-77c09b3e6907",
+			"id": "f41faf3e-a10b-42e7-8cac-4954d3c5bf99",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/covid19-rest",
 			"type": "string"
 		},
 		{
-			"id": "f98622b2-ccae-4dcf-97a6-16a238323162",
+			"id": "b6dee961-7d6d-47b4-8715-1f3269d90f17",
 			"key": "baseUrl",
 			"value": "https://covid19-eth.herokuapp.com",
 			"type": "string",

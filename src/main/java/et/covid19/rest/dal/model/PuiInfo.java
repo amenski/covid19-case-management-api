@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import et.covid19.rest.dal.util.StringColumnToListConverter;
 
 
 /**
@@ -110,7 +113,8 @@ public class PuiInfo implements Serializable {
 	private String subcityOrZone;
 
 	@Column(name="recent_travel_to")
-	private String recentTravelTo;
+	@Convert( converter = StringColumnToListConverter.class)
+	private List<String> recentTravelTo;
 	
 	@ManyToOne
 	@JoinColumn(name = "status", referencedColumnName = "enum_code")
@@ -350,15 +354,15 @@ public class PuiInfo implements Serializable {
 		this.subcityOrZone = subcityOrZone;
 	}
 
-	public String getRecentTravelTo() {
-		return recentTravelTo;
-	}
+	public List<String> getRecentTravelTo() {
+        return recentTravelTo;
+    }
 
-	public void setRecentTravelTo(String recentTravelTo) {
-		this.recentTravelTo = recentTravelTo;
-	}
+    public void setRecentTravelTo(List<String> recentTravelTo) {
+        this.recentTravelTo = recentTravelTo;
+    }
 
-	public String getWoreda() {
+    public String getWoreda() {
 		return this.woreda;
 	}
 

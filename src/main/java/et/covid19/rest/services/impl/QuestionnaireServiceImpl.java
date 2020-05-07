@@ -114,7 +114,10 @@ public class QuestionnaireServiceImpl extends AbstractService implements IQuesti
                 throw EthExceptionEnums.VALIDATION_EXCEPTION.get().message("Invalid Questionnaire id value.");
             
             Questionier entity = questionnierRepository.findById(id).filter(val -> !val.isInActive()).orElseThrow(EthExceptionEnums.QUESTIONNAIRE_NOT_FOUND);
+
             entity.setInActive(true);
+            entity.setModifiedBy(getCurrentLoggedInUserId());
+            entity.setModifiedDate(OffsetDateTime.now());
             
             questionnierRepository.save(entity);
             return true;

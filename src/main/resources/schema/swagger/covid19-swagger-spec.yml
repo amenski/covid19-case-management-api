@@ -737,7 +737,9 @@ definitions:
         parentCaseCode:
           type: string
         recentTravelTo:
-          type: string
+          type: array
+          items:
+            type: string
         admittedToFacility:
           $ref: '#/definitions/model-enum-id-value'
         status:
