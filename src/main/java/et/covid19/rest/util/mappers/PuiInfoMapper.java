@@ -68,7 +68,7 @@ public interface PuiInfoMapper {
 		@Mapping(target = "confirmedResult.value", source = "confirmedResult.enumLabel"),
 		@Mapping(target = "identifiedBy.value", source = "identifiedBy.enumLabel"),
 		@Mapping(target = "status.value", source = "status.enumLabel"),
-		@Mapping(target = "admittedToFacility.id", source = "admittedToFacility"), //TODO incorrect mapping
+		@Mapping(target = "admittedToFacility.id", source = "admittedToFacility")
 	})
 	ModelCase entityToModelCaseForSearch(PuiInfo body);
 }
