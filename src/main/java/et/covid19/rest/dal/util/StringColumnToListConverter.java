@@ -16,6 +16,9 @@ public class StringColumnToListConverter implements AttributeConverter<List<Stri
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
+        if(attribute == null || attribute.isEmpty())
+            return StringUtils.EMPTY;
+        
         StringBuilder sb = new StringBuilder();
         attribute.stream().forEach(val -> sb.append(val).append(EthConstants.ATTRIBUTE_SEPARATOR));
         sb.setLength(sb.length() - 1);
