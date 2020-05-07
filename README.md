@@ -5,11 +5,12 @@ The motivation behind this project is that as we all know the world is strugglin
 
 # How to setup
 1. Standalone tomcat: It is enough to have to download tomcat and add the following inside tomcat-users.xml
-	``` </tomcat-users> 
-			<role rolename="manager-gui"/> 
-			<user username="admin" password="admin" roles="manager-gui"/> 
-		</tomcat-users>
-		```
+	``` 
+	</tomcat-users> 
+		<role rolename="manager-gui"/> 
+		<user username="admin" password="admin" roles="manager-gui"/> 
+	</tomcat-users>
+	```
 2. PostgreSQL(can easily be migrated to MYSQL) server
 3. Run DDL and then DML found inside `resources/schema/db`
 4. Deploy and Test(if you use postman, there is postman collection inside resources/schema/postman_collections)
