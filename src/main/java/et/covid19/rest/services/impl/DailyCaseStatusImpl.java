@@ -29,9 +29,10 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 	public ModelDailyCaseStatus getDailyCaseStatus(LocalDate reportingDate) throws EthException {
 		try {
 			LocalDate repDate = reportingDate !=null ? reportingDate : LocalDate.now();
-			CaseStat stat = dailyStatusRepository.findByReportDate(repDate)
-					.stream().findFirst()
-					.orElseThrow(EthExceptionEnums.DAILY_STAT_NOT_FOUND);
+			CaseStat stat = dailyStatusRepository.findByReportDate(repDate);
+			  
+			  if(stat == null)
+			      throw EthExceptionEnums.DAILY_STAT_NOT_FOUND.get();
 			
 			return DailyStatusMapper.INSTANCE.entityToDto(stat);
 		} catch (Exception ex) {
@@ -62,7 +63,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			if(!GeneralUtils.validateNumericValues(Arrays.asList(
 					model::getNewCases,
 					model::getNewDeaths,
-					model::getRecovered,
+					model::getNewRecovered,
 					model::getNewTests))) 
 				throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 			
@@ -72,7 +73,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			if(lastStatusData != null) {
 				newStat.setTotalCases(Integer.sum(model.getNewCases(), lastStatusData.getTotalCases()));
 				newStat.setTotalDeaths(Integer.sum(model.getNewDeaths(), lastStatusData.getTotalDeaths()));
-				newStat.setTotalRecovered(Integer.sum(model.getRecovered(), lastStatusData.getTotalRecovered()));
+				newStat.setTotalRecovered(Integer.sum(model.getNewRecovered(), lastStatusData.getTotalRecovered()));
 				newStat.setTotalTests(Integer.sum(model.getNewTests(), lastStatusData.getTotalTests()));
 				
 				int criticalCases = Integer.sum(model.getCriticalCases(), lastStatusData.getSeriousCriticalCases());
@@ -82,7 +83,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 				newStat.setSeriousCriticalCases(criticalCases);
 				
 				Integer active = lastStatusData.getActiveCases() + model.getNewCases();
-				active = active - model.getNewDeaths() - model.getRecovered();
+				active = active - model.getNewDeaths() - model.getNewRecovered();
 				if(Integer.signum(active) == -1) 
 					throw EthExceptionEnums.VALIDATION_EXCEPTION.get();
 				
@@ -94,6 +95,7 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			    newStat.setId(lastStatusData.getId());
 			    newStat.setNewCases(Integer.sum(lastStatusData.getNewCases(), newStat.getNewCases()));
 			    newStat.setNewDeaths(Integer.sum(lastStatusData.getNewDeaths(), newStat.getNewDeaths()));
+			    newStat.setNewRecovered(Integer.sum(lastStatusData.getNewRecovered(), newStat.getNewRecovered()));
 			    newStat.setNewTests(Integer.sum(lastStatusData.getNewTests(), newStat.getNewTests()));
 			}
 			
