@@ -36,6 +36,9 @@ public class CaseStat implements Serializable {
 
 	@Column(name="new_deaths")
 	private Integer newDeaths;
+	
+	@Column(name="new_recovered")
+    private Integer newRecovered;
 
 	@Column(name="report_date")
 	private LocalDate reportDate;
@@ -86,7 +89,15 @@ public class CaseStat implements Serializable {
 		this.newCases = newCases;
 	}
 
-	public Integer getNewDeaths() {
+	public Integer getNewRecovered() {
+        return newRecovered;
+    }
+
+    public void setNewRecovered(Integer newRecovered) {
+        this.newRecovered = newRecovered;
+    }
+
+    public Integer getNewDeaths() {
 		return this.newDeaths;
 	}
 

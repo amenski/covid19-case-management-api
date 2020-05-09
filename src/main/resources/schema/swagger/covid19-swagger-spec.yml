@@ -850,7 +850,10 @@ definitions:
         totalDeaths:
           type: integer
           format: int32
-        recovered:
+        newRecovered:
+          type: integer
+          format: int32
+        totalRecovered:
           type: integer
           format: int32
         activeCases:
