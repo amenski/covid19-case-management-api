@@ -92,6 +92,9 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			// update if same date with the last entry, 
 			if(lastStatusData != null && lastStatusData.getReportDate().equals(newStat.getReportDate())) {
 			    newStat.setId(lastStatusData.getId());
+			    newStat.setNewCases(Integer.sum(lastStatusData.getNewCases(), newStat.getNewCases()));
+			    newStat.setNewDeaths(Integer.sum(lastStatusData.getNewDeaths(), newStat.getNewDeaths()));
+			    newStat.setNewTests(Integer.sum(lastStatusData.getNewTests(), newStat.getNewTests()));
 			}
 			
 			dailyStatusRepository.save(newStat);
