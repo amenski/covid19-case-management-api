@@ -72,9 +72,9 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			CaseStat newStat = DailyStatusMapper.INSTANCE.dtoToEntity(model.reportDate(LocalDate.now()));
 			if(lastStatusData != null) {
 				newStat.setTotalCases(Integer.sum(model.getNewCases(), lastStatusData.getTotalCases()));
+				newStat.setTotalTests(Integer.sum(model.getNewTests(), lastStatusData.getTotalTests()));
 				newStat.setTotalDeaths(Integer.sum(model.getNewDeaths(), lastStatusData.getTotalDeaths()));
 				newStat.setTotalRecovered(Integer.sum(model.getNewRecovered(), lastStatusData.getTotalRecovered()));
-				newStat.setTotalTests(Integer.sum(model.getNewTests(), lastStatusData.getTotalTests()));
 				
 				int criticalCases = Integer.sum(model.getCriticalCases(), lastStatusData.getSeriousCriticalCases());
 				if(Integer.signum(criticalCases) == -1) 
@@ -94,9 +94,9 @@ public class DailyCaseStatusImpl implements IDailyCaseStatus {
 			if(lastStatusData != null && lastStatusData.getReportDate().equals(newStat.getReportDate())) {
 			    newStat.setId(lastStatusData.getId());
 			    newStat.setNewCases(Integer.sum(lastStatusData.getNewCases(), newStat.getNewCases()));
+			    newStat.setNewTests(Integer.sum(lastStatusData.getNewTests(), newStat.getNewTests()));
 			    newStat.setNewDeaths(Integer.sum(lastStatusData.getNewDeaths(), newStat.getNewDeaths()));
 			    newStat.setNewRecovered(Integer.sum(lastStatusData.getNewRecovered(), newStat.getNewRecovered()));
-			    newStat.setNewTests(Integer.sum(lastStatusData.getNewTests(), newStat.getNewTests()));
 			}
 			
 			dailyStatusRepository.save(newStat);
