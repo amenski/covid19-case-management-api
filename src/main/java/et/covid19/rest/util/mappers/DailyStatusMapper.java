@@ -14,13 +14,11 @@ public interface DailyStatusMapper {
 	DailyStatusMapper INSTANCE = Mappers.getMapper(DailyStatusMapper.class);
 	
 	@Mappings({
-		@Mapping(target = "totalRecovered", source = "recovered"),
 		@Mapping(target = "seriousCriticalCases", source = "criticalCases"),
 	})
 	CaseStat dtoToEntity(ModelDailyCaseStatus model);
 	
 	@Mappings({
-		@Mapping(target = "recovered", source = "totalRecovered"),
 		@Mapping(target = "criticalCases", source = "seriousCriticalCases"),
 	})
 	ModelDailyCaseStatus entityToDto(CaseStat entity);

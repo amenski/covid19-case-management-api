@@ -28,7 +28,6 @@ public interface PuiInfoMapper {
 	
 	@Mappings({
 		@Mapping(target = "id", ignore=true),
-		@Mapping(target = "caseCode", ignore=true),
 		@Mapping(target = "admittedToFacility", ignore=true),
 		@Mapping(target = "presumptiveResult.id", source = "presumptiveResult.enumCode"),
 		@Mapping(target = "presumptiveResult.value", source = "presumptiveResult.enumName"),

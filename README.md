@@ -14,3 +14,12 @@ The motivation behind this project is that as we all know the world is strugglin
 2. PostgreSQL(can easily be migrated to MYSQL) server
 3. Run DDL and then DML found inside `resources/schema/db`
 4. Deploy and Test(if you use postman, there is postman collection inside resources/schema/postman_collections)
+
+### Admin panel
+![Admin panel](src/main/resources/images/covid_fe_admin.png)
+
+### Public facing
+![Public facing dashboard](src/main/resources/images/covid_fe_public.png)
+
+
+Front end angular project can be found [here](https://github.com/amenski/covid19-fe).
