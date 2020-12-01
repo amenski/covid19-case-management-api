@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import et.covid19.rest.dal.model.PuiInfo;
 
 @Repository
-public interface PuiInfoRepository extends JpaRepository<PuiInfo, Integer> {
+public interface PuiInfoRepository extends JpaRepository<PuiInfo, Long> {
 
 	PuiInfo findByCaseCode(String code);
 

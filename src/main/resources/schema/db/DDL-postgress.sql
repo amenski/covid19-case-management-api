@@ -11,7 +11,7 @@ CREATE TABLE "public"."constant_enum" (
 "enum_type" VARCHAR(50)  DEFAULT '' NOT NULL,
 "enum_label" VARCHAR(50)  DEFAULT '' NOT NULL, 
 "enum_desc" VARCHAR(250)  DEFAULT '' NOT NULL, 
-"disabled" INTEGER DEFAULT 0 NOT NULL
+"disabled" boolean DEFAULT false NOT NULL
 );
 DROP INDEX IF EXISTS "PRIMARY";
 ALTER TABLE "public"."constant_enum" ADD CONSTRAINT "PRIMARY" PRIMARY KEY ("enum_code");
@@ -28,17 +28,17 @@ Table structure for table 'public.health_facility' => we can use SERIAL type not
 CREATE SEQUENCE "public"."health_facility_id_seq";
 DROP TABLE IF EXISTS "public"."health_facility" CASCADE;
 CREATE TABLE "public"."health_facility" (
-"ID" INTEGER NOT NULL DEFAULT NEXTVAL('health_facility_id_seq'), 
-"OSM_ID" DOUBLE PRECISION,
-"NAME" VARCHAR(200)  DEFAULT '' NOT NULL, 
-"ADDRFULL" VARCHAR(250)  DEFAULT '' NOT NULL,
-"AMENITY" VARCHAR(50) ,
-"X_CORD" DOUBLE PRECISION NOT NULL, 
-"Y_CORD" DOUBLE PRECISION NOT NULL,
-"MODIFIED_BY" VARCHAR(250)  DEFAULT '' NOT NULL, 
-"MODIFIED_DATE" TIMESTAMP NOT NULL
+"id" INTEGER NOT NULL DEFAULT NEXTVAL('health_facility_id_seq'), 
+"osm_id" DOUBLE PRECISION,
+"name" VARCHAR(200)  DEFAULT '' NOT NULL, 
+"addrfull" VARCHAR(250)  DEFAULT '' NOT NULL,
+"amenity" VARCHAR(50) ,
+"x_cord" DOUBLE PRECISION NOT NULL, 
+"y_cord" DOUBLE PRECISION NOT NULL,
+"modified_by" VARCHAR(250)  DEFAULT '' NOT NULL, 
+"modified_date" TIMESTAMP NOT NULL
 );
-ALTER TABLE "public"."health_facility" ADD CONSTRAINT "PK_health_facility_ID" PRIMARY KEY ("ID");
+ALTER TABLE "public"."health_facility" ADD CONSTRAINT "PK_health_facility_ID" PRIMARY KEY ("id");
 
 /*
 Dumping data for table 'public.health_facility'
@@ -174,7 +174,7 @@ DROP TABLE IF EXISTS "public"."role" CASCADE;
 CREATE TABLE "public"."role" (
 "id" INTEGER NOT NULL DEFAULT NEXTVAL('role_id_seq'), 
 "name" VARCHAR(255)  DEFAULT '' NOT NULL, 
-"enabled" INTEGER DEFAULT 1 NOT NULL
+"enabled" boolean DEFAULT true NOT NULL
 );
 ALTER TABLE "public"."role" ADD CONSTRAINT "PR_role_ID" PRIMARY KEY ("id");
 
@@ -195,10 +195,10 @@ CREATE TABLE "public"."eth_user" (
 "password" VARCHAR(255)  DEFAULT '' NOT NULL, 
 "first_name" VARCHAR(255)  DEFAULT '' NOT NULL, 
 "last_name" VARCHAR(255) , 
-"account_non_expired" INTEGER NOT NULL, 
-"account_non_locked" INTEGER NOT NULL, 
-"enabled" INTEGER NOT NULL, 
-"last_access" TIMESTAMP NOT NULL
+"account_non_expired" boolean default false NOT NULL, 
+"account_non_locked"  boolean default false NOT NULL, 
+"enabled"  boolean default false NOT NULL, 
+"last_access" TIMESTAMP default current_timestamp NOT NULL
 );
 ALTER TABLE "public"."eth_user" ADD CONSTRAINT "PR_eth_user_ID" PRIMARY KEY ("id");
 ALTER TABLE "public"."eth_user" ADD CONSTRAINT "PR_eth_user_name_unique" UNIQUE (username);

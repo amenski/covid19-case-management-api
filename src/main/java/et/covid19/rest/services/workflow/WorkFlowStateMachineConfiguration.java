@@ -3,6 +3,8 @@ package et.covid19.rest.services.workflow;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
@@ -12,7 +14,6 @@ import org.springframework.statemachine.config.builders.StateMachineConfiguratio
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
-import org.springframework.statemachine.state.State;
 
 import et.covid19.rest.annotations.EthLoggable;
 
@@ -20,6 +21,8 @@ import et.covid19.rest.annotations.EthLoggable;
 @EnableStateMachineFactory
 public class WorkFlowStateMachineConfiguration extends StateMachineConfigurerAdapter<WorkFlowStates, WorkFlowEvents> {
 
+    protected Logger logger = LoggerFactory.getLogger(WorkFlowStateMachineConfiguration.class);
+    
     @Override
     public void configure(StateMachineStateConfigurer<WorkFlowStates, WorkFlowEvents> states) throws Exception {
         states
@@ -35,41 +38,41 @@ public class WorkFlowStateMachineConfiguration extends StateMachineConfigurerAda
             throws Exception {
         // no CRITICAL => RECOVERED transition
        transitions
-           .withExternal().source(WorkFlowStates.TEST_PENDING).target(WorkFlowStates.TEST_NEGATIVE).event(WorkFlowEvents.TEST_NEGATIVE)
+           .withExternal().source(WorkFlowStates.TEST_PENDING).target(WorkFlowStates.TEST_NEGATIVE).event(WorkFlowEvents.TEST_PENDING_TO_TEST_NEGATIVE)
            .and()
-           .withExternal().source(WorkFlowStates.TEST_PENDING).target(WorkFlowStates.TEST_POSITIVE).event(WorkFlowEvents.TEST_POSITIVE)
+           .withExternal().source(WorkFlowStates.TEST_PENDING).target(WorkFlowStates.TEST_POSITIVE).event(WorkFlowEvents.TEST_PENDING_TO_TEST_POSITIVE)
            .and()
-           .withExternal().source(WorkFlowStates.TEST_POSITIVE).target(WorkFlowStates.STABLE).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.TEST_POSITIVE).target(WorkFlowStates.STABLE).event(WorkFlowEvents.TEST_POSITIVE_TO_STABLE)
            .and()
-           .withExternal().source(WorkFlowStates.TEST_POSITIVE).target(WorkFlowStates.CRITICAL).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.TEST_POSITIVE).target(WorkFlowStates.CRITICAL).event(WorkFlowEvents.TEST_POSITIVE_TO_CRITICAL)
            .and()
-           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.CRITICAL).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.CRITICAL).event(WorkFlowEvents.STABLE_TO_CRITICAL)
            .and()
-           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.RECOVERED).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.RECOVERED).event(WorkFlowEvents.STABLE_TO_RECOVERED)
            .and()
-           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.DECEASED).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.STABLE).target(WorkFlowStates.DECEASED).event(WorkFlowEvents.STABLE_TO_DECEASED)
            .and()
-           .withExternal().source(WorkFlowStates.CRITICAL).target(WorkFlowStates.STABLE).event(WorkFlowEvents.CONDITION_CHANGE)
+           .withExternal().source(WorkFlowStates.CRITICAL).target(WorkFlowStates.STABLE).event(WorkFlowEvents.CRITICAL_TO_STABLE)
            .and()
-           .withExternal().source(WorkFlowStates.CRITICAL).target(WorkFlowStates.DECEASED).event(WorkFlowEvents.CONDITION_CHANGE);
+           .withExternal().source(WorkFlowStates.CRITICAL).target(WorkFlowStates.DECEASED).event(WorkFlowEvents.CRITICAL_TO_DECEASED)
+           .and()
+           .withExternal().source(WorkFlowStates.NA).target(WorkFlowStates.STABLE).event(WorkFlowEvents.NA_TO_STABLE)
+           .and()
+           .withExternal().source(WorkFlowStates.NA).target(WorkFlowStates.CRITICAL).event(WorkFlowEvents.NA_TO_CRITICAL);
     }
 
+    /** 
+     * Add a listener since {@link WorkFlowServiceImpl#executeTransition(et.covid19.rest.dal.model.PuiInfo, Integer)} 
+     * {@code InterceptorAdater} doesn't have {@code eventNotAccepted} method
+     */
     @Override
     public void configure(StateMachineConfigurationConfigurer<WorkFlowStates, WorkFlowEvents> config) throws Exception {
-        StateMachineListenerAdapter<WorkFlowStates, WorkFlowEvents> adapter = new StateMachineListenerAdapter<WorkFlowStates, WorkFlowEvents>() {
-
-            @Override
-            @EthLoggable
-            public void stateChanged(State<WorkFlowStates, WorkFlowEvents> from,
-                    State<WorkFlowStates, WorkFlowEvents> to) {
-                // TODO Auto-generated method stub
-                super.stateChanged(from, to);
-            }
+        StateMachineListenerAdapter<WorkFlowStates, WorkFlowEvents> listner = new StateMachineListenerAdapter<WorkFlowStates, WorkFlowEvents>() {
 
             @Override
             @EthLoggable
             public void eventNotAccepted(Message<WorkFlowEvents> event) {
-                // TODO Auto-generated method stub
+                logger.warn("{} Input parameters: [ event: {}]", "eventNotAccepted()", event);
                 super.eventNotAccepted(event);
             }
 
@@ -77,13 +80,15 @@ public class WorkFlowStateMachineConfiguration extends StateMachineConfigurerAda
             @EthLoggable
             public void stateMachineError(StateMachine<WorkFlowStates, WorkFlowEvents> stateMachine,
                     Exception exception) {
-                // TODO Auto-generated method stub
+                logger.info("{} Input parameters: [ event: {}]", "stateMachineError()", exception.getMessage());
                 super.stateMachineError(stateMachine, exception);
             }
             
         };
         
-        config.withConfiguration().listener(adapter);
+        config
+            .withConfiguration()
+            .listener(listner);
     }
 
 }

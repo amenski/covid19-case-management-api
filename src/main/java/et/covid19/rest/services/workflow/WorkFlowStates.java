@@ -10,6 +10,7 @@ public enum WorkFlowStates {
     STABLE, 
     CRITICAL,
     RECOVERED,
-    DECEASED;
+    DECEASED,
+    NA;
 
 }

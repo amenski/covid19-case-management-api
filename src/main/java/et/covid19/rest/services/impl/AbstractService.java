@@ -39,7 +39,7 @@ import et.covid19.rest.util.exception.EthExceptionEnums;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AbstractService {
 	
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	protected ConstantsEnumRepository constantsEnumRepository;

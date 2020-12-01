@@ -16,7 +16,7 @@ public enum EthExceptionEnums implements Supplier<EthException> {
 	REGION_EMPTY_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400005, "Region can not be empty.")),
 	QUESTION_OPTIONS_EMPTY_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400006, "Question options can not be empty.")),
     CASE_RESULT_CHANGE_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400007, "The requested result update can not be performed.")),
-    CASE_STATUS_CHANGE_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400008, "The requested status update can not be performed.")),
+    CASE_STATUS_CHANGE_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400008, "The requested status update could not be performed.")),
     NON_POSITIVE_UPDATE_EXCEPTION(new EthException(HttpStatus.BAD_REQUEST , 400009, "Can not update status for non positive case.")),
     
 	USER_NOT_FOUND(new EthException(HttpStatus.NOT_FOUND , 404001, "User not found.")),

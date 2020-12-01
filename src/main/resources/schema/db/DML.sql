@@ -28,23 +28,31 @@ INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC
 INSERT INTO CONSTANT_ENUM(ENUM_NAME, ENUM_CODE, ENUM_TYPE, ENUM_LABEL, ENUM_DESC, DISABLED) VALUES('IN_ISOLATION','1083','RUMOR_STATUS', 'Rumor Status tested negative.', '', false);
 
 -- USER ROLES
-INSERT INTO "public"."role"("id", "enabled", "name") VALUES('1', 'TRUE', 'ADMIN');
-INSERT INTO "public"."role"("id", "enabled", "name") VALUES('2', 'TRUE', 'HEALTH_OFFICER');
+INSERT INTO "public"."role"("id", "enabled", "name") VALUES('1', true, 'ADMIN');
+INSERT INTO "public"."role"("id", "enabled", "name") VALUES('2', true, 'HEALTH_OFFICER');
 
 
 -- result, patient status and rumor possible workflow transitions
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1002, 0, 'Test result Pending to Negative.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1003, 0, 'Test result Pending to Positive.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1002, false, 'Test result Pending to Negative.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1001, 1003, false, 'Test result Pending to Positive.');
 
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1061, 0, 'PUI status Stable to Critical.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1062, 0, 'PUI status Stable to Deceased.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1063, 0, 'PUI status Stable to Recovered.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1061, false, 'PUI status Stable to Critical.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1062, false, 'PUI status Stable to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1060, 1063, false, 'PUI status Stable to Recovered.');
 
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1060, 0, 'PUI status Critical to Stable.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1062, 0, 'PUI status Critical to Deceased.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1063, 0, 'PUI status Critical to Recovered.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1060, false, 'PUI status Critical to Stable.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1062, false, 'PUI status Critical to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1061, 1063, false, 'PUI status Critical to Recovered.');
 
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1060, 0, 'PUI status NA to Stable.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1061, 0, 'PUI status NA to Critical.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1062, 0, 'PUI status NA to Deceased.');
-INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1063, 0, 'PUI status NA to Recovered.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1060, false, 'PUI status NA to Stable.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1061, false, 'PUI status NA to Critical.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1062, false, 'PUI status NA to Deceased.');
+INSERT INTO workflow (start_state, end_state, disabled, description) VALUES (1064, 1063, false, 'PUI status NA to Recovered.');
+
+-- sample user, password=[pass]
+INSERT INTO public.eth_user (id,username,"password",first_name,last_name,account_non_expired,account_non_locked,enabled, last_access )
+	VALUES (1,'user1','$2a$12$AiKXxSsVUgsZ1jc7k7D8jOMbFIJsxV718bdK8B7U1AyeGF0smnEC2','Bambo','Kase',true, true, true, current_date);
+
+
+INSERT INTO user_roles (user_id,role_id) VALUES (1,1); -- admin
+INSERT INTO user_roles (user_id,role_id) VALUES (1,2); -- health-officer

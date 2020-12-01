@@ -83,31 +83,6 @@ public class CaseController extends AbstractController implements CaseApi {
 		return new ResponseEntity<>(response, status);
 	}
 
-	// /v1/api/case/{code} - confirmedResult as a body
-	@Override
-	@EthLoggable
-    @PreAuthorize("hasRole('ROLE_HEALTH_OFFICER')")
-	public ResponseEntity<ResponseBase> updateResult(
-	        @ApiParam(value = "",required=true) @PathVariable("code") String code,
-	        @ApiParam(value = ""  )  @Valid @RequestBody ModelEnumIdValue result)
-	{
-		Class<ResponseBase> responseClass = ResponseBase.class;
-		ResponseBase response = null;
-		HttpStatus status = HttpStatus.OK;
-		try{
-			caseService.updateResult(code.trim(), result.getId());
-			response = fillSuccessResponse(new ResponseBase());
-		} catch(EthException ex) {
-			status = ex.getHttpCode();
-			response = fillFailResponseEthException(responseClass, ex);
-		} catch (Exception ex) {
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			response = fillFailResponseGeneric(responseClass);
-		}
-		
-		return new ResponseEntity<>(response, status);
-	}
-
     @Override
     @EthLoggable
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_HEALTH_OFFICER')")

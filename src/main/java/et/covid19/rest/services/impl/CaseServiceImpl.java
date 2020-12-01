@@ -1,6 +1,5 @@
 package et.covid19.rest.services.impl;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,15 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.ImmutableSet;
-
 import et.covid19.rest.annotations.EthLoggable;
-import et.covid19.rest.dal.model.ConstantEnum;
 import et.covid19.rest.dal.model.HealthFacility;
 import et.covid19.rest.dal.model.PuiInfo;
 import et.covid19.rest.dal.util.GeneralQueryBuilder;
 import et.covid19.rest.services.ICaseService;
-import et.covid19.rest.services.IWorkFlowService;
 import et.covid19.rest.swagger.model.ModelCase;
 import et.covid19.rest.swagger.model.ModelCaseList;
 import et.covid19.rest.swagger.model.ModelEnumIdValue;
@@ -46,7 +42,8 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
     private GeneralQueryBuilder queryBuilder;
     
     @Autowired
-    private IWorkFlowService workflowService;
+    @Qualifier("newWorkflow")
+    private et.covid19.rest.services.workflow.IWorkFlowService newWorkflowService;
     
 	@Override
 	@EthLoggable
@@ -57,7 +54,7 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 			PuiInfo parentCase = getParentCase(newCase.getParentCaseCode()); 
 			if(!StringUtils.isBlank(newCase.getParentCaseCode()) && Objects.isNull(parentCase))
 				throw EthExceptionEnums.CASE_NOT_FOUND.get().message("Parent case not found.");
-			
+			// TODO exclude NA status from input
 			PuiInfo entity = PuiInfoMapper.INSTANCE.modelCaseToPuiInfoMapper(newCase);
 			if(parentCase != null) {
 				entity.setParentCaseCode(parentCase.getCaseCode());
@@ -104,21 +101,19 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
 	@Override
 	@EthLoggable
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateResult(String code, Integer resultId) throws EthException {
+	public boolean updateStatus(String code, Integer resultId) throws EthException {
 		try {
 			PuiInfo info = puiInfoRepository.findByCaseCode(code);
 			if(info == null)
 				throw EthExceptionEnums.CASE_NOT_FOUND.get();
 			
-			validateInputEnumById(EthConstants.CONST_TYPE_TEST_RESULT, ImmutableSet.of(resultId));
+			if(resultId == null || Integer.signum(resultId) != 1)
+			    throw EthExceptionEnums.CONSTANT_NOT_FOUND.get();
 			
-			//check if transition is possible
-			validateStateChange(info.getConfirmedResult().getEnumCode(), resultId, EthExceptionEnums.CASE_RESULT_CHANGE_EXCEPTION.get());
-			
-			info.setConfirmedResult(new ConstantEnum(resultId));
-			info.setModifiedBy(getCurrentLoggedInUserId());
-			info.setModifiedDate(OffsetDateTime.now());
-			
+			boolean success = newWorkflowService.executeTransition(info, resultId);
+			if(!success) {
+			    throw EthExceptionEnums.CASE_STATUS_CHANGE_EXCEPTION.get();
+			}
 			puiInfoRepository.save(info);
 			return true;
 		} catch (Exception ex) {
@@ -164,34 +159,6 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
         }
     }
 
-    @EthLoggable
-    @Override
-    public boolean updateStatus(String code, Integer statusId) throws EthException {
-        try {
-            PuiInfo info = puiInfoRepository.findByCaseCode(code);
-            if(info == null)
-                throw EthExceptionEnums.CASE_NOT_FOUND.get();
-            
-            // update on non +ve cases should not be allowed
-            if(!EthConstants.CONST_TEST_POSITIVE.equals(info.getConfirmedResult().getEnumCode()))
-                throw EthExceptionEnums.NON_POSITIVE_UPDATE_EXCEPTION.get();
-            
-            validateInputEnumById(EthConstants.CONST_TYPE_STATUS, ImmutableSet.of(statusId));
-                
-            //validate status change
-            validateStateChange(info.getStatus().getEnumCode(), statusId, EthExceptionEnums.CASE_STATUS_CHANGE_EXCEPTION.get());
-            
-            info.setStatus(new ConstantEnum(statusId));
-            info.setModifiedBy(getCurrentLoggedInUserId());
-            info.setModifiedDate(OffsetDateTime.now());
-            
-            puiInfoRepository.save(info);
-            return true;
-        } catch (Exception ex) {
-            throw ex;
-        }
-    }
-    
     private ModelCaseList getCaseList(List<PuiInfo> puiList) {
         ModelCaseList modelCaseList = new ModelCaseList();
         List<ModelCase> cases = new ArrayList<>();
@@ -207,12 +174,4 @@ public class CaseServiceImpl extends AbstractService implements ICaseService {
         return modelCaseList.cases(cases);
     }
     
-    private void validateStateChange(Integer source, Integer destination, EthException exception) throws EthException {
-        if(source != null && destination != null && source.equals(destination)) //ok
-            return;
-        
-        boolean transitionAllowed = workflowService.transitionAllowed(source, destination);
-        if(!transitionAllowed)
-            throw exception;
-    }
 }
